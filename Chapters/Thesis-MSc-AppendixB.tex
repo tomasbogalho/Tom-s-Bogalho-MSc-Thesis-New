@@ -1,0 +1,373 @@
+% #############################################################################
+% This is Appendix B
+% !TEX root = ../main.tex
+% #############################################################################
+\chapter{Literature revision tables}
+
+
+\label{chapter:appendixB}
+
+This appendix includes a table with some details of scientific articles that study issues similar to the theme of this thesis.
+
+\begin{landscape}
+
+    \begin{longtable}{llllllll}
+    \caption {Summary of ANNs in predicting building energy consumption.}
+    \label{table1}\\
+    \hline \\[-1.0ex]
+    \textbf{Year} & \textbf{Reference} & \textbf{Type of building}  & \textbf{Inputs} & \textbf{Output} & \textbf{Dataset length} & \textbf{Model} \\[+1.0ex] \hline \\[-1.0ex]
+    \endhead
+
+     2000   &
+     \cite{annr1}  &
+     Supermarket & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Day, Time, External Humidity and Temperature and Internal humidity and temperature for short term i.e. a month}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     Not specified  & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+     
+     
+     2000   &
+     \cite{annr2}  &
+     Holiday passive house  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Season, insulation function, wall thickness, heat transfer coefficient, time of day}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     Two seasons & 
+     \makecell*[{{p{3cm}}}]{RNN combined with BPNN}  \\
+         
+     2005   &
+     \cite{annr3}  &
+     Office   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Outdoor dry-bulb temperature, outdoor humility, water temperature of chiller, compressor status etc.}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Dynamic chiller electric demand}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{Sliding window ANN and accumulative ANN}  \\
+
+
+     2005   &
+     \cite{svm2}  &
+     Commercial   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Outdoor temperature, relative humility, global solar
+     radiation, previous electricity consumption}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Building energy consumption per month} & 
+     3 years & 
+     \makecell*[{{p{3cm}}}]{SVM}   \\
+
+         
+     2007   &
+     \cite{annr4}  &
+     Multiple  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Economic indicators (GNP and GDP), population}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     37 years (1968–2005) & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\    
+     
+     2008   &
+     \cite{annr5}  &
+     Solar house  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Outdoor temperature, relative humility, set point temperature, occupancy schedule}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Heating/cooling consumption}   & 
+     2 days & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+         
+     2009   &
+     \cite{annr6}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Transparency ratios, insulation thickness, building form factors and heating energy demands}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Building heating energy requirements}   & 
+     5 years  & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+     
+     2009   &
+     \cite{annr7}  &
+     Commercial & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Previous cooling demand, air temperature and relative humidity}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Cooling demand}   & 
+     45 weekdays & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\   
+     
+     2009   &
+     \cite{svm5}  &
+     Office  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Outdoor weather parameters, the outdoor temperature, humidity and solar radiation}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Building cooling load}   & 
+     6 months & 
+     \makecell*[{{p{3cm}}}]{BPNN, RBFNN, RNN and SVM} \\
+     
+     2009   &
+     \cite{svmr0}  &
+     Multiple   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Historical electricity consumption data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~5-min ahead electricity load} & 
+     3 years & 
+     \makecell*[{{p{3cm}}}]{SVM, statistical regression, and BPNN}  \\
+     
+     2009   &
+     \cite{svmr1}  &
+     Not specified   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption, past climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy load}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{SVM}  \\
+     
+     2010   &
+     \cite{annr8}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~18 building envelope parameters, heating degree day, cooling degree day}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Heating and cooling energy consumption}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\   
+     
+     2010   &
+     \cite{svm3}  &
+     Office buildings   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Heating consumption, electrical consumption}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Heating demand and electrical load} & 
+     5 months & 
+     \makecell*[{{p{3cm}}}]{Parallel SVM}   \\
+     
+     2010   &
+     \cite{svmr2}  &
+     Office buildings   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past building cooling load}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Building cooling load}   & 
+     6 months & 
+     \makecell*[{{p{3cm}}}]{FSVM} \\ 
+     
+     2011   &
+     \cite{annr9}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Weather conditions, calendar, type of day and other factors}&
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+     
+     2012  &
+     \cite{svmr3}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption, past climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     2 years & 
+     \makecell*[{{p{3cm}}}]{SVM and SVR} \\     
+     
+     2013   &
+     \cite{annr10}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Previous electricity consumption}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Half-hour ahead electricity demand}   & 
+     9 weeks & 
+     \makecell*[{{p{3cm}}}]{Multi-output BPNN}  \\
+     
+     2015   &
+     \cite{annr12}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Outdoor and indoor temperature, solar radiation, humidity ratio, wind speed, occupancy}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Building electricity power consumption}   & 
+     6 months & 
+     \makecell*[{{p{3cm}}}]{Hybrid iPSO-ANN and GA-ANN}  \\
+     
+     2015   &
+     \cite{regression0}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption, time, outdoor temperature and global horizon radiation}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 month & 
+     \makecell*[{{p{3cm}}}]{Simple and multiple regression analysis}  \\
+     
+      2016   &
+     \cite{annr13}  &
+     Commercial & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Meteorological data and HVAC operation schedule}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\    
+     
+      2016   &
+     \cite{annr14}  &
+     Office & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Previous load, temperatures of previous day, occupancy condition, sin and cosine of the hour}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~One day ahead electric power consumption}   & 
+     1 year and a half & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+      
+     2016   &
+     \cite{svmr4}  &
+     Institutional  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Daily and half-hourly energy consumption}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Daily and half-hourly energy consumption} & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{GA combined with SVM}   \\
+     
+     2016   &
+     \cite{annr15}  &
+     Institutional & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Indoor conditions and occupancy}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 to 2 years & 
+     \makecell*[{{p{3cm}}}]{RNN}  \\
+     
+     2016   &
+     \cite{annr22}  &
+     University & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption and temperature}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{Non-linear auto regressive model}  \\
+
+      2017   &
+     \cite{annr16}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year and a half & 
+     \makecell*[{{p{3cm}}}]{PDRNN}  \\ 
+     
+      2017   &
+     \cite{annr17}  &
+     Office & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption, past climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year  & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+     
+     2017   &
+     \cite{annr18}  &
+     Not specified & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy load, past climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Load forecast}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{DNN}  \\    
+     
+     2017   &
+     \cite{svmr7}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{SVM}  \\    
+     
+     2018   &
+     \cite{annr19}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Socio-demographic data, building characteristics, occupancy and appliance characteristics}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\
+     
+     2018   &
+     \cite{annr20}  &
+     Office & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption, air-conditioning data, operating hours, other consumption sources}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~HVAC related energy saving}   & 
+     15 years & 
+     \makecell*[{{p{3cm}}}]{BPNN}  \\ 
+     
+     
+     2018   &
+     \cite{annr24}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data, calendar, occupation}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy  consumption}   & 
+     6 months & 
+     \makecell*[{{p{3cm}}}]{Improved teaching learning based optimization algorithm based artificial neural network}  \\ 
+     
+     2018   &
+     \cite{annr25}  &
+     University & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption and climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy  consumption}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{ANNs}  \\ 
+     
+     2018   &
+     \cite{svmr5}  &
+     Not specified & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data, ratio  of  urbanization,  gross  domestic  product, household consumption level and total area of structure}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     14 years & 
+     \makecell*[{{p{3cm}}}]{SVM}   \\ 
+     
+     2018   &
+     \cite{dt0}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{DTs, Regressive models}   \\ 
+     
+     2018   &
+     \cite{rf0}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data, occupancy, schedule}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{Random forest}   \\ 
+          
+     2019   &
+     \cite{annr21}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Past energy consumption, past climatic data}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     4 years & 
+     \makecell*[{{p{3cm}}}]{RNN, SSA and TCNN}  \\  
+     
+     2019   &
+     \cite{annr26}  &
+     Educational & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Climatic data, occupancy, schedule, operating variables}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{RNN, LSTM and GRU}  \\  
+     
+     2019   &
+     \cite{annr27}  &
+     Multiple & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Hubei province, China (Energy consumption, temporal and climatic data)}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Power load forecasting}   & 
+     11 months & 
+     \makecell*[{{p{3cm}}}]{Variational mode decomposition, LSTMs and Bayesian optimization algorithm}  \\  
+     
+     2019   &
+     \cite{annr28}  &
+     Multiple& 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption data from five states of Australia}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Power load forecasting}   & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{ANNs, BPNN, GABPNN, ELM and GRNN}  \\  
+     
+     2019   &
+     \cite{annr29}  &
+     Residential & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Schedule, Global active power, average voltage}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption}   & 
+     4 years & 
+     \makecell*[{{p{3cm}}}]{CNNs and LSTMs}  \\  
+     
+     2019   &
+     \cite{svmr6}  &
+      Office  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Not specified}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     2 months & 
+     \makecell*[{{p{3cm}}}]{SVR}   \\ 
+     
+     2019   &
+     \cite{other1}  &
+     Educational  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Schedule, climatic data and other operating parameters}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     1 year & 
+     \makecell*[{{p{3cm}}}]{Deep learning techniques for feature engineering}  \\  
+     
+     2019   &
+     \cite{other2}  &
+     Multiple  & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~physical characteristics of the building and independent of the climate}   & 
+     \makecell*[{{p{5cm}}}]{~\textbullet~Energy consumption} & 
+     Not specified & 
+     \makecell*[{{p{3cm}}}]{ANNs, SVMs, Gaussian Process, RF and DTs}   \\             
+
+
+    \end{longtable}
+
+\end{landscape}

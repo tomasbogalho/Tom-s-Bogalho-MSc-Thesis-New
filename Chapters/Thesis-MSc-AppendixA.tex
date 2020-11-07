@@ -1,0 +1,19 @@
+% #############################################################################
+% This is Appendix A
+% !TEX root = ../main.tex
+% #############################################################################
+\chapter{Code of Project}
+\label{chapter:appendixA}
+
+Nulla dui purus, eleifend vel, consequat non, dictum porta, nulla. Duis ante mi, laoreet ut, commodo eleifend, cursus nec, lorem. Aenean eu est. Etiam imperdiet turpis. Praesent nec augue. Curabitur ligula quam, rutrum id, tempor sed, consequat ac, dui. Vestibulum accumsan eros nec magna. Vestibulum vitae dui. Vestibulum nec ligula et lorem consequat ullamcorper. 
+
+
+
+\begin{lstlisting} [style=py,caption={PYTHON Code}]
+class TelgramRequestHandler(object):
+    def handle(self):
+        addr = self.client_address[0]         # Client IP-adress
+        telgram = self.request.recv(1024)     # Recieve telgram
+        print "From: %s, Received: %s" % (addr, telgram)
+        return
+\end{lstlisting}

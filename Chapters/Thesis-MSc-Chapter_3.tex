@@ -1,0 +1,41 @@
+% #############################################################################
+% This is Chapter 3
+% !TEX root = ../main.tex
+% #############################################################################
+% Change the Name of the Chapter i the following line
+\fancychapter{Proposed research framework and building specifications}
+\cleardoublepage
+% The following line allows to ref this chapter
+\label{chap:architecture}
+
+
+In the last chapter we presented some of the most important models in the literature regarding the forecast of energy consumption of buildings. In this chapter we will present in more detail the challenge proposed by \ac{EDP} and the specifications of the building used in this case study, as well as the framework used to address this problem.
+
+\section{Problem statement}
+
+The proposed theme for this work is to create a model capable of making predictions regarding the power profile of the building in question. The data obtained through the proposed model will then be used as input for an optimization system that is outside the scope of this thesis. Since the work to be developed is directly associated with the behavior of the building, it then makes sense to present the building and its characteristics.
+
+
+
+\section{The building}\label{subbuild}
+
+(SOBRE O EDIFICIO)
+
+
+\section{Proposed framework}\label{propfram}
+During this study, the work had to be divided into several phases in order to respond to the proposed problem. In Figure \ref{framework}, the reader can observe a state map where the step-by-step identification of the different stages of development of this thesis can be found.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/framework.png}
+    \caption{Proposed research framework.}
+    \label{framework}
+    \end{center}
+\end{figure}
+
+In state 0, one starts only with raw data, where some of the datasets were incomplete, so one of the first challenges was to develop some methods to complete the missing data. In addition, in this section it was also necessary to understand which data was relevant to enter as input in the models, as well as to limit all the data to a specific time window in order to obtain a time interval in which the four datasets were complete. In state 1 the datasets are complete and the data is analyzed and prepared so that it can be introduced as input in the models to be tested. It is in this section that are also decided which variables to use in order to optimize the results of the models. Afterwards different models are built, they are trained, validated and tested, and in state 2 they already have the first forecast results for the models that presented the best performance in the first set of tests. The best or the best model are then chosen, and different tests are carried out to understand what the behavior of the chosen model is in relation to certain situations. In state 3, we have the results obtained by the best models, as well as an evaluation of their performance in general.
+
+\section{Conclusion}
+
+This chapter can be divided into two parts, in the first part, sub-chapter \ref{subbuild}, some relevant data regarding the building used in the case study portrayed in this thesis are identified. In the second part, sub-chapter \ref{propfram} is made a schematization of the work developed in order to facilitate the understanding of the chapters that follow.
