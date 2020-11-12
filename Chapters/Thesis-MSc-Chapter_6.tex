@@ -8,13 +8,101 @@
 % The following line allows to ref this chapter
 \label{chap:results}
 
-So far we have introduced the theme to be developed in this thesis \ref{chap:intro}, we have presented some studies developed in this area \ref{chap:background}, we have presented the concrete case studied in this thesis and we propose a schematization of the work to be developed \ref{chap:architecture}, we have introduced the models that we will implement \ref{chap:Model}, and we have described in detail both the datasets used, as well as the experimental process implemented in this study \ref{chap:implementation}.
- In this chapter, we present the results obtained in this thesis as well as a discussion section.
+So far we have introduced the theme to be developed in this thesis \ref{chap:intro}, we have presented some studies developed in this area \ref{chap:background}, we have presented the concrete case studied in this thesis and we propose a schematization of the work to be developed \ref{chap:architecture}, we have introduced the models that we will implement \ref{chap:Model}, and we have described in detail both the datasets used, as well as the experimental process implemented in this study \ref{chap:implementation}. In this chapter, we present the results obtained in this thesis as well as a discussion section.
 
 
-\section{Final Experiment}
+\section{Algorithm selection} \label{chap5:framework}
 
-\section{Results}
+In this section, the process of training and validation of the 8 proposed architectures begins. In a first stage the architectures are trained and validated in order to regulate the hyperparameters of each layer. It is in this stage that the performance of each architecture is also evaluated for the training and validation scenario. In a second stage, the models that present the best performance in the first stage are trained and validated again in specific scenarios, a weekday forecast, a weekend forecast, and a holiday forecast. In this second stage the objective is to identify a model for each of these three situations.  
+
+
+\subsection{Stage 1 - Hyperparameter tuning}\label{sec:part1}
+Beginning with stage 1, in the first part of the process, the focus was to optimize the hypterparameters of the eight proposed architectures. The datasets 1, 2 and 3 represented in Figure \ref{hyptun} were then used, each one consisting of a total of 5 weeks of data, 4 of which were used for training and 1 for validation. Each of the eight architectures went through this process for each of the 3 datasets.  
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/hyptun.png}
+    \caption{Datasets used for training and validation.}
+    \label{hyptun}
+    \end{center}
+\end{figure}
+
+Models 0 and 1 only consist of a \ac{GRU} or a \ac{LSTM} layer. In this type of layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. In models 4, 5, 6 and 7, since they have two distinct layers, the same parameter can be tuned for each one of the layers. In models 2 and 3, the parameters that can change are the number of filters of the \ac{1D CNN} - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), the kernel\_size of the \ac{1D CNN} - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used, and again, and the number of Units of the \ac{GRU} or \ac{LSTM} layer. 
+
+
+Since the process of tuning the hyperparameters is done by hand, all the architectures started this phase with layers of 8 units. In models 2 and 3 the initial number of filters of the \ac{1D CNN} layers was also 8 and the kernel\_size used was 10. If the models behaved well in the validation set and showed no signs of overfitting or underfitting, the initial values would be maintained. If signs of overfitting 
+
+
+
+If any of these behaviors were observed in at least one of the datasets, the hyperparameters would be changed until the model presented the desired behavior for all the datasets. It was chosen to start with simple architectures and one would only increase the complexity of the architecture (increasing the number of units per layer, for example) if the model did not present all the desired behavior. The increase in the complexity of the model is associated with an increase in its training time, so it was essential to use models as simple as possible. In table \ref{table4}, one can then observe the results of the errors calculated in this process for each of the eight architectures, in each of the three datasets, in the training and validation process.
+
+
+\begin{longtable}{|c|c|c|c|}
+    \caption{Combinations of hyperparameters tested.}
+    \label{table4}\\
+    \hline 
+    & & & \\[-0.5ex]
+    \textbf{Model} & \textbf{Architecture}   & \textbf{Hyperparameters tested values} & \makecell*[{{p{2.5cm}}}]{\centering\textbf{Total number of combinations}}\\[3ex]
+    \hline
+    & & & \\[-2ex]
+    Model 0 & GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128, 256, 512]} & 7\\
+    \hline
+    Model 1 & LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128, 256, 512]} & 7\\
+    \hline
+    Model 2 & 1D CNN - GRU & \makecell*[{{p{6.3cm}}}]{\centering Filters - [8, 16, 32, 64, 128, 256], Kernel\_size - [10,60], \\Units - [8, 16, 32, 64, 128, 256]} & 72\\
+    \hline
+    Model 3 & 1D CNN - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Filters - [8, 16, 32, 64, 128, 256], Kernel\_size - [10,60], \\Units - [8, 16, 32, 64, 128, 256]} & 72\\
+    \hline
+    Model 4 & GRU - GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
+    \hline
+    Model 5 & LSTM - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
+    \hline
+    Model 6 & GRU - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
+    \hline
+    Model 7 & LSTM - GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
+    \hline
+    & & & \\[-0.5ex]
+    \textbf{Total} & \textbf{-} &  \textbf{-} & \textbf{258}\\[+1ex]
+    \hline
+    
+
+\end{longtable}
+
+By examining the results of the xxx table, 
+
+The three best models are then....xxxxxxxxxxx
+
+
+
+
+
+\subsection{Stage 2 - Situational study}
+
+In the second stage of the process, the main objective is to compare the 3 models chosen in Stage 1, situationally. To bring this into practice, multiple subdasets were created presenting thre particular situations in the activity of the building: weekdays, weekends and national holidays.
+
+This step serves to identify which model presents the best performance depending on the situation to be expected. If it is possible to define a model that is clearly better to predict certain situations, and another that presents better performance in others, there is the possibility of creating a superior abstraction layer capable of choosing the best model to use in a given scenario. 
+
+
+
+
+
+For each of the cases presented, XXX dataset was created whose validation subset represents the scenario to be tested. In order to understand which of the 3 models presents the best performance for each scenario, the equation \ref{err_av} was used again. Applying a specific case, the best model to apply in a holiday scenario will be the one that presents on average the lowest error value in the XX scenarios where it was tested.
+
+\subsection{Stage 3 - Model performance}
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/Test.png}
+    \caption{Dataset used for testing.}
+    \label{test}
+    \end{center}
+\end{figure}
+
+
+\subsection{Stage 4 - Final system}
+\subsubsection{Comparative analysis}
 
 \section{Discussion}
 

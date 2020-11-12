@@ -172,34 +172,35 @@ where $zt$ represents the update gate vector, $r_t$ the reset gate vector, $\til
 
 Convolutional Neural Networks (\ac{CNN}s) are biologically-inspired feed-forward neural networks that have been successfully applied in the field of computer vision and digital image processing and analysis \cite{cnn0}.
 
-In \ac{ML} applications, a \ac{2D CNN}s is typically used for categorizing 2D images (into classification problems) or creating images (in case of regression-based problems). This thesis aims to predict the future behavior of certain variables of a single dimension, so that models consisting of \ac{1D CNN}'s layers have been tested.
+In \ac{ML} applications, \ac{2D CNN} are typically used for categorizing 2D images (into classification problems) or creating images (in case of regression-based problems). In this kind of applications, the layers extract two-dimensional pathces from an image and then apply similar transformations to each of the patches. Similarly, there are \ac{1D CNN}, that extract data subsequences from a dimension of the main sequence. This thesis aims to predict the future behavior of certain variables of a single dimension, so that models consisting of \ac{1D CNN}'s layers have been tested.
 
 The \ac{1D CNN} is very effective when you expect to derive interesting features from shorter (fixed-length) segments of the overall data set. Its main purpose is to turn the long input sequence into much shorter (downsampled) sequences of higher-level features, which can be very useful in the treatment of large time sequences.
 
-In Figure \ref{cnn}, the reader may find a representation of the normal working process of a \ac{1D CNN}. The operation of \ac{1D CNN} is based on the extraction of patches (in this particular case it uses a convolution window with size 5, from a sequence of large dimensions of input data. To that extracted patch, it it applied a convolution operation that can be written as \cite{cnn2} 
+In Figure \ref{conv1}, the reader may find a representation of the normal working process of a \ac{1D CNN}. The operation of \ac{1D CNN} is based on the extraction of odd size pathces (in this particular case it uses a convolution window with size 5), from a sequence of large dimensions of input data. Is then applied a convolution operation that can be written as \cite{cnn2} 
 
 \begin{equation}
 y(n)=
     \begin{cases} 
             
-        \sum_{i=0}^k x(n+i)h(i),\  if \  n=0.\\
-        \sum_{i=0}^k x(n+i+(s-1))h(i),\  otherwise.\\
+        \sum_{i=-\frac{k}{2}+\frac{1}{2}}^{\frac{k}{2}-\frac{1}{2}} x(n+i)h(i),\  if \  n=0.\\
+        \sum_{i=-\frac{k}{2}+\frac{1}{2}}^{\frac{k}{2}-\frac{1}{2}} x(n+i+(s-1))h(i),\  otherwise.\\
     
     \end{cases} ,
 \end{equation}
 
-where $n$ represents the length of the convolution layer, $x$ represents the input of the layer, $h$ represents the kernel (or extracted patch) and $k$ its length. Lastly, $s$ represents the number of shifted positions of the kernel window after each convolution, also known as number of strides. For example, if n = 21, k=5 and s=1 then
+where $n$ represents the length of the convolution layer, $x$ represents the input of the layer, $h$ represents the kernel (or extracted patch) and $k$ its length. Lastly, $s$ represents the number of shifted positions of the kernel window after each convolution, also known as number of strides. For example, if n = 20, k=5 and s=1 then
 
 \begin{equation}
     \begin{cases} 
-        y(0)=x(0)h(0)+x(1)h(1)+x(2)h(2)+x(3)h(3)+x(4)h(4)\\
-        y(1)=x(1)h(0)+x(2)h(1)+x(3)h(2)+x(4)h(3)+x(5)h(4)\\
+        y(2)=x(0)h(0)+x(1)h(1)+x(2)h(2)+x(3)h(3)+x(4)h(4)\\
+        y(3)=x(1)h(0)+x(2)h(1)+x(3)h(2)+x(4)h(3)+x(5)h(4)\\
         \  ...\\
-        y(16)=x(16)h(0)+x(17)h(1)+x(18)h(2)+x(19)h(3)+x(20)h(4)\\
+        y(17)=x(15)h(0)+x(16)h(1)+x(17)h(2)+x(18)h(3)+x(19)h(4)\\
     \end{cases} .
+    \label{noncausal}
 \end{equation}
 
-It should be mentioned that the output ($o=17$) does not have the same dimension as the input layer ($n=21$). This is because no padding has been applied to the convolution which implies that for the length of the convolution layer $n$, the kernel size $k$, and the number of strides $s$, the output $o$ is given by:
+It should be mentioned that the output ($o=16$) does not have the same dimension as the input layer ($n=20$). This happens because no padding has been applied to the convolution which implies that for the length of the convolution layer $n$, the kernel size $k$, and the number of strides $s$, the output $o$ is given by:
 
 \begin{equation}
     o = \lfloor \frac{(n-k)}{s} \rfloor + 1 .
@@ -211,18 +212,96 @@ By applying "padding", having the input $n$, kernel size $k$, and padding with l
     o = \lfloor \frac{(n+2p-k)}{s} \rfloor + 1 .
 \end{equation}
 
-This allows to obtain \ac{1D CNN}'s layers whose input size is equal to the output, which is very useful in time series forecasting applications.
+This allows to obtain \ac{1D CNN}'s layers whose input size is equal to the output. In this example, for the output $o$ dimension to have the same dimension as the input sequence, 20, then the $p$ dimension must be 2. In Figure \ref{conv1} it can be seen schematically the result of the described convolution operation.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=0.6\textwidth]{Images/cnn.PNG}
-    \caption{1D convolution working process. Source:\cite{cnn1}.}
-    \label{cnn}
+    \includegraphics[width=1\textwidth]{Images/conv1.png}
+    \caption{1D convolution working process.}
+    \label{conv1}
     \end{center}
 \end{figure}
 
-Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling operation aims to simplify convolution output, giving more importance to prominent features. There are several types of pooling, the most important of which is Max pooling which involves selecting the largest value in a user-defined size window, thus reducing the dimensionality of the output.
+Although it may seem like a good methodology, the convolution operation presents a particularity: it uses future values in its computing. In the example present in Figure \ref{conv1}, it can be observed that in the computation of $y(10)$, for example, values of $x(8)$, $x(9)$, $x(10)$, $x(11)$ and $x(12)$ were used. In a series with time dependencies such as the problem in question, the use of future values in the computation of a present value presents an obvious violation, in which the output of instant $[t]$ depends on the input of $[t+1:]$. In this sense, the concept of causal convolution must be introduced. 
+
+In causal convolution, the value of the generated output is not dependent on future inputs. In the same way described above, the causal convolution is given by 
+
+\begin{equation}
+y(n)=
+    \begin{cases} 
+            
+        \sum_{i=0}^k x(n-i)h(i),\  if \  n=k-1.\\
+        \sum_{i=0}^k x(n-i+(s-1))h(i),\  otherwise.\\
+    
+    \end{cases} ,
+\end{equation}
+
+where $n$ represents the length of the convolution layer, $x$ represents the input of the layer, $h$ represents the kernel (or extracted patch) and $k$ its length. Lastly, $s$ represents the number of shifted positions of the kernel window after each convolution, also known as number of strides. For example, if n = 20, k=5 and s=1 then
+
+\begin{equation}
+    \begin{cases} 
+        y(4)=x(4)h(0)+x(3)h(1)+x(2)h(2)+x(1)h(3)+x(0)h(4)\\
+        y(5)=x(5)h(0)+x(4)h(1)+x(3)h(2)+x(2)h(3)+x(1)h(4)\\
+        y(6)=x(6)h(0)+x(5)h(1)+x(4)h(2)+x(3)h(3)+x(2)h(4)\\
+        \  ...\\
+        y(19)=x(19)h(0)+x(18)h(1)+x(17)h(2)+x(16)h(3)+x(15)h(4)\\
+    \end{cases} .
+    \label{noncausal}
+\end{equation}
+
+In Figure \ref{conv2}, a schematization of the causal convolution process can be seen.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/conv2.png}
+    \caption{1D causal convolution working process.}
+    \label{conv2}
+    \end{center}
+\end{figure}
+
+In this layer category, convolutional windows are used, which is similar to using a k-dimensional kernel where all its elements have the value $\frac{1}{k}$. Following the example, with the kernel described in dimension 5, $y(19)$ is given by
+\begin{equation}
+        y(19)=x(19)\frac{1}{5}+x(18)\frac{1}{5}+x(17)\frac{1}{5}+x(16)\frac{1}{5}+x(15)\frac{1}{5}.
+    \label{19}
+\end{equation}
+
+
+
+Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling operation aims to simplify convolution output, giving more importance to prominent features. There are several types of pooling, the most important of which is Max pooling which involves selecting the largest value in a user-defined size window, thus reducing the dimensionality of the output. Following the example, for a $pool\_size$ of 5 units, one can see in Figure \ref{maxpooling}, the representation of the Max pooling operation where the dark units have the highest value within the 5-unit window. For the first 10 time-setps, the highest value value is then passed as layer output, and the dimension of the output decreases. In other words, for each set of 5 values, the largest is chosen, and the size of the output decreases with an inverse relationship to the chosen $pool\_size$. In this case, the dimensionality of the output decreases five times.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=0.9\textwidth]{Images/maxpooling.png}
+    \caption{Max pooling without and with padding.}
+    \label{maxpooling}
+    \end{center}
+\end{figure}
+
+As for the problem under study in this thesis, it is essential to maintain the dimensionality of the input data. To accomplish this, padding was added to this layer. In Figure \ref{maxpooling}, for the last 10 time-steps, it is possible to observe Max pooling with padding, where the beginning of the process is similar as pooling without padding, but inside the output windows of dimension $pool\_size$, the higher selected value is copied to all the remaining empty spaces. 
+
+
+
+
+\begin{figure}[h!]
+\captionsetup[subfigure]{position=b}
+\centering
+\subcaptionbox{\label{inputseq}}{\includegraphics[width=.32\linewidth]{Images/inputsequence.png}}
+\subcaptionbox{ \label{afterconv}}{\includegraphics[width=.32\linewidth]{Images/afterconvolution.png}}
+\subcaptionbox{ \label{aftermaxp}}{\includegraphics[width=.32\linewidth]{Images/aftermaxpooling.png}}
+\caption{Example of one neuron a) and a multi-layer perceptron b).}
+\end{figure}
+
+
+
+
+
+
+
+
+
 
 \section{Artificial Neural Networks specifications} \label{chap4:anns}
 
@@ -245,12 +324,9 @@ Model 0 and Model 1 are composed of a single layer of \ac{GRU} and \ac{LSTM} res
 
 \subsection{Hyperparameter optimization}
 
-A hyperparameter is a parameter whose value is used to control the learning process. Hyperparameter optimization is the process of choosing a set of optimal hyperparameters for a learning algorithm. Depending on the layer in question, different hyperparameters can be tuned. Other parameters, such as node weights are initialized randomly, and are defined during the learning process.
+A hyperparameter is a parameter whose value is used to control the learning process. Hyperparameter optimization is the process of choosing a set of optimal hyperparameters for a learning algorithm. Depending on the layer in question, different hyperparameters can be tuned. Other parameters, such as node weights are initialized randomly, and are defined during the learning process. In other words, hyperparameters are parameters which must be changed by the user according to the results obtained, while other parameters should not be modified by the user, and are the result of the learning process.
 
-In other words, hyperparameters are parameters which must be changed by the user according to the results obtained, while other parameters should not be modified by the user, and are the result of the learning process.
-
-
-\ac{ANN}s have numerous advantages, both in terms of their usage and performance. On the other hand, tuning the hyperparameters is an extremely time-consuming process that is done by hand. A certain set of hyperparameters is tested, evaluated, and then changed and so on until the best possible result is obtained. During the tests performed with the models present in Figure {models}, different hyperparameters were tuned such as the number of nodes in each layer, number of filters of each \ac{1D CNN} layer and kernel size. 
+\ac{ANN}s have numerous advantages, both in terms of their usage and performance. On the other hand, tuning the hyperparameters is an extremely time-consuming process that is done by hand. A certain set of hyperparameters is tested, evaluated, and then changed and so on until the best possible result is obtained. During the tests performed with the models present in Figure \ref{models}, different hyperparameters were tuned such as the number of nodes in each layer, number of filters of each \ac{1D CNN} layer and kernel size. 
 
 For this purpose, a script was developed that automated the training of more than 250 combinations for these 8 models, with different hyperameters. 
 

@@ -8,8 +8,8 @@
 % The following line allows to ref this chapter
 \label{chap:implementation}
 
-In the past chapters we introduced the theme \ref{chap:intro}, we presented some studies developed in this area \ref{chap:background}, we presented the concrete case studied in this thesis and we proposed a schematization of the work to be developed \ref{chap:architecture}, and we introduced the models that we will implement in this thesis \ref{chap:Model}.
-In this chapter, we will present the environment in which the proposed models were trained, the data used and the way how they were treated and used during the research phase, and finally the metrics used to evaluate the performance of the proposed models.
+So far, we have introduced the topic of this thesis and the objective of the work developed in Chapter \ref{chap:intro}, we have also presented some studies developed in this area in Chapter \ref{chap:background}, we have presented the concrete case studied used in Chapter \ref{chap:architecture}, and we have introduced the models implemented in this thesis in Chapter\ref{chap:Model}.
+In this chapter, we present the environment in which the proposed models were trained, the datasets and all the data cleaning and preparation procedure, and finally the metrics used to evaluate the performance of the proposed models.
  
 
 \section{Implementation environment} \label{chap5:enviromnet}
@@ -267,7 +267,7 @@ The \ac{MAE}, is defined as
 The \ac{MAE} is known as a scale-dependent accuracy measure and measures the average absolute deviation between the forecasted values and the real ones. As a scale-dependent measure, it cannot be used to compare series series using different scales.
 
 
-\subsection{Mean Squared Error (MSE)}
+\subsection{Mean Squared Error (MSE) and Root Mean Squared Error (RMSE)}
 
 The \ac{MSE}, is defined as
 
@@ -278,103 +278,17 @@ The \ac{MSE}, is defined as
 
 The \ac{MSE} is also known as a scale-dependent accuracy measure and measures the average squared deviation between the forecasted values and the real ones. The application of this measure is quite relevant because it doesn't allow the negative errors to cancel the positive errors and vice-versa. 
 
-\subsection{Root Mean Squared Error (RMSE)}
-
 By applying the square root to the \ac{MSE}, the \ac{RMSE} is then defined as
 
 \begin{equation}
      RMSE =\sqrt{MSE} = \sqrt{\frac {1}{n}\sum_{t=1}^ne_t^2}.
 \label{rmse}
 \end{equation}
+Mathematically, the \ac{RMSE} is the square root of the average of the squared difference between the predicted values and the observed ones. The advantage of \ac{RMSE} over \ac{MSE} is that it is on the same scale as the targets, facilitating its interpretation in the concrete context of the problem. 
 
-The advantage of \ac{RMSE} over \ac{MSE} is that it is on the same scale as the targets, facilitating its interpretation in the concrete context of the problem. 
-
-\section{Algorithm selection} \label{chap5:framework}
-
-In this section, we explain the 8 architectures introduced in the section \ref{sec:arq}, and describe the method used to optimize the hyperparameters of each of the models. In addition, we also choose the models that present the best performance for specific situations such as holidays and weekends. At the end of this section, the goal is to find a model or a set of models that present good overall performance.
-
-
-\subsection{Part 1 - Hyperparameter tuning}\label{sec:part1}
-In the first part of the process, the focus was to optimize the hypterparameters of the 8 proposed architectures in order to obtain the best set of hyperparameters for each of the eight architectures. To do so, a script was developed responsible for training and validating all possible combinations of different hyperparameters (within a predefined range), for each one of the 3 Datasets mentioned in section \ref{sec:datap}. In Table \ref{table4} the different combinations of hyperparameters tested for each of the architectures can be observed.
-
-\begin{longtable}{|c|c|c|c|}
-    \caption{Combinations of hyperparameters tested.}
-    \label{table4}\\
-    \hline 
-    & & & \\[-0.5ex]
-    \textbf{Model} & \textbf{Architecture}   & \textbf{Hyperparameters tested values} & \makecell*[{{p{2.5cm}}}]{\centering\textbf{Total number of combinations}}\\[3ex]
-    \hline
-    & & & \\[-2ex]
-    Model 0 & GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128, 256, 512]} & 7\\
-    \hline
-    Model 1 & LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128, 256, 512]} & 7\\
-    \hline
-    Model 2 & 1D CNN - GRU & \makecell*[{{p{6.3cm}}}]{\centering Filters - [8, 16, 32, 64, 128, 256], Kernel\_size - [10,60], \\Units - [8, 16, 32, 64, 128, 256]} & 72\\
-    \hline
-    Model 3 & 1D CNN - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Filters - [8, 16, 32, 64, 128, 256], Kernel\_size - [10,60], \\Units - [8, 16, 32, 64, 128, 256]} & 72\\
-    \hline
-    Model 4 & GRU - GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
-    \hline
-    Model 5 & LSTM - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
-    \hline
-    Model 6 & GRU - LSTM & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
-    \hline
-    Model 7 & LSTM - GRU & \makecell*[{{p{6.3cm}}}]{\centering Units - [8, 16, 32, 64, 128] (2x)} & 25\\
-    \hline
-    & & & \\[-0.5ex]
-    \textbf{Total} & \textbf{-} &  \textbf{-} & \textbf{258}\\[+1ex]
-    \hline
-    
-
-\end{longtable}
-
-Models 0, 1, 4, 5, 6 and 7 only consist of \ac{GRU} and/or \ac{LSTM} layers. In this type of layers, the hyperparameter that changed was only the number of Units - A positive integer that represents the dimensionality of the output space. In models 4, 5, 6 and 7, these values are combined 2 to 2 (8-8, 8-16,... 128-64, 128-128), producing 25 different combinations. On Models 2 and 3, the parameters that are varied are the number of filters of the \ac{1D CNN} - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), the kernel\_size of the \ac{1D CNN} - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used, and again, the number of Units of the \ac{GRU} and \ac{LSTM} layers. With all these variants, 258 different models are then built and put to the test. The function of this first step is to reduce these 258 models to the best 8, thus selecting the best hyperparameters for each of the 8 architectures. It should be mentioned that, although after the treatment carried out in Part 1 the ideal hyperparameters for each of the 8 network structures are obtained, these values should only be used as indicators. If one verifies that the change of a parameter affects positively the model, then this change should be made.
-
-
-In Appendix C, Table \ref{table7}, 
-
-
-
-
-
-
-
-
-
-
-
-
-
-\subsection{Part 2 - Situational study}
-
-In the second part of the process, the main objective is to compare the 8 models chosen in Part 1, situationally. To bring this into practice, multiple subdasets were created presenting particular situations in the activity of the building such as weekends, holidays, etc.
-
-This step serves to identify which model presents the best performance depending on the situation to be expected. If it is possible to define a model that is clearly better to predict certain situations, and another that presents better performance in others, there is the possibility of creating a superior abstraction layer capable of choosing the best model to use in a given scenario. In Table {} are present the different scenarios tested as well as the number of cases used in choosing the best model for the scenario in question.
-
-\begin{longtable}{|c|c|}
-    \caption{Scenarios tested.}
-    \label{table5}\\
-    \hline 
-    & \\[-0.5ex]
-    \textbf{Scenario} & {\centering\textbf{Total number of cases}}\\[1ex]
-    \hline
-    & \\[-0.5ex]
-    National holiday & 6\\
-    Weekends & X\\
-    Rainy days & \\
-    Cold days & \\[1ex]
-    \hline
-    
-
-\end{longtable}
-
-For each of the cases presented in Table \ref{table5}, a dataset was created whose training subset represents the scenario to be tested. In order to understand which of the 8 models presents the best performance for each scenario, the equation \ref{err_av} was used again. Applying a specific case, the best model to apply in a holiday scenario will be the one that presents on average the lowest error value in the 6 scenarios where it was tested.
-
-\subsection{Part 3}
-
-\subsection{Framework diagram}
+\ac{RMSE} and \ac{MAE} were the metrics implemented in the development of this research. These two measurements present some similarities, but also some differences that make it relevant to use the two metrics separately. In terms of similarities, both are expressed in the units of the variable in question, which means that both errors are easily interpretable given the context of the problem. The major difference between the two metrics lies in the contribution that individual error values make to the final result. In the case of \ac{MAE}, the contribution of individual errors follows a linear behavior. An error of 20 units contributes twice as much as an error of 10 units, and an error of 500 units contributes half as much as an error of 1000 units. In the case of \ac{RMSE} the errors are squared before being averaged, which means that this metric gives more weight to larger errors.  This means that very small errors tend to be ignored while large errors tend to be magnified. One can then conclude that \ac{RMSE} is especially useful when one intends to emphasize large errors and reduce the importance of smaller errors. It was then chosen to use both \ac{RMSE} and \ac{MAE} in the evaluation of the implemented models since both express interesting results that could be advantageous in the development of the research.
 
 
 \section{Conclusion}
 
-In this chapter, we have delved into the whole process of implementing the work of this thesis. Initially, in the section \ref{chap5:enviromnet}, we describe the different implementation environments used, and then, in the section \ref{chap5:dataset}, we describe the datset used and all the data processing that was performed. In the section \ref{chap5:framework}, we present the test framework and the process chosen to select the best models. Finally, in the section \ref{chap5:evaluation}, we describe the metrics used to choose the best models designed.
+In this chapter, we have delved into the whole process of implementing the work of this thesis. Initially, in the section \ref{chap5:enviromnet}, we describe the different implementation environments used, and then, in the section \ref{chap5:dataset}, we describe the datset used and all the data processing that was performed. Finally, in the section \ref{chap5:evaluation}, we describe the metrics used to choose the best models designed. In the next chapter we will dive into the experimental process carried out, from the training phase of the 8 initial architectures, until the construction of the final implemented system.
