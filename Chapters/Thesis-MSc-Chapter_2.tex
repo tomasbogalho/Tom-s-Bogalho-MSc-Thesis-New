@@ -10,7 +10,7 @@
 
 This chapter presents an overview of the fundamental and most commonly used models in \textit{Building Energy Consumption and Production Forecasting}, along with a revision of the related work in the field.
 
-Before starting to dissect the history of predictive methodologies, one must consider that \textit{Time Series Forecasting} is an area with numerous utilities and that can be applied to several fields of research. Given the high consumption of buildings, the prediction of this factor can be the core basis for the development of intelligent systems, capable of optimizing resources and that contribute to a more economic and sustainable power consumption profile.
+Before starting to dissect the history of predictive methodologies, one must consider that \textit{Time Series Forecasting} is an area with numerous applications, and can be applied to several fields of research. Given the high consumption of buildings, as well as its trending behaviour, the prediction of this factor can be the core basis for the development of intelligent systems, capable of optimizing resources to contribute to a more economic and sustainable system overall.
 
 
 \section{Methodologies\label{a}}
@@ -19,11 +19,11 @@ Over the past decades, numerous methods have been created to meet this challenge
 
 Currently, these approaches used for building energy simulation are categorized roughly as: (1) white-box based approaches, (2) grey-box based approaches and (3) black-box based approaches \cite{review2017}. 
 
-White-box methods are based mostly on knowledge about the system. This type of methods requires knowledge of detailed information about the building in question, which makes it possible to obtain good accuracy in the forecasts obtained, but makes the models slow and complex to use.
+White-box methods are based mostly on knowledge about the system. This type of methods requires knowledge of detailed information about the building in question, which makes it possible to obtain good accuracy in the forecasts obtained, but makes the models are slow and complex to use.
 
 Grey-box models are known to combine white-box models with data on past energy information from buildings, and apply statistical evaluations to predict future energy consumption.
 
-Finally, the black-box methods are able to perform an assessment and produce a forecast of a building's energy consumption, based only on the building's statistical and historical information from the data, discarding the building's specific details (as is done in the other two methods). This allows this type of methods to produce results with better accuracy and at a much faster pace than the other alternatives. The main disadvantage is that in order to obtain a really useful and acceptable forecast, there must be a high amount of past data available to train, test and evaluate the model.
+Finally, the black-box methods are able to perform an assessment, and produce a forecast of a building's energy consumption, based only on the building's statistical and historical information from the data, discarding the building's specific details (as is done in the other two methods). This allows this type of methods to produce results with better accuracy and at a much faster pace than the other alternatives. The main disadvantage is that, in order to obtain a really useful and acceptable forecast, there must be a high amount of past data available to train, test and evaluate the model.
 
 The work developed in this thesis aims to find a solution to the proposed problem through \ac{AI} and \ac{ML} techniques, which means that the focus of this work and respective research is based on black-box or, from now on, data-driven techniques.
 
@@ -55,16 +55,14 @@ The neuron has a unique behavior, since it receives as input $I_i$ from other un
    \label{tauequation}
 \end{equation}
 
-where the $bias$ is specific for each iteration and unit, and $f$ is the activation function. The most common transfer function is the sigmoid function \cite{ann1}
+where the $bias$ is specific for each iteration and unit, and $f$ is the activation function. The most common activation function is the sigmoid function \cite{ann1}, give by
 
 \begin{equation}
    f(x) = \frac{1}{1+e^{-x}}.
    \label{fequation}
 \end{equation}
 
-As the properties of common networks dictate, each neuron can serve as an input from the neuron in a next layer and so on.
-
-In the Figure \ref{mlp} it is possible to see a scheme of a \ac{ANN}. It can be verified that it presents, as previously mentioned, a structure by layers. In this case, it is a \ac{FFNN} where the information circulates in only one direction, starting from the input layer, moving to the hidden layer, and ending in the output layer. 
+This function, presents a s-shape, and is responsible for mapping all the input values to the interval [0, 1], converting the actual value into a value that can be interpreted in probabilistic terms. As the properties of common networks dictate, each neuron can serve as an input from the neuron in a next layer and so on. In the Figure \ref{mlp} it is possible to see a schematic representation of a \ac{ANN}. It can be verified that it presents, as previously mentioned, a structure by layers. In this case, it is a \ac{FFNN} where the information circulates in only one direction, starting from the input layer, moving to the hidden layers, and ending in the output layer. 
 
 
 
@@ -74,13 +72,13 @@ In the Figure \ref{mlp} it is possible to see a scheme of a \ac{ANN}. It can be 
 \subcaptionbox{\label{neuron}}{\includegraphics[width=.4\linewidth]{Images/neuron.PNG}}
 \hspace{0.05\textwidth}
 \subcaptionbox{ \label{mlp}}{\includegraphics[width=.49\linewidth]{Images/ANN.png}}
-\caption{Example of one neuron a) and a multi-layer perceptron b).}
+\caption{Example of a) a neuron and a b) multi-layer perceptron.}
 \end{figure}
 
-This is a very simple representation, but there are more complex models such as \ac{BPNN} and \ac{RNN}, which should be introduced.
+This is a very simple architecture, which is useful to demonstrate the fundamentals of the operation of a typical neuronal network, but there are more complex models such as \ac{BPNN} and \ac{RNN}, which should be introduced.
 
 \subsubsection{Back-propagation neutral network (BPNN)}
-The \ac{BPNN} was developed by Rumelhart \cite{bpnn0}, is one of the most commonly used methods super-vised learning models of ANN. According to Goh \cite{bpnn}, in \ac{BPNN}s, the mathematical relation-ships between the various variables are not specified. Instead, they learn from the examples fed to them. In addition, they can generalize correct responses that only broadly resemble the data in the learning phase. Figure \ref{bpnn} shows the architecture of a \ac{BPNN} where the neural network computes the error of the output for each iteration, and then propagates this information as a negative feedback to tune the incoming connection weight and bias. This manipulation offers flexibility to modify the output error to a minimum, which  improves the accuracy of the \ac{ANN} calculation \cite{review2017}. To minimize the output error, the gradient descent method is used to compute the weight of each neuron and to adjusts the weight of interconnections. At the output of each node, the error is defined as
+The \ac{BPNN}, developed by Rumelhart \cite{bpnn0}, is one of the most commonly used methods super-vised learning architectures of ANN. According to Goh \cite{bpnn}, in \ac{BPNN}s, the mathematical relation-ship between the various variables is not specified. Instead, they learn from the examples fed to them. In addition, they can generalize correct responses that only broadly resemble the data in the learning phase. Figure \ref{bpnn} shows the architecture of a \ac{BPNN} where the neural network computes the error of the output for each iteration, and then propagates this information as a negative feedback to tune the incoming connection weight and bias. This manipulation offers flexibility to modify the output error to a minimum, which  improves the accuracy of the \ac{ANN} computation \cite{review2017}. To minimize the output error, the gradient descent method is used to compute the weight of each neuron and to adjusts the weight of interconnections. At the output of each node, the error is defined as
 
 \begin{equation}
    E = \frac{1}{2}\sum_k(T_k-A_k)^2,
@@ -91,7 +89,7 @@ where $T_k$ is the actual value of the output of the neuron, $A_k$ denotes the p
 
 \subsubsection{Recurrent neutral network (RNN)}
 
-The \ac{RNN}, on the other hand, implies that the output of each neuron serves as input for the previous layer processing units, or even the for the same layer itself, in order to identify temporal patterns. This design makes this family of networks ideal for working with time series data-sets \cite{rnn1},\cite{rnn2},\cite{rnn3}, without shuffling, being the type of models that is applied more regularly in time-series forecasting problems.
+The \ac{RNN}, on the other hand, implies that the output of each neuron serves as input for the previous layer processing units, or even for the same layer itself, in order to identify temporal patterns. This design makes this family of networks ideal for working with time series data-sets \cite{rnn1},\cite{rnn2},\cite{rnn3}, without shuffling, being the type of models that is applied more regularly in time-series forecasting problems.
 
 In Figure \ref{rnn} is a representation of the architecture of a generalized \ac{RNN}, where it is possible to verify the existence of feedback loops in their recurrent layer. This helps them keep information in 'memory' for an extended period \cite{rnn4}.
 
@@ -102,7 +100,8 @@ In Figure \ref{rnn} is a representation of the architecture of a generalized \ac
 \subcaptionbox{\label{bpnn}}{\includegraphics[width=.4\linewidth]{Images/bpnn.png}}
 \hspace{0.05\textwidth}
 \subcaptionbox{ \label{rnn}}{\includegraphics[width=.4\linewidth]{Images/rnn.png}}
-\caption{a) Back-propagation neural network (BPNN)  and b) Recurrent neutral network (RNN).}
+\caption{Structure of a a) Back-propagation neural network (BPNN) and b) a
+Recurrent neutral network (RNN).}
 \end{figure}
 
 Although these models present a good behavior in temporal data prediction and modeling, it is difficult to train vanilla \ac{RNN}s whose data have a great temporal dependence. This is due to the loss function gradient that decays exponentially over time (which is referred to as the gradient vanishing problem)\cite{rnn4}. To combat this problem, new types of \ac{RNN}s have been developed, such as \ac{LSTM} and \ac{GRU}, whose behavior will be explained in a later chapter, which have been having an enormous success in predicting time-series patterns. 
@@ -127,7 +126,7 @@ where $\langle\cdot,\cdot\rangle$ represents the inner product, $w$ represents w
 \end{split}
 \end{equation}
 
-where $\{a_i, a_i^*, \eta_i, \eta_i^*\geq 0\}$ are the Lagrangian Multiplier, $\parallel w \parallel$ is the Euclidean norm, ${{\xi_i,\xi_i^*\geq 0}}$ are two slack variables to copy with some infeasible optimization constraints\cite{review2017}. Another constant $c \geq 0$ determines the trade-off between the training error (over-fitting) and model flatness (under-fitting)\cite{review2017}. 
+where $\{a_i, a_i^*, \eta_i, \eta_i^*\geq 0\}$ are the Lagrangian Multipliers, $\parallel w \parallel$ is the Euclidean norm, ${{\xi_i,\xi_i^*\geq 0}}$ are two slack variables to copy with some infeasible optimization constraints\cite{review2017}. Another constant $c \geq 0$ determines the trade-off between the training error (over-fitting) and model flatness (under-fitting)\cite{review2017}. 
 It is important to mention that the Lagrange multipliers ($\eta_i = c - a_i$, $\eta_i^* = c-a_i^*$) are all independent. $\{a_i, a_i^*\}$ can be determined by the corresponding dual optimization \cite{ann1}
 
 \begin{equation}
@@ -143,7 +142,7 @@ After computing $a_i, a_i^*$, one can write $w$ as a function of $\{ a_i, a_i^*.
       F(x) = \sum_{x_i \in SV} (a_i-a_i^*)K(x, x_i)+b , 
       \label{ioi}
 \end{equation}
- where $K(x, x_i) = \varphi(x)\cdot\varphi(x_i)$. In \ac{ML}, one can call this function the \ac{SVR} kernel function, that which varies according to the intended final application. Another aspect to consider is that the sum presented in the equation \ref{ioi} does not include all the inputs, only the support vectors. Moreover, the bias $b$ is calculated based on these support vectors
+ where $K(x, x_i) = \varphi(x)\cdot\varphi(x_i)$. In \ac{ML}, one can call this function the \ac{SVR} kernel function, which varies according to the intended final application. Another aspect to consider is that the sum presented in the Equation \ref{ioi} does not include all the inputs, only the support vectors. Moreover, the bias $b$ is calculated based on these support vectors
 
 \begin{equation}
 \begin{split}
@@ -151,7 +150,7 @@ After computing $a_i, a_i^*$, one can write $w$ as a function of $\{ a_i, a_i^*.
            & \sum_{a^*_j \in (o,C)}\Bigg[Y_i-\sum_{x_k\in SV}(a_j-a_j^*)K(x_i, x_j) - \varepsilon\Bigg] \Bigg\},
 \end{split}
 \end{equation}
- where $N_1$ is the number of support vectors. After the decision function, i.e., Eq.\ref{svmdec}, is fully defined by the training process, the \ac{SVR} model created is ready to compute predictions for a new input\cite{review2017}.
+ where $N_1$ is the number of support vectors. After the decision function, i.e., Equation \ref{svmdec}, is fully defined by the training process, the \ac{SVR} model created is ready to compute predictions for a new input\cite{review2017}.
  
 
 \subsection{Statistical regression}
@@ -167,13 +166,13 @@ or
 \label{poly}
 \end{equation}
 
-where $x_i$ represents the input, $\varepsilon_i$ represents a random normally distributed error, and  $\alpha_i, \tilde{\alpha_i}, \beta_j\  and\  \tilde{\beta_j}\ (j=1,...,m)$ are the parameters to be estimated. To give an example, let's focus on multiple linear regression, E.q. \ref{multi}, in which the estimates of all the parameters where computed using the \ac{LS} method. Let's also introduce the notion of \ac{SSE} as
+where $x_i$ represents the input, $\varepsilon_i$ represents a random normally distributed error, and  $\alpha_i, \tilde{\alpha_i}, \beta_j\  and\  \tilde{\beta_j}\ (j=1,...,m)$ are the parameters to be estimated. For instance, let's focus on multiple linear regression, Equation \ref{multi}, in which the estimates of all the parameters where computed using the \ac{LS} method. Let's also introduce the notion of \ac{SSE} as
 
 \begin{equation}
        SSE = \sum_{i=1}^n (y_i-A_i-B_1 x_{i,1} - B_2 x_{i,2} - ... - B_m x_{i,m})_i^2,
 \label{SSE}
 \end{equation}
- where $A_i$ and $B_j(j\ =\ 1,...m)$ are the corresponding \ac{LS} estimates of $\alpha_i$, $\beta_j(j\ =\ 1,...m)$ in E.q.\ref{multi} \cite{review2017}. Using this method, one should proceed to the minimization of the SSE which originates $m+1$ equations, in which each one of them presents a partial derivative of the \ac{SSE} in order to $A_i$ and $B_j(j=1,...,m)$ which should be equal to zero. It is through these equations that it is possible to determine the parameters $A_i$ and $B_j(j=1,...,m)$ that refer to the respective historical data. You can then write the equation
+ where $A_i$ and $B_j(j\ =\ 1,...m)$ are the corresponding \ac{LS} estimates of $\alpha_i$, $\beta_j(j\ =\ 1,...m)$ in E.q.\ref{multi} \cite{review2017}. Using this method, one should proceed to the minimization of the SSE which originates $m+1$ equations, in which each one of them presents a partial derivative of the \ac{SSE} in order to $A_i$ and $B_j(j=1,...,m)$ which should be equal to zero. It is through these equations that it is possible to determine the parameters $A_i$ and $B_j(j=1,...,m)$ that refer to the respective historical data. One can then write the equation
  
 \begin{equation}
        y_i = A_i + B_1 x_{i,1} +  B_2 x_{i,2} + ... + B_m x_{i,m},
@@ -182,11 +181,11 @@ where $x_i$ represents the input, $\varepsilon_i$ represents a random normally d
 
 known as the predictive equation with the estimated parameters in the form of multiple linear regression.
  
-This model has become in forecasting medium to long term patterns and is widely used with that purpose. As a negative point, in order to make a good forecast, a large amount of data is needed, which makes this model limited by temporal constraints, which means that it is not a good model to use when there is a small amount of time available to run the model. As far as short term forecasting is concerned, it has been found that it presents worse results than models such as \ac{ANN}s and \ac{SVM}s.
+This model has become popular in forecasting medium to long term patterns, and is widely used for that purpose. As a negative point, in order to make a good forecast, a large amount of data is needed, which makes this model limited by temporal constraints, which means that it is not a good model to use when there is a small amount of time available to run the model. As far as short term forecasting is concerned, it has been found that it presents worse results than models such as \ac{ANN}s and \ac{SVM}s.
 
 \subsection{Decision tress (DT)}
 
-\ac{DT} models \cite{dt1}, structurally present a tree inspired architecture consisting of a graph that has a root node and a set of branch nodes. In this architecture, the system inputs are inserted in the root node, where they are divided successively in different groups as they advance in the tree, based on a predetermined division criterion. This split data is then propagated to sub-nodes as branches from the root node.
+\ac{DT} models \cite{dt1}, structurally present a tree inspired architecture consisting of a graph that has a root node and a set of branch nodes. In this architecture, the system inputs are inserted in the root node, where they are divided successively in different groups as they advance in the tree, based on a predetermined division criterion. The split data is then propagated to sub-nodes as branches from the root node.
 
 The inner nodes of the tree subsequently apply divisions of the sub-data into new sub-data. The end nodes or leaf nodes that serve as output nodes. 
 This type of methodologies can also be applied to the concrete case of energy forecasts of buildings. In the Figure \ref{dt} one can see an example where the range of consumption values is divided into hierarchical groups and the model classifies in the future the consumption of the building associating it with one of these groups.
@@ -209,7 +208,7 @@ A relevant concept when it comes to the use of \ac{DT}s, is the concept of entro
 
 where $E$ is the information entropy, $n$ is the number of different target values and $P_i$ is the probability of a dataset taking the $i^{th}$ target value. This parameter is used to calculate the gain ratio of the \ac{DT}.
 
-The biggest advantage of using this type of methodologies is the fact that it is a simple method to implement and does not require extensive computational knowledge to put it to work. Compared to other data-driven methods, the main disadvantage is that the targets or categories defined for leaf nodes are based on assumptions. In the example in Figure \ref{dt}, the previously defined energy ranges are those because there is an expectation that the future values fit into one of the categories. This limitation can sometimes generate errors or deviations from the real values. The architecture of this model is also in itself a limitation because it does not present a good performance for nonlinear data \cite{dt2}.
+The biggest advantage of using this type of methodologies is the fact that it is a simple method to implement and does not require extensive computational knowledge to put it to work. Compared to other data-driven methods, the main disadvantage is that the targets or categories defined for leaf nodes are based on assumptions. In the example in Figure \ref{dt}, the previously defined energy ranges are the ones presented, because there is an expectation that the future values fit into one of the categories. This limitation can sometimes generate errors or deviations from the real values. The architecture of this model is also in itself a limitation because it does not present a good performance for nonlinear data \cite{dt2}.
 
 
 \section{Data-driven prediction models applied to building energy forecasting \label{c}}
@@ -242,11 +241,11 @@ Electricity consumption has increased in the commercial sector in the last fifte
 
 As can be seen in Figure \ref{buildingenergy}, space cooling, space heating and water heating represent  over 70\% of a building's energy consumption, which presents a direct correlation with  the number of people inside the building at each moment.
 
-The ability to build models that take these factors into consideration and that can predict what the future energy consumption of the building will be, is a competence that enables not only the creation of sustainable solutions, but also the design of optimization models for managing these sources of consumption, limiting their usage when necessary.
+The ability to build models that take these factors into consideration and that can predict what the future energy consumption of the building will be, is a competence that enables not only the creation of sustainable solutions, but also the design of optimization models for managing these consumption sources, limiting their usage when not needed.
 
-According to \cite{reviewtsf}, factors such as such as occupancy schedule, weather conditions, thermal properties of building materials, complex interactions of the energy systems like \ac{HVAC} and lighting etc have a huge impact in the energy behavior of a building. 
+According to \cite{reviewtsf}, factors such as such as occupancy schedule, weather conditions, thermal properties of building materials, complex interactions of the energy systems like \ac{HVAC} and lighting etc., have a high impact on the consumption behavior of a building. 
 
-Giving all the necessary building specifications to take into account when applying white and grey-box techniques, it is quite complex to build a model capable of simulating the behavior of the building. In this sense, data-driven methods appear as a viable alternative. These techniques are based on past recorded data, and try to build a future model based on past observed energy patterns. Techniques that use past data to develop a model to predict future behaviour, often fall under the category of \ac{ML} and have been actively applied to building energy forecasting studies in the last two decades. With this notion in mind, let's then look at some concrete cases where the models described above have been applied in forecasting energy consumption of buildings.
+Taking into consideration all the necessary building specifications when applying white and grey-box techniques, it is quite complex to build a model capable of simulating the behavior of the building. In this sense, data-driven methods appear as a viable alternative. These techniques are based on past recorded data, and try to construct a future model based on past observed energy patterns. Techniques that use past data to develop a model to predict future behaviour, often fall under the category of \ac{ML}, and have been actively applied to building energy forecasting studies in the last two decades. Taking all into consideration, let's then look at some concrete cases where the models described above have been applied in forecasting energy consumption of buildings.
 
 The use of a simple prediction model has been common practice for many years, but with the progress of technology and computational capacity, the combination of several prediction models has become more and more common. In this regard, it is important to mention two very relevant model architectures, Ensemble models and Hybrid models. 
 
