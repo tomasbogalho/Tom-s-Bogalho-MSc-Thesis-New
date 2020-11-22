@@ -62,9 +62,7 @@ where the $bias$ is specific for each iteration and unit, and $f$ is the activat
    \label{fequation}
 \end{equation}
 
-This function, presents a s-shape, and is responsible for mapping all the input values to the interval [0, 1], converting the actual value into a value that can be interpreted in probabilistic terms. As the properties of common networks dictate, each neuron can serve as an input from the neuron in a next layer and so on. In the Figure \ref{mlp} it is possible to see a schematic representation of a \ac{ANN}. It can be verified that it presents, as previously mentioned, a structure by layers. In this case, it is a \ac{FFNN} where the information circulates in only one direction, starting from the input layer, moving to the hidden layers, and ending in the output layer. 
-
-
+This function, presents a s-shape, and is responsible for mapping all the input values to the interval [0, 1], converting the actual value into a value that can be interpreted in probabilistic terms. As the properties of common networks dictate, each neuron can serve as an input from the neuron in a next layer and so on. In the Figure \ref{mlp} it is possible to see a schematic representation of a \ac{ANN}. It can be verified that it presents, as previously mentioned, a layered structure. 
 
 \begin{figure}[h!]
 \captionsetup[subfigure]{position=b}
@@ -75,37 +73,39 @@ This function, presents a s-shape, and is responsible for mapping all the input 
 \caption{Example of a) a neuron and a b) multi-layer perceptron.}
 \end{figure}
 
-This is a very simple architecture, which is useful to demonstrate the fundamentals of the operation of a typical neuronal network, but there are more complex models such as \ac{BPNN} and \ac{RNN}, which should be introduced.
+The Figure illustrates a \ac{FFNN} where the information circulates in only one direction, starting from the input layer, moving to the hidden layers, and ending in the output layer. In this type of \ac{ANN}, there are no feedback loops, that is, the information present in the output of each neuron in nothing affects that same layer or the previous ones, only the later ones. \ac{FFNN}s are simple networks that directly map inputs with outputs.
 
-\subsubsection{Back-propagation neutral network (BPNN)}
-The \ac{BPNN}, developed by Rumelhart \cite{bpnn0}, is one of the most commonly used methods super-vised learning architectures of ANN. According to Goh \cite{bpnn}, in \ac{BPNN}s, the mathematical relation-ship between the various variables is not specified. Instead, they learn from the examples fed to them. In addition, they can generalize correct responses that only broadly resemble the data in the learning phase. Figure \ref{bpnn} shows the architecture of a \ac{BPNN} where the neural network computes the error of the output for each iteration, and then propagates this information as a negative feedback to tune the incoming connection weight and bias. This manipulation offers flexibility to modify the output error to a minimum, which  improves the accuracy of the \ac{ANN} computation \cite{review2017}. To minimize the output error, the gradient descent method is used to compute the weight of each neuron and to adjusts the weight of interconnections. At the output of each node, the error is defined as
+Backpropagation, is an algorithm for supervised learning, which calculates the gradient of the loss function that concerns each weight, and is typically used in \ac{FFNN}s. Given an artificial neural network and an loss function, the method calculates the gradient of the loss function that concerns the weights of a given layer, propagating this information to the previous layer. This process begins at the output layer, and is iterated all the way to the input layer. This reverse flow of the error information enables a more efficient computation of the gradient at each layer. A \ac{FFNN} that applies implements backpropagation, is also knowned as \ac{BPNN}.
 
-\begin{equation}
-   E = \frac{1}{2}\sum_k(T_k-A_k)^2,
-   \label{EBPNN}
-\end{equation}
 
-where $T_k$ is the actual value of the output of the neuron, $A_k$ denotes the predicted value of the output of the neuron and $k$ is the output neuron. 
+%\subsubsection{Back-propagation neutral network (BPNN)}
+%The \ac{BPNN}, developed by Rumelhart \cite{bpnn0}, is one of the most commonly used methods super-vised learning architectures of ANN. According to Goh \cite{bpnn}, in \ac{BPNN}s, the mathematical relation-ship between the various variables is not specified. Instead, they learn from the examples fed to them. In addition, they can generalize correct responses that only broadly resemble the data in the learning phase. Figure \ref{bpnn} shows the architecture of a \ac{BPNN} where the neural network computes the error of the output for each iteration, and then propagates this information as a negative feedback to tune the incoming connection weight and bias. This manipulation offers flexibility to modify the output error to a minimum, which  improves the accuracy of the \ac{ANN} computation \cite{review2017}. To minimize the output error, the gradient descent method is used to compute the weight of each neuron and to adjusts the weight of interconnections. At the output of each node, the error is defined as
 
-\subsubsection{Recurrent neutral network (RNN)}
+%\begin{equation}
+%   E = \frac{1}{2}\sum_k(T_k-A_k)^2,
+%   \label{EBPNN}
+%\end{equation}
 
-The \ac{RNN}, on the other hand, implies that the output of each neuron serves as input for the previous layer processing units, or even for the same layer itself, in order to identify temporal patterns. This design makes this family of networks ideal for working with time series data-sets \cite{rnn1},\cite{rnn2},\cite{rnn3}, without shuffling, being the type of models that is applied more regularly in time-series forecasting problems.
+%where $T_k$ is the actual value of the output of the neuron, $A_k$ denotes the predicted value of the output of the neuron and $k$ is the output neuron. 
 
-In Figure \ref{rnn} is a representation of the architecture of a generalized \ac{RNN}, where it is possible to verify the existence of feedback loops in their recurrent layer. This helps them keep information in 'memory' for an extended period \cite{rnn4}.
+%\subsubsection{Recurrent neutral network (RNN)}
+
+The \ac{RNN}, on the other hand, has a mode of operation that implies that the output of each neuron of the hidden layer, serves as input for the previous layer processing units, or even for the same layer itself, in order to identify temporal patterns. This design makes this family of networks ideal for working with time series data-sets \cite{rnn1},\cite{rnn2},\cite{rnn3}, without shuffling, being the type of models that is applied more regularly in time-series forecasting problems.
+
+In Figure \ref{rnn}, there is a representation of the generic architecture of a \ac{RNN}, where it is possible to verify the existence of feedback loops. This loops are responsible for feeding the network computations derived from earlier input, thus keeping information in 'memory' for an extended period \cite{rnn4}. \ac{RNN}s are also dynamic, which implies that their state is continuously changing until an equilibrium point is reached. 
 
 \begin{figure}[h!]
-\captionsetup[subfigure]{position=b}
-\centering
-\label{fig:Mould}
-\subcaptionbox{\label{bpnn}}{\includegraphics[width=.4\linewidth]{Images/bpnn.png}}
-\hspace{0.05\textwidth}
-\subcaptionbox{ \label{rnn}}{\includegraphics[width=.4\linewidth]{Images/rnn.png}}
-\caption{Structure of a a) Back-propagation neural network (BPNN) and b) a
-Recurrent neutral network (RNN).}
+    \centering
+    \begin{center}
+    \includegraphics[width=0.49\textwidth]{Images/rnn.png}
+    \caption{Structure of a Recurrent neutral network (RNN).}
+    \label{rnn}
+    \end{center}
 \end{figure}
 
-Although these models present a good behavior in temporal data prediction and modeling, it is difficult to train vanilla \ac{RNN}s whose data have a great temporal dependence. This is due to the loss function gradient that decays exponentially over time (which is referred to as the gradient vanishing problem)\cite{rnn4}. To combat this problem, new types of \ac{RNN}s have been developed, such as \ac{LSTM} and \ac{GRU}, whose behavior will be explained in a later chapter, which have been having an enormous success in predicting time-series patterns. 
 
+
+Backpropagation is also used in \ac{RNN}s, and although these models present a good behavior in temporal data prediction and modeling, it is difficult to train vanilla \ac{RNN}s whose data has a great temporal dependence. This is due to the gradient of the loss function that decays exponentially over time (which is referred to as the gradient vanishing problem)\cite{rnn4}. To tackle this problem, new types of \ac{RNN}s have been developed, such as \ac{LSTM}s and \ac{GRU}s, whose behavior will be explained in a later chapter, which have been having an enormous success in predicting time-series patterns. 
 
 \subsection{Support vector machine (SVM)}
 

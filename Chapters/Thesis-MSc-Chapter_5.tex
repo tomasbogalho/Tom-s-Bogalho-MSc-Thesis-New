@@ -131,40 +131,48 @@ In Phase 6 the Solar and Cons. datasets were concatenated, thus reducing the dat
 Although a huge amount of data was made available for the development of this study, the use of a large number of different features may negatively affect the performance of the tested models, namely their speed. In order not to overload the models, an initial set of features from all the available datasets was selected. In Table \ref{table3} the reader may find the selected features, their unit and their descrption.
 
 
-\begin{longtable}{|l|c|l|}
-    \caption{Features used.}
-    \label{table3}\\
-    
-    \hline 
-    & &\\[-0.5ex]
-    \textbf{Feature}   & \textbf{Unit} & \textbf{Description}\\[1ex]
-    \hline
-     & &\\[-0.5ex]
-    \textbf{$Std\_DHI$} & $W/m^2$ & Standard diffuse horizontal irradiance\\
-    \textbf{$Avg\_DHI$} & $W/m^2$ & Average diffuse horizontal irradiance \\
-    \textbf{$Avg\_GHI$} & $W/m^2$ & Global horizontal irradiance \\
-    \textbf{$Avg\_DNI$} & $W/m^2$ & Direct normal irradiance \\
-    \textbf{$Avg\_POA$} & $W/m^2$ & Average plane of array\\
-    \textbf{$T\_amb\_avg$} & $^\circ C$ & Average ambient temperature\\
-    \textbf{$Theoretical Value$} & $W$ & Theoretical production active power generated\\
-    \textbf{$ActPwr$} & $W$ & Production active power\\
-    \textbf{$Ir$} & $A$ & Consumption three-phase current \\
-    \textbf{$Is$} & $A$ & Consumption three-phase current \\
-    \textbf{$It$} & $A$ & Consumption three-phase current \\
-    \textbf{$Vrs$} & $V$ & Consumption three-phase voltage\\
-    \textbf{$Vst$} & $V$ & Consumption three-phase voltage\\
-    \textbf{$Vtr$} & $V$ & Consumption three-phase voltage\\
-    \textbf{$P$} & $W$ & Consumption real power\\
-    \textbf{$S$} & $VA$ & Consumption complex power\\
-    \textbf{$hour$} & $hours$ & Hour of the day\\
-    \textbf{$day\_of\_month$} & $days$ & Day of the month\\
-    \textbf{$day\_of\_week$} & $days$ & Day of the week\\
-    \textbf{$month$} & $months$ & Month of the year\\
-    \textbf{$holiday$} & $binary$ & National holiday identifier\\[+1ex]
-    \hline
-    
 
-\end{longtable}
+\begin{table}[htbp]
+  \centering
+  \caption{Features used.}
+    \begin{tabular}{rlcl}
+    \toprule
+          & \multicolumn{1}{c}{\textbf{Feature}} & \textbf{Unit} & \multicolumn{1}{c}{\textbf{Description}} \\
+    \midrule
+    Input & Std\_DHI & W/$m^2$ & Standard diffuse horizontal irradiance \\
+          & Avg\_DHI & W/$m^2$ & Average diffuse horizontal irradiance \\
+          & Avg\_GHI & W/$m^2$ & Global horizontal irradiance \\
+          & Avg\_DNI & W/$m^2$ & Direct normal irradiance \\
+          & Avg\_POA & W/$m^2$ & Average plane of array \\
+          & T\_amb\_avg & C     & Average ambient temperature \\
+          & TheoreticalValue & W     & Theoretical production active power generated \\
+          & ActPwr & W     & Production active power \\
+          & Ir    & A     & Consumption three-phase current \\
+          & Is    & A     & Consumption three-phase current \\
+          & It    & A     & Consumption three-phase current \\
+          & Vrs   & V     & Consumption three-phase voltage \\
+          & Vst   & V     & Consumption three-phase voltage \\
+          & Vtr   & V     & Consumption three-phase voltage \\
+          & P     & W     & Consumption real power \\
+          & S     & VA    & Consumption complex power \\
+          & hour  & hours & Hour of the day \\
+          & day\_of\_moth & days  & Day of the month \\
+          & day\_of\_week & days  & Day of the week \\
+          & month & months & Month of the year \\
+          & holiday & binary & National holiday identifier \\
+          & Available Power & W     & Current available power \\
+    \midrule
+    Output & Available Power (t+5) & W     & Real available power for 5 minutes ahead \\
+          & Available Power (t+10) & W     & Real available power for 10 minutes ahead \\
+          & Available Power (t+15) & W     & Real available power for 15 minutes ahead \\
+    \end{tabular}%
+  \label{table3}%
+\end{table}%
+
+
+
+
+
 
 Although all these features contribute in some way to enrich the past information available, it is important to reduce as much as possible the number of features used as input to the model, limiting the choice to the essentials.
 In this sense, a second phase of analysis was then carried out where the correlation matrix between each of the features was projected. In Figure \ref{corr} one can then observe the correlation matrix where the correlations between all the selected variables are represented. The value of the correlation is present in the [-1, 1] range, where -1 means that the variables present an opposite correlation, 0 means that there is no correlation between the two variables and 1 means that there is perfect correlation between the two variables. 
@@ -185,7 +193,7 @@ The aim of computing this matrix is to identify variables that present a perfect
 A perfect correlation between two variables means that one can be deduced from the other, that is, the relevance of the two variables for the construction of the forecasting system is the same, so one of the variables can be eliminated. 
 
 
-First of all, it was decided to eliminate the features that contribute to the calculation of others. In this sense, both three-phase voltages and three-phase currents contribute to the calculation of $S$ and $P$ and present a perfect correlation between them. It was then chosen to eliminate the features: $Ir$, $Is$, $It$, $Vrs$, $Vst$, $Vtr$. Then, since in this case $S$ does not have an imaginary component, $S$ and $P$ have the same value. The feature $S$ was then also eliminated. Also, although $Theoretical\ Value$ and $Avg\_GHI$ present a very high correlation with $ActPwr$ (which is predictable given that the measured $ActPwr$ these two variables were added, as explained in section \ref{chap4:vtp}), we chose to keep these two variables as input features since the correlation is not exactly perfect and can be decisive in certain cases in building a good predictive model. Therefore, the variables chosen for the input of all tested models are: $Std\_DHI$, $Avg\_DHI$, $Avg\_GHI$, $Avg\_DNI$, $Avg\_POA$, $T\_amb\_avg$, $Theoretical\ Value$, $ActPwr$, $P$, $hour$, $day\_of\_month$, $day\_of\_week$, $month$ and $holiday$. In addition, the variable $Available Power$ given in $watts$ has been added as an input feature, resulting in a total of 15 input features and 3 output (Available Power in 5, 10 and 15 minutes).
+First of all, it was decided to eliminate the features that contribute to the calculation of others. In this sense, both three-phase voltages and three-phase currents contribute to the calculation of S and P and present a perfect correlation between them. It was then chosen to eliminate the features: Ir, Is, It, Vrs, Vst, Vtr. Then, since in this case S does not have an imaginary component, S and P have the same value. The feature S was then also eliminated. Also, although TheoreticalValue and Avg\_GHI present a very high correlation with ActPwr (which is predictable given that the measured ActPwr these two variables were added, as explained in section \ref{chap4:vtp}), we chose to keep these two variables as input features since the correlation is not exactly perfect and can be decisive in certain cases in building a good predictive model. Therefore, the variables chosen for the input of all tested models are: Std\_DHI, Avg\_DHI, Avg\_GHI, Avg\_DNI, Avg\_POA, T\_amb\_avg, Theoretical\ Value, ActPwr, P, hour, day\_of\_month, day\_of\_week, month and holiday. In addition, the variable Available Power given in W has been added as an input feature, resulting in a total of 15 input features and 3 output (Available Power in 5, 10 and 15 minutes).
 
 
 \subsection{Data shifting}
@@ -202,11 +210,11 @@ While designing a predictive model, the training process is critical so that the
     \end{center}
 \end{figure}
 
-In a first instance one has the data set that corresponds to the 15 features identified in the previous section. For the initial scenario, the 15 features of a given instant $t_i$, have a direct match with a value of $Available\ Power$ of the output variables for the same instant $t_i$.  Then the transformation process begins, where the output variables are shifted 5, 10 and 15 time-steps. The data vector of $Available Power$ is copied originating three identical vectors. In the first step, the 5, 10 and 15 measurements of $Available Power$ are removed originating the output vectors with the ranges $[t_0 + 5, t]$, $[t_0 + 10, t]$, $[t_0 + 15, t]$ respectively.  At this time each set of input features already presents a match of $Available Power$ in 5, 10 and 15 minutes, but the output vectors present different dimensions as one would expect. In order to have output vectors with the same dimension, the size of the three vectors is limited to the size of the smallest, as well as the set of input features. In the last step there is then a set of input features with values in the range $[t_0, t-15]$ and the ranges $[t_0 + 5, t-10]$, $[t_0 + 10, t-5]$ and $[t_0 + 15, t]$ for the $Available Power$ to 5, 10 and 15 minutes, all four vectors with the same dimension. It is now possible to train the model for the three proposed cases. It should be noted that although there is a reduction in the dataset dimension, this reduction is derisory for the data used. There is a loss of 15 time-steps of data in this whole process. Since the total dataset contains a total of 201542 time-steps, the elimination of these 15 time-steps corresponds to a loss of only 0.0074$\%$.
+In a first instance one has the data set that corresponds to the 15 features identified in the previous section. For the initial scenario, the 15 features of a given instant $t_i$, have a direct match with a value of Available Power of the output variables for the same instant $t_i$.  Then the transformation process begins, where the output variables are shifted 5, 10 and 15 time-steps. The data vector of Available Power is copied originating three identical vectors. In the first step, the 5, 10 and 15 measurements of Available Power are removed originating the output vectors with the ranges $[t_0 + 5, t]$, $[t_0 + 10, t]$, $[t_0 + 15, t]$ respectively.  At this time each set of input features already presents a match of Available Power in 5, 10 and 15 minutes, but the output vectors present different dimensions as one would expect. In order to have output vectors with the same dimension, the size of the three vectors is limited to the size of the smallest, as well as the set of input features. In the last step there is then a set of input features with values in the range $[t_0, t-15]$ and the ranges $[t_0 + 5, t-10]$, $[t_0 + 10, t-5]$ and $[t_0 + 15, t]$ for the Available Power to 5, 10 and 15 minutes, all four vectors with the same dimension. It is now possible to train the model for the three proposed cases. It should be noted that although there is a reduction in the dataset dimension, this reduction is derisory for the data used. There is a loss of 15 time-steps of data in this whole process. Since the total dataset contains a total of 201542 time-steps, the elimination of these 15 time-steps corresponds to a loss of only 0.0074$\%$.
 
 \subsection{Data partition}\label{sec:datap}
 
-In order to study a certain algorithm, it is necessary to have access to past data to train the model and then evaluate its performance. The the available is key point when it comes to developing predictive models. Usually, in \ac{ML}, to study a certain model, the dataset should be divided into three sets as can bee seen in Figure \ref{division}. 
+In order to study a certain algorithm, it is necessary to have access to past data to train the model and then evaluate its performance. The the available data is key point when it comes to developing predictive models. Usually, in \ac{ML}, to study a certain model, the dataset should be divided into three sets as can bee seen in Figure \ref{division}. 
 
 \begin{figure}[h!]
     \centering
@@ -221,18 +229,18 @@ The first set is known as a training set, and consists of a dataset used to feed
 
 One way to use the available dataset to evaluate the proposed models would be to simply apply the standard training-validation-testing division to the entire dataset available, but this strategy would be a poor way to use the small amount of data available. Typically, to evaluate machine learning models on a very limited time interval, k-fold cross-validation is used. However, cross-validation can present some problems when applied to time-series problems, since one cannot choose random samples and assign them to either the test set or the training set because it makes no sense to use future values to predict past values. There is a time dependency between observations, and it is essential to preserve this relationship during testing. To overcome this barrier, a block cross-validation method was used. This validation methodology consists, in the first place, of separating the training data into different blocks. Afterwards, each of these blocks must be used to train and validate the data. After applying this procedure to the different blocks, an average of the errors presented in the different blocks must then be calculated, thus reaching a total error value. 
 
-In Figure \ref{partition} the reader may find four different sub-datasets, resulting from a division of the main datastet, defined in phase 6, of the section \ref{sec:data_manip}. The idea behind this division is, in a first part, to use datasets 1, 2 and 3 for training and validation in order to make hyperparameter tuning, and use dataset 4 to test the final models.
+In Figure \ref{partition} the reader may find six different sub-datasets, resulting from a division of the main datastet, defined in phase 6, of the section \ref{sec:data_manip}. The idea behind this division is, in a first stage, to use datasets 1, 2 and 3 for training and validation, in order to conduct hyperparameter tuning of the eight architectures proposed.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=1\textwidth]{Images/data_partition.png}
+    \includegraphics[width=1\textwidth]{Images/data_partition_2.png}
     \caption{Data partition diagram.}
     \label{partition}
     \end{center}
 \end{figure}
 The standard approach would be to split dataset 4 in training, validation and testing, but aplying Block cross-validation to to this specific case, consists of dividing the training set in a fixed number of blocks (the number of blocks chosen was 3), and perform training and validation on these blocks.
-Datesets 1, 2 and 3 feature five weeks of training and one week of validation. The performance evaluation of the models is then given by the average of the performance in each of these blocks i.e., the error of the models is given by
+Datesets 1, 2 and 3 feature three weeks of training and one week of validation. The performance evaluation of the models is then given by the average of the performance in each of these blocks i.e., the error of the models is given by
 
 \begin{equation}
      Model\ error =\frac {1}{k}\ \sum_{i=1}^k Error_{di},
@@ -249,7 +257,7 @@ In this specific case, the validation error for each model is given by
 
 The great advantage of using this method is the reduction of the influence of random errors in the selection of the best model. In other words, by performing an average of 3 different sets, the robustness of the choice process is increased since different scenarios are considered and the best model is the one that performs well on average for all of them.
 
-The dataset 4, however, represents the entire dataset and presents 18 weeks of training and two tests. The overall goal is to propose a model capable of predicting the available power between May 25 and June 12. After tuning the hyperparameters and choosing the best models by applying block cross-validation, the finalist models should then be trained and tested in dataset 4, where the results of the different forecasts can be observed.
+In a second phase, the models with the best results in the validation data set will be trained again throughout dataset 4 and tested in dataset 5. The predictions resulting from the best models in this test phase (dataset 5), will be used as input for a \ac{DenseNet}, where they will be used as training and validation data. This way, a stacked ensemble model is then constructed, which uses data resulting from the forecasts of all the finalist models to produce a final forecast. This model will then be trained throughout dataset 5 and tested on the test dataset, where its performance will be compared with the individual performance of the finalist models, trained on dataset 4 and tested also on the test dataset. Finally, the dataset 6, represents the entire dataset and presents 18 weeks.
 
 \section{Performance evaluation metrics}\label{chap5:evaluation}
 

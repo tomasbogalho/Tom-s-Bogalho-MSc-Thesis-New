@@ -37,7 +37,7 @@ Variables that present a trend are more easily examined since it is sometimes po
 \section{Problem statement and objectives}
 
 
-\ac{EDP} is a vertically integrated energy company with a consolidated position in the Iberian Peninsula, both in terms of electricity generation, distribution and supply, and gas supply. The energy consumption of \ac{EDP}'s Lisbon building can be divided into two categories, controlled and uncontrolled consumption. Within the category of uncontrolled consumption, some factors are identified such as the \ac{HVAC} system, lighting, among others. These factors are said to be uncontrolled, as they generally depend directly on factors such as the outside temperature and the occupancy rate of the building, respectively, variables that cannot be controlled. When it comes to controlled consumption, in the building's parking garage there is an electric car charging system for employees, denominated \ac{EVSCS}. The main functionality of this system is to manage the charging of all the \ac{EV}s connected to the \ac{EVSCSs}. This system is able to assign exactly the amount of power supplied to each vehicle, and is able to prioritize the charging, for example, a vehicle that already has 80$\%$ of battery capacity, has less priority than a discharged vehicle that has been recently connected to the grid. The system can also manage the charging procedure based on the instantaneous available power of the building, providing more capacity when there is less overall consumption, and reducing the capacity otherwise. The decision making ability of the \ac{EVSCS} makes the charging of \ac{EV}s a controlled consumption process. When it comes to production, unlike generality, the building is equipped with 70 kWp (kilowatt "peak") of solar generation, which means it also has the capacity to generate power. 
+\ac{EDP} is a vertically integrated energy company with a consolidated position in the Iberian Peninsula, both in terms of electricity generation, distribution and supply, and gas supply. The energy consumption of \ac{EDP}'s Lisbon building can be divided into two categories, controlled and uncontrolled consumption. Within the category of uncontrolled consumption, some factors are identified such as the \ac{HVAC} system, lighting, among others. These factors are said to be uncontrolled, as they generally depend directly on factors such as the outside temperature and the occupancy rate of the building, respectively, variables that cannot be controlled. When it comes to controlled consumption, in the building's parking garage there is an electric car charging system for employees, denominated \ac{EVCS}. The main functionality of this system is to manage the charging of all the \ac{EV}s connected to the \ac{EVCSs}. This system is able to assign exactly the amount of power supplied to each vehicle, and is able to prioritize the charging, for example, a vehicle that already has 80$\%$ of battery capacity, has less priority than a discharged vehicle that has been recently connected to the grid. The system can also manage the charging procedure based on the instantaneous available power of the building, providing more capacity when there is less overall consumption, and reducing the capacity otherwise. The decision making ability of the \ac{EVCS} makes the charging of \ac{EV}s a controlled consumption process. When it comes to production, unlike generality, the building is equipped with 70 kWp (kilowatt "peak") of solar generation, which means it also has the capacity to generate power. 
 
 
 %The ability to forecast building power consumption's and the respective power available at each time, can be decisive to optimize power usage in a building.  
@@ -46,10 +46,7 @@ Variables that present a trend are more easily examined since it is sometimes po
 %Regarding energy profile, there are two main types of buildings, residential buildings and non-residential buildings. A building should be regarded as residential building when more than half of the floor area is used for dwelling purposes \cite{OECD}. On the other hand, non-residential buildings consists of buildings other than dwellings, including fixtures, facilities and equipment that are integral parts of the structures and costs of site clearance and preparation \cite{OECD}. The work presented focuses on non-residential buildings, more specifically office buildings.
 
  
-Taking into consideration the listed factors, the work developed in this thesis contributes directly to minimize the unnecessary power consumption, thus contributing to a more sustainable building. At a global scale, the objective is to assist \ac{EVSCS} in the handling of power utilization in the  \ac{EV}'s charging procedure. The system has access to current data, namely the total power available at each instant, but it would be useful to obtain a forecast of the power available in the near future. The knowledge of this value would bring enormous advantages, positively impacting the way \ac{EV} charging is managed. The question then arises: "How can one forecast the power available in a near future, in order to optimize the \ac{EVSCS}?
-
-
-The answer to this question is to create a computing architecture capable of predicting the energy available in the future, while using that forecast to feed the \ac{EVSCS}. Specifically, the goal is to define a short-term power availability forecast system to help the \ac{EVSCS} to manage power supply for \ac{EVSCSs}. In Figure \ref{building} reader can observe a schematization of all the work developed during this thesis. 
+Taking into consideration the listed factors, the work developed in this thesis contributes directly to minimize the unnecessary power consumption, thus contributing to a more sustainable building. At a global scale, the objective is to assist \ac{EVCS} in the handling of power utilization in the  \ac{EV}'s charging procedure. The system has access to current data, namely the total power available at each instant, but it would be useful to obtain a forecast of the power available in the near future. The knowledge of this value would bring enormous advantages, positively impacting the way \ac{EV} charging is managed. The question then arises: "How can one forecast the power available in a near future, in order to optimize the \ac{EVCS}"? The answer to this question is to create a computing architecture capable of predicting the energy available in the future, while using that forecast to feed the \ac{EVCS}. Specifically, the goal is to define a short-term power availability forecast system to help the \ac{EVCS} to manage power supply for \ac{EVCSs}. In Figure \ref{building}, the reader can observe a schematization of all the work developed during this thesis. 
 
 \begin{figure}[h!]
     \centering
@@ -60,42 +57,24 @@ The answer to this question is to create a computing architecture capable of pre
     \end{center}
 \end{figure}
 
-Data from different sources (radiation, meteorology, production and consumption) was used in the construction of a predictive model whose outputs are used as inputs in the \ac{EVSCS}. The expected result of the research should be (but not limited to) a maximum and minimum power output forecast algorithm to boost the capabilities of the \ac{EVSCS} by predicting \ac{EDP}'s building power availability for the next 5, 10 and 15 minutes.
+Data from different sources (radiation, meteorology, production and consumption) was used in the construction of a predictive model whose outputs are used as inputs in the \ac{EVCS}. The expected result of the research should be (but not limited to) a maximum and minimum power output forecast algorithm to boost the capabilities of the \ac{EVCS} by predicting \ac{EDP}'s building power availability for the next 5, 10 and 15 minutes.
 
 \section{Thesis outcome}
 
-
-In the course of this dissertation, a predictive model based on \ac{ML} methodologies was developed, namely using \ac{ANN}s, capable of producing forecasts of the available power with a time target of 5, 10 and 15 minutes in the future, for a building that presents two peculiar characteristics: it has  \ac{PV} panels for energy production and it has an electric car loading system in its parking garage. Eight different types of architectures were tested and their performance was studied for specific cases. The result is an automated predictive system that uses XXXXX.
-
-In the process of carrying out this research, meteorological and radiation data provided by \ac{FCUL} were used, as well as data regarding the energy production and consumption of the building, provided by \ac{EDP}.
-
-The work carried out followed the following steps:
-\begin{enumerate}[noitemsep,topsep=0pt]
-  \itemsep0em 
-  \item Data cleaning;
-  \item Data prepossessing;
-  \item Comparison between eight predictive architectures.
-  \item Selection of the best predictive architectures.
-  \item Selection of the final architectures for specific scenarios.
-  \item Construction of an automated forecasting system.
-\end{enumerate}
-
-
-In Figure \ref{scope} it is possible to observe a diagram of the total architecture of the work developed in this thesis. 
+In the course of this dissertation, a predictive model based on \ac{ML} methodologies was developed, namely using \ac{ANN}s, capable of producing forecasts of the available power with a time target of 5, 10 and 15 minutes in the future, for a building that presents two peculiarities: it has \ac{PV} panels for energy production and it has an electric car loading system in its parking garage. In Figure \ref{scope}, the reader may find a diagram of the forecasting system developed.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=1\textwidth]{Images/Work.png}
-    \caption{Thesis framework.}
+    \includegraphics[width=0.8\textwidth]{Images/Work1.png}
+    \caption{Proposed forecasting system framework.}
     \label{scope}
     \end{center}
 \end{figure}
 
-The purpose of this thesis is to implement a system capable of computing the available power in the near future. A total of four datesets were used, with information on solar radiation, the weather conditions of the area where the building is located, the consumption and production of the building. These data, besides having different dimensions and granularities, presented temporal gaps. It was then necessary to automate a data treatment process in which, regardless of the state in which the data are introduced in the system, they are treated and prepared to respect the structure that allows them to be used as inputs to the system. At a later stage, eight different \ac{ANN} architectures composed of three categories of distinct layers were designed: \ac{GRU}, \ac{LSTM} and \ac{1D CNN}. After performing some tests, the three final models were then chosen that present the best performance for three distinct situations: weekdays, weekends and holidays. The last step was to build a system capable of choosing the model to be used based on the situation you want to foresee. It was then arrived to a system capable of performing, with minimum error, the forecast of the total power available in the building in 5, 10 and 15 minutes. These data are later provided to the \ac{EVSCS} that will use them to optimize its decision process. The optimization process of the charging system is outside the scope of this thesis.
 
+A total of four datesets were used, with information on solar radiation and weather conditions of the area where the building is located, provided by \ac{FCUL}, and information regarding the power consumption and power production of the building, provided by \ac{EDP}. These datasests, besides having different dimensions and granularities, presented temporal gaps. It was then necessary to automate a data treatment process in which, regardless of the state in which the data is introduced in the system, it is treated and prepared to respect the structure that allows it to be used as input to the system. Then the processing Level 1 starts, where three different \ac{ANN} architectures composed of three categories of layers (\ac{GRU}, \ac{LSTM} and \ac{1D CNN}), produce some forecasts for Available power of the building in 5, 10 and 15 minutes. These forecasts are then introduced as input to a fourth model, Model level 2, which uses these values to produce new forecasts of the total power available. The result of this thesis is a Hybrid Ensemble Forecasting System capable of generating short-term forecasts of the available power of the building. Ensemble because it uses predictions generated in parallel, and hybrid because it uses these predictions as input parameters to a fourth model. 
 
-
-
+The forecasts produced by the forecasting system are later provided to the \ac{EVCS}, that uses this information to optimize its decision process. The optimization process of the charging system is outside the scope of this thesis.
 
 \section{Thesis outline}

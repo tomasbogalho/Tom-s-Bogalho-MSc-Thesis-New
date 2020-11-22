@@ -17,7 +17,7 @@ As we have seen so far, the problem proposed by \ac{EDP} is a bit different from
 
 \section{Proposed variable to predict}\label{chap4:vtp}
 
-The available power is a key factor because it is the indicator provided to the \ac{EVSCS} that enables it to proceed with the optimization of the distribution of the available power by the \ac{EV}s present in the building's garage, which need to be charged.
+The available power is a key factor because it is the indicator provided to the \ac{EVCS} that enables it to proceed with the optimization of the distribution of the available power by the \ac{EV}s present in the building's garage, which need to be charged.
 
 The power available is not a measured variable but a calculated one. When it comes to computing it, one question then arises: Should we compute the available power and predict it or should we predict consumed power and produced solar power and just then perform the calculations? Figure \ref{avsol} represents two possible solutions for this problem. The first solution consists in creating a model that has as input, besides the other variables, two variables: consumption power and solar production. This model will have as output a forecast for these two variables and only then is the available power calculated. The second solution is to compute the available power before inputting the data into the model, which causes a reduction in the number of inputs and outputs in the model. 
 
@@ -79,7 +79,7 @@ Although all the mentioned models can produce acceptable results for the propose
 
 \section{Artificial Neural Networks}\label{sec:layers}
 
-Neural networks have proven extremely efficient in identifying and learning temporal data patterns, many of them quite complex. In chapter \ref{chap:background}, two large families of neural networks were presented, \ac{BPNN}s and \ac{RNN}s. From the different existing architectures within these two categories, two types of layers were selected, \ac{GRU} and \ac{LSTM}, both classified as \ac{RNN}s' layers. In addition, \ac{1D CNN} layers were also tested, which fall under the umbrella of \ac{CNN}. These three different types of layers were tested in multiple arrangements and combined with each other to form multiple neural network architectures.
+Neural networks have proven extremely efficient in identifying and learning temporal data patterns, many of them quite complex. In chapter \ref{chap:background}, two large families of neural networks were presented, \ac{FFNN}s and \ac{RNN}s. From the different existing architectures within these two categories, two types of layers were selected, \ac{GRU} and \ac{LSTM}, both classified as \ac{RNN}s' layers. In addition, \ac{1D CNN} layers were also tested, which fall under the umbrella of \ac{CNN}. These three different types of layers were tested in multiple arrangements and combined with each other to form multiple neural network architectures.
 
 
 \subsection{Long short-term memory (LSTM)}
@@ -167,7 +167,7 @@ where $zt$ represents the update gate vector, $r_t$ the reset gate vector, $\til
 
 
 
-\subsection{One dimensional convolutional neural network (1D CNN)}
+\subsection{One dimensional convolutional neural network (1D CNN)}\label{sec:1dcnn}
 
 
 Convolutional Neural Networks (\ac{CNN}s) are biologically-inspired feed-forward neural networks that have been successfully applied in the field of computer vision and digital image processing and analysis \cite{cnn0}.
@@ -305,10 +305,11 @@ Figure \ref{inputseq} shows a 20 time-steps random signal, as the one used in th
 
 \section{Artificial Neural Networks specifications} \label{chap4:anns}
 
-The process of designing the architectures to be tested is a complicated and demanding task. This section describes the architectures used, as well as some techniques used in their development.
+The process of designing the architectures to be tested is a complex and demanding task. This section describes the architectures used, as well as some techniques used in their development.
 
 \subsection{Studied architectures}\label{sec:arq}
-In the development of this thesis, different types of neural networks were tested, composed of the layers introduced in section \ref{sec:layers}. In Figure \ref{models} are represented the 8 main architectures tested in this study.
+In the development of this thesis, different types of neural networks were tested, composed of the layers introduced in section \ref{sec:layers}. As mentioned in Chapter \ref{chap:intro}, the forecasting system developed is divided into two levels, level 1, composed of three models, and level 2, composed of only one model. In Figure \ref{models}, are represented the 8 main architectures studied in level 1.
+
 \begin{figure}[h!]
     \centering
     \begin{center}
@@ -318,15 +319,17 @@ In the development of this thesis, different types of neural networks were teste
     \end{center}
 \end{figure}
 
+Model 0 and Model 1 are composed of a single layer of \ac{GRU} and \ac{LSTM} respectively. The purpose of these two models is to compare the performance between the two types of single layer. In order to study the effect that the addition of \ac{CNN}s has on simple models, the architecture of Model 2 is similar to that of Model 0, with the addition of a \ac{1D CNN} layer and a Maxpooling layer before the \ac{GRU} layer. Similarly, Model 3 is like to Model 1 with the addition of \ac{1D CNN} layer and a Maxpooling layer before the \ac{LSTM} layer. Models 4, 5, 6 and 7 have as main purpose to study the effect of combining more than one \ac{GRU}/\ac{LSTM} layers together. For this purpose, the \ac{GRU}-\ac{GRU} combinations were studied on Model 4, \ac{LSTM}-\ac{LSTM} on Model 5, \ac{GRU}-\ac{LSTM} on Model 6 and \ac{LSTM}-\ac{GRU} on Model 7. All eight architectures present, as their last layer, a Dense layer with three units, responsible for converting the outputs of the previous layers into only three outputs, one for each of the forecasts ((t+5), (t+10) and (t+15)).
 
-Model 0 and Model 1 are composed of a single layer of \ac{GRU} and \ac{LSTM} respectively. The purpose of these two models is to compare the performance between the two types of single layer. In order to study the effect that the addition of \ac{CNN}s has on simple models, the architecture of Model 2 is similar to that of Model 0, with the addition of a \ac{1D CNN} layer and a Maxpooling layer before the \ac{GRU} layer. Similarly, Model 3 is like to Model 1 with the addition of \ac{1D CNN} layer and a Maxpooling layer before the \ac{LSTM} layer. Models 4, 5, 6 and 7 have as main purpose to study the effect of combining more than one \ac{GRU}/\ac{LSTM} layers together. For this purpose, the \ac{GRU}-\ac{GRU} combinations were studied on Model 4, \ac{LSTM}-\ac{LSTM} on Model 5, \ac{GRU}-\ac{LSTM} on Model 6 and \ac{LSTM}-\ac{GRU} on Model 7.
+Regarding the model used in level 2, its architecture can also be seen in Figure \ref{models}, and presents only Dense layers, which means that it presents an architecture of a \ac{FFNN} with three layers, where the last one has, as in the other models, three units in order to define the output dimension.
+
 
 
 \subsection{Hyperparameter optimization}
 
 A hyperparameter is a parameter whose value is used to control the learning process. Hyperparameter optimization is the process of choosing a set of optimal hyperparameters for a learning algorithm. Depending on the layer in question, different hyperparameters can be tuned. Other parameters, such as node weights are initialized randomly, and are defined during the learning process. In other words, hyperparameters are parameters which must be changed by the user according to the results obtained, while other parameters should not be modified by the user, and are the result of the learning process.
 
-\ac{ANN}s have numerous advantages, both in terms of their usage and performance. On the other hand, tuning the hyperparameters is an extremely time-consuming process that is done by hand. A certain set of hyperparameters is tested, evaluated, and then changed and so on until the best possible result is obtained. During the tests performed with the models present in Figure \ref{models}, different hyperparameters were tuned such as the number of nodes in each layer, number of filters of each \ac{1D CNN} layer and kernel size.
+\ac{ANN}s have numerous advantages, both in terms of their usage and performance. On the other hand, tuning the hyperparameters is an extremely time-consuming process that is done by hand. A certain set of hyperparameters is trained, validated, and then changed and so on until the best possible result is obtained. During the tests performed with the models present in Figure \ref{models}, different hyperparameters were tuned such as the number of nodes in each layer, number of filters of each \ac{1D CNN} layer and kernel size.
 
 \subsection{Regularization techniques}
 
