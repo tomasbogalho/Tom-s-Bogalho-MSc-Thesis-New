@@ -1,0 +1,106 @@
+% #############################################################################
+% This is Appendix E
+% !TEX root = ../main.tex
+% #############################################################################
+\chapter{Data}
+\label{chapter:appendixE}
+
+
+This appendix contains the tables concerning the features computed and the features made available for the development of this thesis. Table \ref{tab:available_variables} contains the four datasets provided by \ac{FCUL} and by \ac{EDP}, where the name of each feature, the unit in which it is found, and a brief description are discriminated. 
+
+\newpage
+    
+    \begin{longtable}{rlcl}
+    \caption {Description of the provided variables.}
+    \label{tab:available_variables}\\
+    
+    \toprule
+    \multicolumn{1}{l}{\textbf{Dataset}} & \textbf{Feature} & \textbf{Unit} & \textbf{Description} \\
+    \midrule
+    \multicolumn{1}{l}{\textbf{Meteo.}} & T\_amb\_min & degC & Minimum ambient temperature \\
+      & T\_amb\_max & degC & Maximum ambient temperature \\
+      & T\_amb\_avg & degC & Average ambient temperature \\
+      & T\_dp\_avg & degC & Time-dependenta verage temperature \\
+      & RH\_min & \% & Minimum relative humidity \\
+      & RH\_max & \% & Maximum relative humidity \\
+      & RH\_avg & \% & Average relative humidity \\
+      & AH\_min & g/m3 & Minimum absolute humidity \\
+      & AH\_max & g/m3 & Maximum absolute humidity \\
+      & AH\_avg & g/m3 & Average absolute humidity \\
+      & p\_amb\_min & hPa & Minimum atmospheric pressure \\
+      & p\_amb\_max & hPa & Maximum atmospheric pressure \\
+      & p\_amb\_avg & hPa & Average atmospheric pressure \\
+      & rho\_act & kg/m3 & Air density \\
+      & v\_min & m/s & Minimum air speed \\
+      & v\_max & m/s & Maximum air speed \\
+      & v\_avg & m/s & Average air speed \\
+      & v\_vectavg & m/s & Average gust speed \\
+      & v\_dir\_min & degrees & Minimum wind direction \\
+      & v\_dir\_max & degrees & Maximum wind direction \\
+      & v\_dir\_vectavg & degrees & Average wind direction \\
+    \midrule
+    \multicolumn{1}{l}{\textbf{Rad.}} & Avg\_GHI & W/m2 & Average global horizontal irradiance \\
+      & Avg\_DHI & W/m2 & Average diffuse horizontal irradiance \\
+      & Avg\_POA & W/m2 & Average plane of array \\
+      & Avg\_DNI & W/m2 & Average direct normal irradiance \\
+      & Avg\_cosDNI & W/m2 & Cos theta correction \\
+      & Avg\_closGHI & W/m2 & Cos theta correction \\
+      & Std\_GHI & W/m2 & Standard global horizontal irradiance \\
+      & Std\_DHI & W/m2 & Standard diffuse horizontal irradiance \\
+      & Std\_POA & W/m2 & Standard plane of array \\
+      & Std\_DNI & W/m2 & Standard direct normal irradiance \\
+      & Std\_cosDNI & W/m2 & Cos theta correction \\
+      & Std\_closGHI & W/m2 & Cos theta correction \\
+      & Min\_GHI & W/m2 & Minimum global horizontal irradiance \\
+      & Min\_DHI & W/m2 & Minimum diffuse horizontal irradiance \\
+      & Min\_POA & W/m2 & Minimum plane of array \\
+      & Min\_DNI & W/m2 & Minimum direct normal irradiance \\
+      & Min\_cosDNI & W/m2 & Cos theta correction \\
+      & Min\_closGHI & W/m2 & Cos theta correction \\
+      & Max\_GHI & W/m2 & Maximum global horizontal irradiance \\
+      & Max\_DHI & W/m2 & Maximum diffuse horizontal irradiance \\
+      & Max\_POA & W/m2 & Maximum plane of array \\
+      & Max\_DNI & W/m2 & Maximum direct normal irradiance \\
+      & Max\_cosDNI & W/m2 & Cos theta correction \\
+      & Max\_closGHI & W/m2 & Cos theta correction \\
+      & phi & degree & azimuth angle \\
+      & theta & degree & zenit angle \\
+      & SensorT & degC & Sensor temperature \\
+    \midrule
+    \multicolumn{1}{l}{\textbf{Prod.}} & I1 & A & Production three-phase current \\
+      & I2 & A & Production three-phase current \\
+      & I3 & A & Production three-phase current \\
+      & V1 & V & Production three-phase voltage \\
+      & V2 & V & Production three-phase voltage \\
+      & V3 & V & Production three-phase voltage \\
+      & ActPwr & W & Production active power \\
+    \midrule
+    \multicolumn{1}{l}{\textbf{Cons.}} & Ir & A & Consumption three-phase current \\
+      & Is & A & Consumption three-phase current \\
+      & It & A & Consumption three-phase current \\
+      & Vrs & V & Consumption three-phase voltage \\
+      & Vst & V & Consumption three-phase voltage \\
+      & Vtr & V & Consumption three-phase voltage \\
+      & P & W & Consumption real power \\
+      & S & VA & Consumption complex power \\
+    \end{longtable}%
+  
+Table \ref{tab:computed_variables} contains the features computed or extracted from the information provided. The organization of this table is similar to table \ref{tab:available_variables}.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Description of the computed variables}
+    \begin{tabular}{rlcl}
+    \toprule
+    \multicolumn{1}{l}{\textbf{Dataset}} & \textbf{Feature} & \textbf{Unit} & \textbf{Description} \\
+    \midrule
+      & hour & hours & Hour of the day \\
+      & day\_of\_moth & days & Day of the month \\
+      & day\_of\_week & days & Day of the week \\
+      & month & months & Month of the year \\
+      & holiday & binary & National holiday identifier \\
+      & AvailablePower & W & Current available power \\
+      & TheoreticalValue & W & Theoretical production active power \\
+    \end{tabular}%
+  \label{tab:computed_variables}%
+\end{table}%

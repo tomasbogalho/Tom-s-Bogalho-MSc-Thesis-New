@@ -3,376 +3,115 @@
 % !TEX root = ../main.tex
 % #############################################################################
 % Change the Name of the Chapter i the following line
-\fancychapter{Proposed Forecasting Model}
+\fancychapter{Experimental Work \& Results}
 \cleardoublepage
 % The following line allows to ref this chapter
-\label{chap:Model}
+\label{chap:results}
 
-This chapter presents the set of models tested during the development of the thesis, as well as its detailed theoretical explanation.
-
-\section{Problem statement} \label{chap4:ps}
-
-As we have seen so far, the problem proposed by \ac{EDP} is a bit different from the most common cases explored in Chapter \ref{chap:background}. The particularity of this challenge is the fact that it is intended to predict the power available at each future instant, and not the power consumed. In addition, since this is a system that aims to produce a short term forecast, 5, 10 and 15 minutes ahead, one must choose a model that produces a solution both with a good performance and with an acceptable pace. Therefore, it can be said that the challenge is to build a system that must be able to reach a forecast of the available power in a short time interval, with a good performance.
+So far we have introduced the theme to be developed in this thesis \ref{chap:intro}, we have presented some studies developed in this area \ref{chap:background}, we have presented the concrete case studied in this thesis and we propose a schematization of the work to be developed \ref{chap:architecture}, we have introduced the models that we will implement \ref{chap:architecture}, and we have described in detail both the datasets used, as well as the experimental process implemented in this study \ref{chap:architecture}. In this chapter, we present the experimental results obtained in this thesis as well as a discussion section.
 
 
-\section{Proposed variable to predict}\label{chap4:vtp}
+\section{Stage 1 - Block cross-validation}\label{chap3:section:stage_1}
 
-The available power is a key factor because it is the indicator provided to the \ac{EVCS} that enables it to proceed with the optimization of the distribution of the available power by the \ac{EV}s present in the building's garage, which need to be charged.
+In this section, the process of training and validation of the proposed architectures begins. In a first stage, the five architectures are trained and validated in order to perform hyperparameter optimization. It is at this stage that the performance of each architecture is evaluated for the training and validation scenario, by performing the block cross-validation procedure. At the end of this stage, the five models are retrained on the entire dataset 4 (the combination of datasets 1, 2 and 3), used for the block cross-validation, and are tested in a new unseen set of data, the Test set.
 
-The power available is not a measured variable but a calculated one. When it comes to computing it, one question then arises: Should we compute the available power and predict it or should we predict consumed power and produced solar power and just then perform the calculations? Figure \ref{avsol} represents two possible solutions for this problem. The first solution consists in creating a model that has as input, besides the other variables, two variables: consumption power and solar production. This model will have as output a forecast for these two variables and only then is the available power calculated. The second solution is to compute the available power before inputting the data into the model, which causes a reduction in the number of inputs and outputs in the model. 
-
-Comparing the two proposed hypotheses, solution 1 presents the advantage of predicting two different variables allowing a better data manipulation, offering more flexibility. Since the model produces separate results for the consumption and production variables, the amount of possible uses for this data is greater than the amount of the second solution. On the other hand, solution 2 presents, first of all, the advantage of having a much simpler architecture which makes the user's work easier, and secondly, the main advantage is that it requires the model to predict only one variable and not two. This factor is quite relevant, namely regarding the time it takes the system to produce forecasts, and also the computational capacity that is required from the system to allow the prediction of two variables simultaneously. The prediction of two variables with the same model also has the disadvantage of making it difficult to evaluate the behavior of the proposed solution, since a specific model can be very good for predicting one of the variables and bad for the other. 
-Taking all these factors into account, the second approach was then chosen, which facilitates the user's work, which allows to produce results more quickly, and facilitates the process of choosing a model that produces a good solution for a final variable.
+The main reason for this step is the possibility to evaluate the behavior of each of the proposed models in different scenarios. The possibility of observing the behavior of any system in different scenarios, allows the user to perform a more robust evaluation of the system in question. The larger the number of blocks used, the more robust the evaluation because more different scenarios are tested.
 
 
+
+
+Stage 1 consists of optimizing the hypterparameters of the five proposed architectures. To do so, the datasets 1, 2 and 3 represented in Figure \ref{hyptun}, were used, each one consisting of a total of 6 weeks of data, 5 of which were used for training and 1 for validation. The Block cross-validation process described before, is put into practice with these three sets of data, where the five models are tested and validated in each of the three sets and the errors presented in each of the validation processes are recorded. At the end of this stage, an average of the errors presented in each of the three datasets is computed and for each of the five models, the combination of hyperparameters that produces the smallest error, is selected as the final architecture of the model. 
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=1\textwidth]{Images/Available.png}
-    \caption{Model solutions.}
-    \label{avsol}
+    \includegraphics[width=1\textwidth]{Images/hyptun.png}
+    \caption{Datasets used for training and validation.}
+    \label{hyptun}
     \end{center}
 \end{figure}
 
-
-In Figure \ref{Max_cons_prod} the reader can see the graph for the power profile of \ac{EDP}’s building, between January 25, 2020 and March 13, 2020, where the blue line is the power consumption of the building, the orange line the solar power production and the red line the power of the electrical grid made available to this specific building.
-
-
-\begin{figure}[h!]
-    \captionsetup[subfigure]{position=b}
-    \centering
-    \label{fig:ap}
-    \subcaptionbox{\label{Max_cons_prod}}{\includegraphics[width=1\linewidth]{Images/Max_cons_prod.png}}
-    \subcaptionbox{ \label{available_power}}{\includegraphics[width=1\linewidth]{Images/available_power.png}}
-    \caption{EDP's building power trends a) grid capacity, consumption and production b) available power.}
-\end{figure}
-
-
-
-
-By analyzing Figure \ref{Max_cons_prod}, it can be seen that, compared to the consumption presented by the building, the \ac{PV} panels installed in the building do not have enough capacity for the building to be self-sustainable, that is, solar power is not enough to maintain the regular operation of the building. On the other hand, it is also visible that around January 30th, the building presented a consumption power higher than the grid power capacity by the network. This is possible because ....XXXXX
-
-
-The value of the available power is a calculated metric and not measured one, given by:
-
-\begin{equation}
-   P_{available} = P_{grid} + P_{solar} - P_{consumption},
-   \label{available}
-\end{equation}
-
-where $P_{grid}$ is the maximum power that is made available to the building, provided by the electrical grid, which in this particular case is around 1.2 MW, $P_{solar}$ is the active solar power produced by the \ac{PV}, and $P_{consumption}$ denotes the the current power consumption of the building. In Figure \ref{available_power}, the available power profile is shown for the same time interval as Figure \ref{Max_cons_prod}. Like the previous variables, it shows an equally cyclical behavior.
-
-Once solution 2 was chosen, illustrated in Figure \ref{avsol}, the behavior that the model developed in this thesis aims to predict is standard generated available power in the building.
-
-\section{Proposed model}\label{chap4:pm}
-
-In Chapter \ref{chap:background}, some of the most common models were studied with regard to forecasting power consumption in various types of buildings. As has also been mentioned, data-driven models have been widely used in this type of applications. In this thesis, it was also decided to study a solution composed by one or more data-driven models, since historically they present a better performance and an excellent relation between the need of computational resources used, and the obtained performance.
-
-This problem presents some characteristics that are determinant in the process of choosing the models to be tested. First of all, the data made available for this study, as can as can be later verified in Chapter \ref{chap:implementation}, represents a significantly short time period, which means that the use of models as statistical regressions are not ideal to solve this problem. On the other hand, the challenge presented by \ac{EDP} implies a 5, 10 and 15 minute data forecast. This factor implies the use of a fast model that is able to produce different forecasts in a short period of time. This is a problem for \ac{SVM}s/\ac{SVR}s because, as mentioned in \cite{svm3}, \cite{svm2} and \cite{svm5} while producing results with good precision an accuracy, they are slow models for large-scale problems. 
-
-Another model presented in Chapter \ref{chap:background}, were the \ac{DT}s. Although they are simple to apply models, \ac{DT}s have the limitation of not allowing a future value to be computed, but rather a range of values in which the variable to be predicted can be found. Since for this problem the main objective is to obtain specific values of available power, this category of models was not considered in this research.
-
-Although all the mentioned models can produce acceptable results for the proposed work, it was decided to apply different types of artificial neural networks, both architectures with only one \ac{ANN} layer, and architectures with multiple layers implemented simultaneously. The idea is then to test various topologies of \ac{ANN}s, and elaborate a comparative study between the proposed solutions, comparing their performance in different scenarios and conditions.
-
-
-
-\section{Artificial Neural Networks}\label{sec:layers}
-
-Neural networks have proven extremely efficient in identifying and learning temporal data patterns, many of them quite complex. In chapter \ref{chap:background}, two large families of neural networks were presented, \ac{FFNN}s and \ac{RNN}s. From the different existing architectures within these two categories, two types of layers were selected, \ac{GRU} and \ac{LSTM}, both classified as \ac{RNN}s' layers. In addition, \ac{1D CNN} layers were also tested, which fall under the umbrella of \ac{CNN}. These three different types of layers were tested in multiple arrangements and combined with each other to form multiple neural network architectures.
-
-
-\subsection{Long short-term memory (LSTM)}
-
-The first type of configuration considered is the \ac{LSTM}, architecture that fits within the group of \ac{RNN}s, proposed et el. \cite{lstm0} by Hochreiter and Schmidhuber in 1997.
-\ac{LSTM}s were invented to fight the vanishing gradient problem that is often identified during the training process of common \ac{ANN}s with gradient-based learning methods and back propagation. In these cases, each of the \ac{ANN}'s weights receives an update proportional to the partial derivative of the error function from the current weight in each iteration of training. The problem is that, in some cases, the gradient becomes smaller and smaller with each iteration, preventing the weight from changing its value. This problem leads to a poor performance of the \ac{ANN}, and can even prevent it from continuing the training process.
-
-To avoid this situation, the \ac{LSTM} units are composed of a cell state, an input gate, an output gate and a forget gate, as can be seen in Figure \ref{lstm}.
-
-The responsibility of the cell state is to trace the dependencies between the elements in the input sequence. 
-
-In first place, the forget gate has the purpose of forgetting information that is no longer useful to the state of the cell. This gate has two inputs, $x_t$ (input at the specific time) and $h_{t-1}$ (output from previous cell) which are multiplied by weight matrices, followed by the addition of the bias. The result of this process is passed through a sigmoid $\sigma$ activation function, which provides a binary output. If for a given cell state the output is 0, the information is forgotten, if the output is 1, the information is retained for future use.
-
-The input gate is responsible for adding useful information to the cell state. First, the information is regulated using the sigmoide function that filters the values to be remembered in a similar way to the forget gate, also having as inputs $h_{t-1}$ and $x_t$. In parallel, a vector is created using the $tanh$ function that has as output a value in the range $ [-1, +1]$, which contains all possible values of $h_{t-1}$ and $x_t$. The values of the vector and the regulated values are then multiplied. 
-
-The output gate's task is to extract useful information from the current cell state to be presented as an output. First, a vector is generated by applying the function tanh to the cell. In parallel, the information from the $h_{t-1}$ and $x_t$ inputs is regulated using the sigmoid function that filters the values to be remembered. The values of the vector and the regulated values are then multiplied to be sent as an output and input to the next cell.
-
- 
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=0.6\textwidth]{Images/LSTM_cell_detailed.png}
-    \caption{LSTM unit.}
-    \label{lstm}
-    \end{center}
-\end{figure}
-
-The equations that describe the operation of a \ac{LSTM} unit are given by 
-
-\begin{equation}
-    \begin{cases} 
-        
-        f_t=\sigma(W_f.[h_{t-1},x_t] + b_f)\\
-        i_t=\sigma(W_i.[h_{t-1},x_t] + b_i)\\
-        \widetilde{C}_t = tanh(W_c.[h_{t-1},x_t] + b_C)\\
-        C_t=f_t*C_{t-1}+i_t* \widetilde{C}_t\\
-        o_t=\sigma(W_o.[h_{t-1},x_t] + b_o)\\
-        h_t=ot*tanh(C_t)
-        
-         
-    \end{cases} ,
-\end{equation}
-
-where $f_t$ represents the forget, $i_t$ the input gate, $\widetilde{C}_t$ the cell input activation vector, ${C}_t$ the cell state vector, $o_t$ the output gate, $h_t$ the hidden state vector or output vector of the \ac{LSTM} unit. This type of units has then the ability to choose new information that is relevant and delete the past information that is not relevant, maintaining a good functioning, particularly in time series data since there can be lags of undefined length between important events in a time series dataset.
-
-
-
-
-\subsection{Gated recurrent unit (GRU)}
-
-The \ac{GRU} unit is quite similar to \ac{LSTM} with the particular difference that it has no output gate. Introduced in 2014 by Kyunghyun Cho et el. \cite{gru0}, \ac{GRU}s are also part of the \ac{RNN} family. Although they have a similar architecture to \ac{LSTM}s, \ac{GRU}s are simpler models which led to the conclusion that for some cases, where there are smaller datasets and with a lower frequency of repetition, \ac{GRU} architectures perform better than \ac{LSTM} architectures \cite{gru1}, \cite{gru2}.
-
-Compared to \ac{LSTM}s, \ac{GRU}s have no cell state and use the hidden state to transfer information. This architecture has only two gates, a reset gate and an update date, as can be seen in the diagram in Figure \ref{gru}.
-
-The \ac{GRU} structure allows to capture dependencies of large data sequences without discarding information from previous parts of the sequence. This is achieved through its gates, similar to \ac{LSTM}s. These gates are responsible for regulating the information to be kept or discarded at each time interval.
-
-The \ac{GRU}'s ability to maintain a long term memory stems from calculations in the \ac{GRU} unit to produce the hidden state. While \ac{LSTM}s have two different states passed between cells - the cell state, which carries long-term memory, and the hidden state, which carries short-term memory - \ac{GRU}s have only one hidden state transferred between time stages. This hidden state is able to maintain both long term and short term dependencies simultaneously, due to the constraint mechanisms and calculations through which the hidden state and the input data pass.  Like the \ac{LSTM} gates, the gates in the \ac{GRU} are trained to selectively filter out any irrelevant information, keeping what is useful.
-
-These gates essentially produce vectors containing the values 0 or 1 that will be multiplied with the input data and/or hidden state. A value of 0 in the vectors indicates that the corresponding data in the input or hidden state is not important and therefore will be overridden. On the other hand, a value of 1 in the array means that the corresponding data is important and will be used.
-
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=0.6\textwidth]{Images/GRU_cell_detailed.png}
-    \caption{GRU unit.}
-    \label{gru}
-    \end{center}
-\end{figure}
-
-The equations that describe the operation of a \ac{GRU} unit are given by 
-
-\begin{equation}
-    \begin{cases} 
-        
-        z_t = \sigma(W^{(z)} x_t + U^{(z)} h_{t-1} + b^{(z)})\\
-        r_t = \sigma(W^{(r)} x_t + U^{(r)} h_{t-1} + b^{(r)})\\
-        \tilde{h}_t = \tanh(W^{(h)} x_t + U^{(h)} h_{t-1} \circ r_t + b^{(h)})\\
-        h_t = (1-z_t) \circ h_{t-1} + z_t \circ \tilde{h}_t
-
-    \end{cases} ,
-\end{equation}
-
-where $zt$ represents the update gate vector, $r_t$ the reset gate vector, $\tilde{h}_t$ the candidate activation vector and $h_t$ the output vector. \ac{GRU}s have fewer tensor operations to perform, and so they take less time to train than \ac{LSTM}s.  
-
-
-
-\subsection{One dimensional convolutional neural network (1D CNN)}\label{sec:1dcnn}
-
-
-Convolutional Neural Networks (\ac{CNN}s) are biologically-inspired feed-forward neural networks that have been successfully applied in the field of computer vision and digital image processing and analysis \cite{cnn0}.
-
-In \ac{ML} applications, \ac{2D CNN} are typically used for categorizing 2D images (into classification problems) or creating images (in case of regression-based problems). In this kind of applications, the layers extract two-dimensional pathces from an image and then apply similar transformations to each of the patches. Similarly, there are \ac{1D CNN}, that extract data subsequences from a dimension of the main sequence. This thesis aims to predict the future behavior of certain variables of a single dimension, so that models consisting of \ac{1D CNN}'s layers have been tested.
-
-The \ac{1D CNN} is very effective when you expect to derive interesting features from shorter (fixed-length) segments of the overall data set. Its main purpose is to turn the long input sequence into much shorter (downsampled) sequences of higher-level features, which can be very useful in the treatment of large time sequences.
-
-In Figure \ref{conv1}, the reader may find a representation of the normal working process of a \ac{1D CNN}. The operation of \ac{1D CNN} is based on the extraction of odd size pathces (in this particular case it uses a convolution window with size 5), from a sequence of large dimensions of input data. Is then applied a convolution operation that can be written as \cite{cnn2} 
-
-\begin{equation}
-y(n)=
-    \begin{cases} 
-            
-        \sum_{i=-\frac{k}{2}+\frac{1}{2}}^{\frac{k}{2}-\frac{1}{2}} x(n+i)h(i),\  if \  n=0.\\
-        \sum_{i=-\frac{k}{2}+\frac{1}{2}}^{\frac{k}{2}-\frac{1}{2}} x(n+i+(s-1))h(i),\  otherwise.\\
-    
-    \end{cases} ,
-\end{equation}
-
-where $n$ represents the length of the convolution layer, $x$ represents the input of the layer, $h$ represents the kernel (or extracted patch) and $k$ its length. Lastly, $s$ represents the number of shifted positions of the kernel window after each convolution, also known as number of strides. For example, if n = 20, k=5 and s=1 then
-
-\begin{equation}
-    \begin{cases} 
-        y(2)=x(0)h(0)+x(1)h(1)+x(2)h(2)+x(3)h(3)+x(4)h(4)\\
-        y(3)=x(1)h(0)+x(2)h(1)+x(3)h(2)+x(4)h(3)+x(5)h(4)\\
-        \  ...\\
-        y(17)=x(15)h(0)+x(16)h(1)+x(17)h(2)+x(18)h(3)+x(19)h(4)\\
-    \end{cases} .
-    \label{noncausal}
-\end{equation}
-
-It should be mentioned that the output ($o=16$) does not have the same dimension as the input layer ($n=20$). This happens because no padding has been applied to the convolution which implies that for the length of the convolution layer $n$, the kernel size $k$, and the number of strides $s$, the output $o$ is given by:
-
-\begin{equation}
-    o = \lfloor \frac{(n-k)}{s} \rfloor + 1 .
-\end{equation}
-
-By applying "padding", having the input $n$, kernel size $k$, and padding with length $p$, the output $o$ is given by:
-
-\begin{equation}
-    o = \lfloor \frac{(n+2p-k)}{s} \rfloor + 1 .
-\end{equation}
-
-This allows to obtain \ac{1D CNN}'s layers whose input size is equal to the output. In this example, for the output $o$ dimension to have the same dimension as the input sequence, 20, then the $p$ dimension must be 2. In Figure \ref{conv1} it can be seen schematically the result of the described convolution operation.
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=1\textwidth]{Images/conv1.png}
-    \caption{1D convolution working process.}
-    \label{conv1}
-    \end{center}
-\end{figure}
-
-Although it may seem like a good methodology, the convolution operation presents a particularity: it uses future values in its computing. In the example present in Figure \ref{conv1}, it can be observed that in the computation of $y(10)$, for example, values of $x(8)$, $x(9)$, $x(10)$, $x(11)$ and $x(12)$ were used. In a series with time dependencies such as the problem in question, the use of future values in the computation of a present value presents an obvious violation, in which the output of instant $[t]$ depends on the input of $[t+1:]$. In this sense, the concept of causal convolution must be introduced. 
-
-In causal convolution, the value of the generated output is not dependent on future inputs. In the same way described above, the causal convolution is given by 
-
-\begin{equation}
-y(n)=
-    \begin{cases} 
-            
-        \sum_{i=0}^k x(n-i)h(i),\  if \  n=k-1.\\
-        \sum_{i=0}^k x(n-i+(s-1))h(i),\  otherwise.\\
-    
-    \end{cases} ,
-\end{equation}
-
-where $n$ represents the length of the convolution layer, $x$ represents the input of the layer, $h$ represents the kernel (or extracted patch) and $k$ its length. Lastly, $s$ represents the number of shifted positions of the kernel window after each convolution, also known as number of strides. For example, if n = 20, k=5 and s=1 then
-
-\begin{equation}
-    \begin{cases} 
-        y(4)=x(4)h(0)+x(3)h(1)+x(2)h(2)+x(1)h(3)+x(0)h(4)\\
-        y(5)=x(5)h(0)+x(4)h(1)+x(3)h(2)+x(2)h(3)+x(1)h(4)\\
-        y(6)=x(6)h(0)+x(5)h(1)+x(4)h(2)+x(3)h(3)+x(2)h(4)\\
-        \  ...\\
-        y(19)=x(19)h(0)+x(18)h(1)+x(17)h(2)+x(16)h(3)+x(15)h(4)\\
-    \end{cases} .
-    \label{noncausal}
-\end{equation}
-
-In Figure \ref{conv2}, a schematization of the causal convolution process can be seen.
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=1\textwidth]{Images/conv2.png}
-    \caption{1D causal convolution working process.}
-    \label{conv2}
-    \end{center}
-\end{figure}
-
-In this layer category, convolutional windows are used, which is similar to using a k-dimensional kernel where all its elements have the value $\frac{1}{k}$. Following the example, with the kernel described in dimension 5, $y(19)$ is given by
-\begin{equation}
-        y(19)=x(19)\frac{1}{5}+x(18)\frac{1}{5}+x(17)\frac{1}{5}+x(16)\frac{1}{5}+x(15)\frac{1}{5}.
-    \label{19}
-\end{equation}
-
-
-
-Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling operation aims to simplify convolution output, giving more importance to prominent features. There are several types of pooling, the most important of which is Max pooling which involves selecting the largest value in a user-defined size window, thus reducing the dimensionality of the output. Following the example, for a $pool\_size$ of 5 units, one can see in Figure \ref{maxpooling}, the representation of the Max pooling operation where the dark units have the highest value within the 5-unit window. For the first 10 time-setps, the highest value value is then passed as layer output, and the dimension of the output decreases. In other words, for each set of 5 values, the largest is chosen, and the size of the output decreases with an inverse relationship to the chosen $pool\_size$. In this case, the dimensionality of the output decreases five times.
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=0.9\textwidth]{Images/maxpooling.png}
-    \caption{Max pooling without and with padding.}
-    \label{maxpooling}
-    \end{center}
-\end{figure}
-
-As for the problem under study in this thesis, it is essential to maintain the dimensionality of the input data. To accomplish this, padding was added to this layer. In Figure \ref{maxpooling}, for the last 10 time-steps, it is possible to observe Max pooling with padding, where the beginning of the process is similar as pooling without padding, but inside the output windows of dimension $pool\_size$, the higher selected value is copied to all the remaining empty spaces. 
-
-In order to aggregate all the information covered in this section, the transformation that the data undergo, from the moment they serve as input to the 1D CNN, until the moment when the Max pooling  is performed, is portrayed in Figure \ref{resdata}.
-
-\begin{figure}[h!]
-\captionsetup[subfigure]{position=b}
-\centering
-\subcaptionbox{\label{inputseq}}{\includegraphics[width=.32\linewidth]{Images/inputsequence.png}}
-\subcaptionbox{ \label{afterconv}}{\includegraphics[width=.32\linewidth]{Images/afterconvolution.png}}
-\subcaptionbox{ \label{aftermaxp}}{\includegraphics[width=.32\linewidth]{Images/aftermaxpooling.png}}
-\caption{Example data a) Before convolution b) after convolution c) after Max pooling.}
-\label{resdata}
-\end{figure}
-
-
-Figure \ref{inputseq} shows a 20 time-steps random signal, as the one used in the other examples used in this section. At this stage, the signal is in its original form, without any treatment. Figure \ref{afterconv} represents the result after the convolution operation with $kerne_size$ 5. It can be seen that at this point, the signal is a smooth representation of the initial signal. The convolution operation extracts the main characteristics of the signal, ignoring intermediate oscillations. Afterwards, the Max pooling operation with $pool_size$ 5 is applied to the signal resulting from the convolution operation. The result of this operation is represented in Figure \ref{aftermaxp}, which consists of extending the point with the highest value within each of the 4 defined windows. This is the final signal resulting from the convolution operation with Max pooling, a simplified representation of the initial sequence.
-
-
-
-
-
-
-
-\section{Artificial Neural Networks specifications} \label{chap4:anns}
-
-The process of designing the architectures to be tested is a complex and demanding task. This section describes the architectures used, as well as some techniques used in their development.
-
-\subsection{Studied architectures}\label{sec:arq}
-In the development of this thesis, different types of neural networks were tested, composed of the layers introduced in section \ref{sec:layers}. As mentioned in Chapter \ref{chap:intro}, the forecasting system developed is divided into two levels, level 1, composed of three models, and level 2, composed of only one model. In Figure \ref{models}, are represented the 8 main architectures studied in level 1.
-
-\begin{figure}[h!]
-    \centering
-    \begin{center}
-    \includegraphics[width=1\textwidth]{Images/models.png}
-    \caption{Tested model architectures.}
-    \label{models}
-    \end{center}
-\end{figure}
-
-Model 0 and Model 1 are composed of a single layer of \ac{GRU} and \ac{LSTM} respectively. The purpose of these two models is to compare the performance between the two types of single layer. In order to study the effect that the addition of \ac{CNN}s has on simple models, the architecture of Model 2 is similar to that of Model 0, with the addition of a \ac{1D CNN} layer and a Maxpooling layer before the \ac{GRU} layer. Similarly, Model 3 is like to Model 1 with the addition of \ac{1D CNN} layer and a Maxpooling layer before the \ac{LSTM} layer. Models 4, 5, 6 and 7 have as main purpose to study the effect of combining more than one \ac{GRU}/\ac{LSTM} layers together. For this purpose, the \ac{GRU}-\ac{GRU} combinations were studied on Model 4, \ac{LSTM}-\ac{LSTM} on Model 5, \ac{GRU}-\ac{LSTM} on Model 6 and \ac{LSTM}-\ac{GRU} on Model 7. All eight architectures present, as their last layer, a Dense layer with three units, responsible for converting the outputs of the previous layers into only three outputs, one for each of the forecasts ((t+5), (t+10) and (t+15)).
-
-Regarding the model used in level 2, its architecture can also be seen in Figure \ref{models}, and presents only Dense layers, which means that it presents an architecture of a \ac{FFNN} with three layers, where the last one has, as in the other models, three units in order to define the output dimension.
-
-
-
-\subsection{Hyperparameter optimization}
-
-A hyperparameter is a parameter whose value is used to control the learning process. Hyperparameter optimization is the process of choosing a set of optimal hyperparameters for a learning algorithm. Depending on the layer in question, different hyperparameters can be tuned. Other parameters, such as node weights are initialized randomly, and are defined during the learning process. In other words, hyperparameters are parameters which must be changed by the user according to the results obtained, while other parameters should not be modified by the user, and are the result of the learning process.
-
-\ac{ANN}s have numerous advantages, both in terms of their usage and performance. On the other hand, tuning the hyperparameters is an extremely time-consuming process that is done by hand. A certain set of hyperparameters is trained, validated, and then changed and so on until the best possible result is obtained. During the tests performed with the models present in Figure \ref{models}, different hyperparameters were tuned such as the number of nodes in each layer, number of filters of each \ac{1D CNN} layer and kernel size.
-
-\subsection{Regularization techniques}
-
-During the learning process of an \ac{ANN}, it is possible that overfitting occurs. Overfitting is a term used to describe when a model fits very well to the previously observed data set, but proves to be ineffective in predicting new results. In practice, overfitting causes the model to perform very well during training, but the performance gets much worse when faced with brand new data because the model has adapted too much to the training data.  
-
-Regularization refers to a set of different techniques that lower the complexity of a neural network model during training, and thus prevent the overfitting \cite{reg0}. There are several types of regularization techniques. In this thesis, two techniques were used: Early-stopping and Dropout.
-
-\subsubsection{Early-stopping}\label{sec:early}
-
-Early-stopping is probably the most common regularization technique. In Figure \ref{early} the reader can find a two graphs that portray the evolution of the error over epochs of a prediction model. During the training and validation process of the predictive models, the error associated with the training set tends to decrease with the increase of the number of training epochs. In an optimal case, with the increase of the number of validation epochs, the error associated with the training set also tends to decrease, thus reaching a trained and validated model whose error produced at validation is minimal. In the case of datasets large enough to overfit, it is observed that most of the time the training set error also tends to decrease, but the validation error starts to increase at a certain point. This is one of the main ways to identify overfitting.
-
-\begin{figure}[h!]
-\captionsetup[subfigure]{position=b}
-\centering
-\subcaptionbox{\label{early0}}{\includegraphics[width=.45\linewidth]{Images/early-stopping0.png}}
-\hspace{0.05\textwidth}
-\subcaptionbox{ \label{early1}}{\includegraphics[width=.45\linewidth]{Images/early-stopping1.png}}
-\caption{Prediction error evolution over epochs a) without overfitting b) without overfitting.}
-\label{early}
-\end{figure}
-
-In Figure \ref{early0}, an ideal case is represented where there is no overfitting. It can be verified that the evolution of the validation error follows the evolution of the training error. Figure \ref{early1} presents a clear case of overfitting in which, at the moment marked with the black dot, the model presents its smallest validation error, which later increases. The early-stopping process consists in, from the moment the system detects that the validation error increases, it runs for more $p$ (patience factor) epochs where it gives the system the opportunity to obtain lower values of validation error. If in none of the $p$ epochs a lower value is found, the training process ends, eraly-stopping occurs. In the extreme case where $p$ = 0, the system stops the training process as soon as it detects a higher value than the previous one for the validation error, moment marked by the black circle present in Figure \ref{early1}.
-
-
-\subsubsection{Dropout}
-
-In the process of training a fully connected \ac{ANN}, neurons tend to develop an interdependence between each other, which limits their individual capacity leading to overfitting.
-
-
-To tackle this problem, the dropout is used, which is also widely used regularization technique. In Figure \ref{drop0} it is possible to see a \ac{ANN} without a dropout, and in Figure \ref{drop1} it is possible to see the same \ac{ANN} after dropout is applied.
-
-\begin{figure}[h!]
-\captionsetup[subfigure]{position=b}
-\centering
-\label{fig:drop}
-\subcaptionbox{\label{drop0}}{\includegraphics[width=.4\linewidth]{Images/dropout0.png}}
-\hspace{0.05\textwidth}
-\subcaptionbox{ \label{drop1}}{\includegraphics[width=.4\linewidth]{Images/dropout1.png}}
-\caption{Artificial neural network a) without dropout b) with dropout.}
-\end{figure}
-
-The application of dropouts, implies for each hidden layer, for each sample of training, and for each iteration, to ignore a fraction $p$ of random neurons (and corresponding activations) during the training process. During the validation phase, all activations are then used, but reduced by a $p$ factor to take into account the missing activations lost during the training \cite{drop0}.
-
-\section{Conclusion}
-
-In this chapter we started by explaining the motivation behind the challenge proposed in section \ref{chap4:ps}, and in section \ref{chap4:vtp}, we introduced the problem associated with the variable to be predicted and presented two distinct proposed solutions. In section \ref{chap4:pm}, we identified the family of models chosen to meet the challenge of this thesis and in section \ref{sec:layers}, we detailed the theoretical and functional specifications of each of the types of layers used. Finally, in section \ref{chap4:anns}, we presented the 8 different architectures proposed in this study, and identified the main regularization techniques for avoiding the overfitting of the models. 
+The process of tuning hyperparators is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results must be the one selected. All the five models started this phase with layers of 8 units. In models 3, 4 and 5, the initial number of filters of the \ac{1D CNN} layer was also 8 and the kernel\_size used was initially 2. If the models behaved well in the validation set and showed no signs of overfitting or underfitting, the initial values would be maintained. If any of these behaviors were observed in at least one of the datasets, the hyperparameters would be changed, until the model presented the desired behavior for all the three datasets. It was chosen to start with simple architectures and one would only increase the complexity of the architecture (increasing the number of units per layer, for example) if the model did not present all the desired behavior. The increase in the complexity of the model is associated with an increase in its running time, so it was essential to use models as simple as possible. 
+
+
+Model 1 consists of a input layer with 13 inputs, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower.  In this sense, one tested initially a \ac{GRU} layer with 8 units and later a \ac{GRU} with 32 units. Between the two, the structure that presented the best performance was the one with 8 units. In order to avoid overfitting, a drop layer with $p$=0.2 to the \ac{GRU} layer output.Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units or 32 units.  Again, the 8-unit layer showed better performance and was therefore chosen. The remaining structure used is similar to model 1. Since the layers of 8 units showed a good behavior for models 0 and 1, this variable was not altered anymore for the remaining models. In the remaining three models, \ac{GRU} and \ac{LSTM} layers of 8 units were always used. In model 3, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 2 units, which means that the output of this layer consists of the result of consecutive convolutions of 2 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps that represent 10 minutes, and also of 60 time-steps, i.e. one hour. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. In models 4, 5 since they since they are composed of \ac{GRU} and/or \ac{LSTM} layers, combined with a \ac{1D CNN} layer, the same procedure taken into account in models 1, 2 and 3 was put into practice. In Table \ref{tableModels}, a summary of the final models used in the validation process can be found. Factors such as the proposed structure and the number of parameters used are detailed.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Model specifications.}
+    \begin{tabular}{r|cccccccc}
+          & \multicolumn{8}{c}{Level 1 Model} \\
+    \midrule
+    \textbf{Model} & \multicolumn{2}{c}{0} & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{2} & \multicolumn{2}{c}{3} \\
+    \midrule
+          & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} \\
+          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{Conv1D (8, 2)} & \multicolumn{2}{c}{Conv1D (8, 2)} \\
+          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Maxpooling(10)} & \multicolumn{2}{c}{Maxpooling(10)} \\
+          & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} \\
+          & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
+          & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} \\
+    \midrule
+    \textbf{Model} & \multicolumn{2}{c}{4} & \multicolumn{2}{c}{5} & \multicolumn{2}{c}{6} & \multicolumn{2}{c}{7} \\
+    \midrule
+          & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} \\
+          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} \\
+          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
+          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{GRU (8)} \\
+          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
+          & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} \\
+    \midrule
+    \textbf{Model} & 0     & 1     & 2     & 3     & 4     & 5     & 6     & 7 \\
+    \midrule
+    \# inputs & 15    & 15    & 15    & 15    & 15    & 15    & 15    & 15 \\
+    \# hidden layers & 2     & 2     & 4     & 4     & 4     & 4     & 4     & 4 \\
+    \# hidden nodes & 16    & 16    & 16    & 16    & 16    & 16    & 16    & 16 \\
+    \# outputs & 3     & 3     & 3     & 3     & 3     & 3     & 3     & 3 \\
+    \end{tabular}%
+  \label{tableModels}%
+\end{table}%
+
+After defining the structural details of the models to be evaluated, a block cross-validation process was then carried out where Datasets 1, 2 and 3 were trained and validated with a distribution of 75\% training and 25\% validation, i.e. three weeks training and one week of validation. In Appendix D, Tables \ref{table4}, \ref{table5} and \ref{table6}, the reader can find the results of the errors presented in each one of the three datastes. In Table \ref{valres}, the reader may consult the results of the block cross-validation process, which consists of an average of the errors presented in datasets 1, 2 and 3.
+
+\begin{table}[htbp]
+  \centering
+  \caption{Stage 1 - Block cross-validation results}
+       \begin{tabular}{r|cccccccc}
+    \toprule
+    \multicolumn{1}{c}{} & 0     & 1     & 2     & 3     & 4     & 5     & 6     & 7 \\
+    \midrule
+    \multicolumn{1}{l|}{\textbf{Non normalized data}} &       &       &       &       &       &       &       &  \\
+    \multicolumn{1}{l|}{\textbf{            Validation Score (t+5)      }} &       &       &       &       &       &       &       &  \\
+    MSE (E+09)   & \textbf{0.82} & 0.87  & \textbf{0.58} & \textbf{0.67} & 0.90  & 1.18  & 0.91  & 1.02 \\
+    RMSE (E+04)   & \textbf{2.84} & 2.92  & \textbf{2.40} & \textbf{2.58} & 2.99  & 3.40  & 2.97  & 3.16 \\
+    MAE (E+04)   & \textbf{2.20} & 2.25  & \textbf{1.86} & \textbf{2.06} & 2.30  & 2.62  & 2.30  & 2.45 \\
+    \multicolumn{1}{l|}{\textbf{            Validation Score (t+10)               }} &       &       &       &       &       &       &       &  \\
+    MSE (E+09)   & \textbf{1.11} & 1.17  & \textbf{0.98} & \textbf{0.99} & 1.20  & 1.42  & 1.16  & 1.28 \\
+    RMSE (E+04)   & \textbf{3.30} & 3.39  & \textbf{3.11} & \textbf{3.12} & 3.44  & 3.74  & 3.37  & 3.54 \\
+    MAE (E+04)   & \textbf{2.54} & 2.63  & \textbf{2.37} & \textbf{2.43} & 2.65  & 2.89  & 2.59  & 2.76 \\
+    \multicolumn{1}{l|}{\textbf{            Validation Score (t+15)               }} &       &       &       &       &       &       &       &  \\
+    MSE (E+09)   & \textbf{1.31} & 1.38  & \textbf{1.25} & \textbf{1.24} & 1.43  & 1.63  & 1.38  & 1.51 \\
+    RMSE (E+04)   & \textbf{3.58} & 3.68  & \textbf{3.51} & \textbf{3.50} & 3.76  & 4.01  & 3.68  & 3.85 \\
+    MAE (E+04)   & \textbf{2.76} & 2.83  & \textbf{2.70} & \textbf{2.71} & 2.89  & 3.09  & 2.82  & 3.01 \\
+    \midrule
+    \multicolumn{1}{l|}{\textbf{Normalized data}} &       &       &       &       &       &       &       &  \\
+    \textbf{Total Validation Score         } &       &       &       &       &       &       &       &  \\
+    MSE (E-03)   & \textbf{2.28} & 2.43  & \textbf{2.00} & \textbf{2.11} & 2.47  & 3.03  & 2.36  & 2.56 \\
+    RMSE (E-02)   & \textbf{4.70} & 4.84  & \textbf{4.39} & \textbf{4.51} & 4.91  & 5.44  & 4.80  & 5.03 \\
+    MAE (E-02)   & \textbf{3.61} & 3.73  & \textbf{3.37} & \textbf{3.51} & 3.77  & 4.20  & 3.69  & 3.90 \\
+    \end{tabular}%
+  \label{valres}%
+\end{table}%
+
+
+
+The Table presents the validation \ac{MSE}, \ac{RMSE} and \ac{MAE} for each of the eight models, both for the individual forecast for power available in 5, 10 and 15 minutes, as well as for the overall performance of the model.
+
+
+It turns out that of all the models tested, the one with the lowest \ac{MSE} and \ac{RMSE}, also presents the lowest \ac{MAE}, Model 2. Since a more detailed comparative study is intended, the three models with the best validation performance, Models 0, 2 and 3, were selected as the three Finalist Models of level 1. These are the three models with the best performance during the block cross-validation procedure. 
+
+
+(COMENTÁRIOS AOS DADOS)
+
+\section{Stage 2 - Results}\label{chap3:section:stage_2}
+
+\section{Stage 3 - Discussion}\label{chap3:section:stage_3}
