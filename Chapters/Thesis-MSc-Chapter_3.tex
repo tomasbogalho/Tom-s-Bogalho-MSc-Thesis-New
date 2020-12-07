@@ -13,7 +13,7 @@ In the last chapter we presented some of the most important models in the litera
 
 \section{Problem statement and framework}\label{chap3:sec:problem_statement}
 
-The proposed objective for this work is to create a system capable of computing predictions regarding the available power in a building, 5, 10 and 15 minutes ahead. Since all the experiment is directly related to the behavior of a specific building, it makes sense to present the building and its characteristics. Then, it is important to describe the whole procedure carried out in the development of this thesis, from the data processing stage to the comparison between different models.
+The proposed objective for this work is to create a system capable of computing predictions regarding the available power in a building, 5, 10 and 15 minutes ahead. Since all the experiment is directly related to the behavior of a specific building, it makes sense to present the building and its characteristics. Then, it is important to describe the whole procedure carried out to be able to produce those three forecasts.
 
 \section{The building}\label{chap3:sec:building}
 
@@ -220,9 +220,9 @@ In order to study a certain algorithm, it is necessary to have access to past da
 
 The first set is known as a training set, and consists of a dataset used to feed the model with examples in order to fit the hyperparameters, such as the weights of connections between neurons in artificial neural networks. As the name implies, the training set is suitable to train the model, progressively adapting the model to its intended purpose. The second is the validation set, which is responsible for simultaneously continuing to adapt the hyperparameters of the model, while providing an unbiased evaluation of the model fit. In addition to that, it can be used for regularization, as will be explored in a later section. Finally, the test set is an independent dataset of the two previous ones, which has the main objective to evaluate in an unbiased way the performance of the model in unseen data (data that was not used neither in the training process, nor in the validation process). 
 
-One way to use the available dataset to evaluate the proposed models would be to simply apply the standard training-validation-testing division to the entire dataset available, but this strategy would be a poor way to use the small amount of data available. Typically, to evaluate machine learning models on a very limited time interval, k-fold cross-validation is used. This methodology consists, in the first place, in splitting the dataset into K folds.The higher the K value, the less biased the model is, but on the other hand, small folds (large value for K) can lead to errors due to lack of data, so one should choose the K value based on the data available for the specific application. Secondly, the model is trained in K-1 folds and validated on the remaining fold.  This process is repeated until all the K folds have served as the validation set.The average performance on all validation folds shows a more robust result of the model performance evaluation than the standard train-validation-test methodology presented above. However, k-fold cross-validation can present some problems when applied to time-series problems, since one cannot choose random samples and assign them to either the validation set or the training set because it makes no sense to use future values to predict past values. There is a time dependency between observations, and it is essential to preserve this relationship during the entire process. To overcome this barrier, a block cross-validation method was used. This validation methodology is an alternative to k-fold cross-validation that retains the temporal dependence of data. It consists, in the first place, of also separating the data into different blocks. Afterwards, each of these blocks must be split into train and validation data, where the validation data, as in the standard methodology, are temporally subsequent to the training data. After applying this procedure to the different blocks available, an average of the errors presented in the different blocks is then calculated, thus reaching a total error value. 
+One way to use the available dataset to evaluate the proposed models would be to simply apply the standard training-validation-testing division to the entire dataset available, but this strategy would be a poor way to use the small amount of data available. Typically, to evaluate machine learning models on a very limited time interval, k-fold cross-validation is used. This methodology consists, in the first place, in splitting the dataset into K folds. The higher the K value, the less biased the model is, but on the other hand, small folds (large value for K) can lead to errors due to lack of data, so one should choose the K value based on the data available for the specific application. Secondly, the model is trained in K-1 folds and validated on the remaining fold. This process is repeated until all the K folds have served as the validation set.The average performance on all validation folds shows a more robust result of the model performance evaluation than the standard train-validation-test methodology presented above. However, k-fold cross-validation can present some problems when applied to time-series problems, since one cannot choose random samples and assign them to either the validation set or the training set because it makes no sense to use future values to predict past values. There is a time dependency between observations, and it is essential to preserve this relationship during the entire process. To overcome this barrier, a expanding window cross-validation method was used. This validation methodology is an alternative to k-fold cross-validation that retains the temporal dependence of data. It consists, in the first place, of also separating the data into different blocks. Afterwards, each of these blocks must be split into train and validation data, where the validation data, as in the standard methodology, are temporally subsequent to the training data. After applying this procedure to the different blocks available, an average of the validation errors presented in the different blocks is then calculated, thus reaching a total validation error value. 
 
-In Figure \ref{partition}, the reader may find five different sub-datasets, resulting from a division of the main datastet, defined in phase 6, of the section \ref{chap3:subsec:data_completion}. The idea behind this division is to use datasets 1, 2 and 3 block cross-validation, in order to conduct hyperparameter tuning of the different architectures proposed. In a second stage, after tuning the hyperprameters in each of the blocks, one moves on to the test phase, in which the model to be tested, already with the hyperparameters defined, is retrained throughout dataset 4 and tested in the test set.
+In Figure \ref{partition}, the reader may find five different sub-datasets, resulting from a division of the main datastet, defined in phase 6, of the section \ref{chap3:subsec:data_completion}. The idea behind this division is to use 4 subsequent blocks for expanding window cross-validation, in order to conduct hyperparameter tuning of the different architectures proposed. In a second stage, after tuning the hyperprameters in each of the four blocks, one moves on to the test phase, in which the model to be tested, already with the hyperparameters defined, is retrained throughout the entire dataset and is tested in the Test set.
 
 \begin{figure}[h!]
     \centering
@@ -233,11 +233,11 @@ In Figure \ref{partition}, the reader may find five different sub-datasets, resu
     \end{center}
 \end{figure}
 
-The standard approach would be to split dataset 4 in training, validation and testing, but aplying Block cross-validation to to this specific case, consists of dividing the training set in a fixed number of blocks (the number of blocks chosen was 3), and perform training and validation on these blocks.
-Datesets 1, 2 and 3 feature five weeks of training and one week of validation. The performance evaluation of the models is then given by the average of the performance in each of these blocks i.e., the error of the models is given by
+The standard approach would be to split the dataset in training, validation and testing, but aplying expanding window cross-validation to to this specific case, consists of dividing the training set in a fixed number of blocks, and perform training and validation on these blocks.
+The performance evaluation of the models is then given by the average of the performance in each of these blocks i.e., the validation error of the models is given by
 
 \begin{equation}
-     Model\ error =\frac {1}{k}\ \sum_{i=1}^k Error_{di},
+     Model\ validation\ error =\frac {1}{k}\ \sum_{i=1}^k Error_{di},
 \label{err_av}
 \end{equation}
 
@@ -245,11 +245,11 @@ where $Model\ error$ represents the final model error, and $Error_{di}$ represen
 In this specific case, the validation error for each model is given by
 
 \begin{equation}
-     Model\ error =\frac {1}{3}\ (Error_{d1} + Error_{d2} + Error_{d3}).
+     Model\ validation\ error =\frac {1}{4}\ (Error_val_{b1} + Error_val_{b2} + Error_val_{b3} + Error_val_{b4}).
 \label{err_av}
 \end{equation}
 
-The great advantage of using this method is the reduction of the influence of random errors in the selection of the best model. In other words, by performing an average of 3 different sets, the robustness of the choice process is increased since different scenarios are considered and the best model is the one that performs well on average for all of them.
+The great advantage of using this method is the reduction of the influence of random errors in the selection of the best model. In other words, by performing an average of 4 different sets, the robustness of the choice process is increased since different scenarios are considered and the best model is the one that performs well on average for all of them.
 
 %In a second phase, the models with the best results in the validation data set will be trained again throughout dataset 4 and tested in dataset 5. The predictions resulting from the best models in this test phase (dataset 5), will be used as input for a \ac{DenseNet}, where they will be used as training and validation data. This way, a stacked ensemble model is then constructed, which uses data resulting from the forecasts of all the finalist models to produce a final forecast. This model will then be trained throughout dataset 5 and tested on the test dataset, where its performance will be compared with the individual performance of the finalist models, trained on dataset 4 and tested also on the test dataset. Finally, the dataset 6, represents the entire dataset and presents 18 weeks.
 
@@ -277,16 +277,51 @@ Although a total of 63 different features have been made available for the devel
 
 A high number of features implies a high complexity of the system architecture. Even though all these features contribute in some way to enrich the past information available, it is important to limit the number of features used. It is then necessary to perform a pre-selection of which features are ideal for the system to produce the best possible results. 
 
-\subsubsection{Dimensionality reduction}
+It is certain that for a good model performance, the amount of available data is an extremely relevant factor. A model that has access to more information, in general, will present a better performance than a model that has access to less information. However, it must be ensured that the data provided to the model is relevant in the context of the problem, and that it actually helps to improve its performance. So far, a set of 70 features has been accessed, but the individual contribution of each feature in the context of the problem is not the same. Using the 70 features would produce a heavy and inefficient model, as there may be small groups of features whose contribution to the model is the same. We are then faced with a problem of dimensional reduction. From the 70 features, it is necessary to extract those that are relevant in the context of the problem, and that actually contribute to a more capable model.
+
+The concept of \ac{PCA}, \cite{pca} is then introduced. \ac{PCA} is a statistical procedure whose goal is to reduce the dimensionality of large datasets, replacing a high number of features by fewer features that still contain the relevant information from the original dataset. The dimensionality reduction can often incur in an increase of the error produced by the model, but the trick is to change minor accuracy for simplicity.
 
 
-\subsubsection{Correlation Matrix}
+The \ac{PCA} is characterized by identifying the dimensions over which data are most dispersed. This way, the dimensions that best differentiate the data set under analysis are identified, that is, its main components. Since the \ac{PCA} is sensitive to the scale of the original data, the first step is to normalize the data. To do this, on the original data, the following formula was applied to every feature individually
 
-From the 70, a set of 16 features that were considered useful in predicting the available power in the building was then pre-selected. 
+\begin{equation}
+   Z_i = \frac{x_i-\overline{x_i}}{\sigma_i},
+   \label{PCA1}
+\end{equation}
 
-The criteria used for this selection of of meteorological and radiation data, included selecting unique features that were directly associated with the temperature or solar radiation of the surrounding environment, since, as was verified in section \ref{chap3:sec:building}, the energy consumption of the building is directly linked to the outside temperature and weather conditions. Metrics related to atmospheric pressure and humidity were discarded. Regarding the building, the metrics that refer to the power produced and the power consumed in were selected, but only the final metrics, that is, the three-phase currents and voltages were eliminated since it is from them that the value of power consumed and produced are obtained. As these two variables are also measured, the use of currents and voltages is then discarded. All 7 metrics that relate to the schedule and calculations performed, were also considered. 
+where $Z_i$ represents the normalized variable, $x_i$ the original variable, $\overline{x_i}$ the mean, and $\sigma_i$ the standard deviation. From the standardized variables, the correlation matrix $\rho$ is then calculated, where each position is given by
 
-It was then necessary to evaluate these 16 pre-selected features. Therefore, the correlation matrix between each of the 16 features was computed. In Figure \ref{corr}, one can then observe the correlation matrix, where the correlations between all the 16 pre-selected features are represented. The value of the correlation is present in the [-1, 1] range, where -1 means that the features present a perfect negative correlation, 0 means that there is no correlation between them, and 1 means that there is perfect positive correlation between the two features. 
+
+\begin{equation}
+   Q_{ij} = \frac{1}{n-1}\sum_{i=1}^nZ_{i,n}Z_{j,n}.
+   \label{PCA2}
+\end{equation}
+
+After obtaining the complete correlation matrix, $\rho$, one should then extract the eigenvectors and eigenvalues, two important factors that contribute for finding the directions of maximum variance and the the value of that variance, respectively. In fact, the eigenvalues are the are  the  variance  of  principal  components. In order to extract eigenvectors and eigenvalues, one applied \ac{SVD}, that states that a matrix A with $n$ rows and $p$ can be decomposed in 
+
+\begin{equation}
+   A_{n,p} = U_{n,n} S_{n,p} V^T{p,p},
+   \label{PCA3}
+\end{equation}
+
+where the columns of matrix $U$ are the left singular vectors, the $S$ is a diagonal matrix that has the same dimensions as A, and contains the singular values along the diagonal, and $V$ is the transposed orthogonal matrix and its rows are the right singular vectors. By multiplying $A^TA$, one gets exactly the matrix $\rho$, so 
+
+\begin{equation}
+   \rho = A^TA = VS^2V^T,
+   \label{PCA4}
+\end{equation}
+
+thus V can be determined. Eigenvectors of matrix A are then found, and the $k$ eigenvectors that correspond to the $k$ directions of maximum variance are selected. The value of $k$ is is chosen based on the cumulative explained variance where the variance of several components is added together and divided by the total variance. This procedure is progressive, where the number of components used increases. With the increase of the number of components, there is also an increase the cumulative explained variance until it stops increasing. The point where this parameter stops increasing and stabilizes is the ideal point, where one can find the value of $k$ minimum for which the cumulative explained variance is maximum. Later a matrix containing the selected eigenvalues is constructed which is multiplied by the original A matrix. This results in a $n,k$ matrix, the matrix resulting from the entire dimensional reduction process with the $k$ features relevant in the context of the problem.
+
+
+
+%\subsubsection{Correlation Matrix}
+
+%The criteria used for this selection of of meteorological and radiation data, included selecting unique features that were directly associated with the temperature or solar radiation of the surrounding environment, since, as was verified in section \ref{chap3:sec:building}, the energy consumption of the building is directly linked to the outside temperature and weather conditions. Metrics related to atmospheric pressure and humidity were discarded. Regarding the building, the metrics that refer to the power produced and the power consumed in were selected, but only the final metrics, that is, the three-phase currents and voltages were eliminated since it is from them that the value of power consumed and produced are obtained. As these two variables are also measured, the use of currents and voltages is then discarded. All 7 metrics that relate to the schedule and calculations performed, were also considered. 
+
+%It was then necessary to evaluate these 16 pre-selected features. Therefore, the correlation matrix between each of the 16 features was computed. 
+
+From the 70, a set of 13 features that were considered useful in predicting the available power in the building. In Figure \ref{corr}, one can then observe the correlation matrix, where the correlations between all the 13 selected features are represented. The value of the correlation is present in the [-1, 1] range, where -1 means that the features present a perfect negative correlation, 0 means that there is no correlation between them, and 1 means that there is perfect positive correlation between the two features. 
 
 
 \begin{figure}[h!]
@@ -299,13 +334,13 @@ It was then necessary to evaluate these 16 pre-selected features. Therefore, the
 \end{figure}
 
 
-The aim of computing this matrix is to identify features that present a perfect or almost perfect correlation between them, both positively and negatively. A perfect correlation between two features means that one can be deduced from the other, that is, the relevance of the two features for the construction of the forecasting system is the same, so one of the features can be eliminated. Using features that present a perfect correlation, one can incur in multicollinearity \cite{multicollinearity}.
+The aim of computing this matrix is to identify features that present a perfect or almost perfect correlation between them, both positively and negatively. A perfect correlation between two features means that one can be deduced from the other, that is, the relevance of the two features for the construction of the forecasting system is the same, so one of the features can be eliminated. Using features that present a perfect correlation, one can incur in multicollinearity \cite{multicollinearity}. As can be seen in the matrix present in Figure \ref{corr}, none of the features selected by \ac{PCA} presents a perfect correlation with any other. Thus, there is a minimum set of features that offers a good representation of the available data.
 
-After evaluating the projected correlation matrix, it was decided to start to eliminate the features that present an almost perfect correlation, both negative and positive. Starting with positive correlation, S represents the complex power consumed and P the real power consumed, which means that the two values only differ in the imaginary component. Since S does not have an imaginary component, S and P have the same value. The feature S was then discarded. The Theoretical Value and ActPwr also present a perfect correlation. This happens because, as explained in section \ref{chap3:subsec:data_completion}, the readings of the power generated by \ac{PV} panels (ActPwr) showed a lot of flaws. For a time failure longer than 30 minutes, the ActPwr value (which was null) was replaced by the calculated theoretical value of power generated by \ac{PV} panels. The large correlation is then justified by the fact that there were quite a few time flaws, i.e., most of the ActPwr values are similar to the Theoretical Value. The feature Theoretical Value was also discarded. 
+%After evaluating the projected correlation matrix, it was decided to start to eliminate the features that present an almost perfect correlation, both negative and positive. Starting with positive correlation, S represents the complex power consumed and P the real power consumed, which means that the two values only differ in the imaginary component. Since S does not have an imaginary component, S and P have the same value. The feature S was then discarded. The Theoretical Value and ActPwr also present a perfect correlation. This happens because, as explained in section \ref{chap3:subsec:data_completion}, the readings of the power generated by \ac{PV} panels (ActPwr) showed a lot of flaws. For a time failure longer than 30 minutes, the ActPwr value (which was null) was replaced by the calculated theoretical value of power generated by \ac{PV} panels. The large correlation is then justified by the fact that there were quite a few time flaws, i.e., most of the ActPwr values are similar to the Theoretical Value. The feature Theoretical Value was also discarded. 
 
 
 
-Also, although Theoretical Value and Avg\_GHI present a very high correlation with ActPwr (which is predictable given that the measured ActPwr these two variables were added, as explained in section \ref{chap4:vtp}), we chose to keep these two variables as input features since the correlation is not exactly perfect and can be decisive in certain cases in building a good predictive model. Therefore, the variables chosen for the input of all tested models are: Std\_DHI, Avg\_DHI, Avg\_GHI, Avg\_DNI, Avg\_POA, T\_amb\_avg, Theoretical\ Value, ActPwr, P, hour, day\_of\_month, day\_of\_week, month and holiday. In addition, the variable Available Power given in W has been added as an input feature, resulting in a total of 15 input features and 3 output (Available Power in 5, 10 and 15 minutes).
+%Also, although Theoretical Value and Avg\_GHI present a very high correlation with ActPwr (which is predictable given that the measured ActPwr these two variables were added, as explained in section \ref{chap4:vtp}), we chose to keep these two variables as input features since the correlation is not exactly perfect and can be decisive in certain cases in building a good predictive model. Therefore, the variables chosen for the input of all tested models are: Std\_DHI, Avg\_DHI, Avg\_GHI, Avg\_DNI, Avg\_POA, T\_amb\_avg, Theoretical\ Value, ActPwr, P, hour, day\_of\_month, day\_of\_week, month and holiday. In addition, the variable Available Power given in W has been added as an input feature, resulting in a total of 15 input features and 3 output (Available Power in 5, 10 and 15 minutes).
 
 \section{Proposed model}\label{chap3:sec:proposed_model}
 
@@ -503,7 +538,7 @@ In this layer category, convolutional windows are used, which is similar to usin
 
 
 
-Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling operation aims to simplify convolution output, giving more importance to prominent features. There are several types of pooling, the most important of which is Max pooling which involves selecting the largest value in a user-defined size window, thus reducing the dimensionality of the output. Following the example, for a $pool\_size$ of 5 units, one can see in Figure \ref{maxpooling}, the representation of the Max pooling operation where the dark units have the highest value within the 5-unit window. For the first 10 time-setps, the highest value value is then passed as layer output, and the dimension of the output decreases. In other words, for each set of 5 values, the largest is chosen, and the size of the output decreases with an inverse relationship to the chosen $pool\_size$. In this case, the dimensionality of the output decreases five times.
+Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling operation aims to simplify convolution output, giving more importance to prominent features and patterns. There are several types of pooling, the most important of which is Max pooling which involves selecting the largest value in a user-defined size window, thus reducing the dimensionality of the output. Following the example, for a $pool\_size$ of 5 units, one can see in Figure \ref{maxpooling}, the representation of the Max pooling operation where the dark units have the highest value within the 5-unit window. For the first 10 time-setps, the highest value value is then passed as layer output, and the dimension of the output decreases. In other words, for each set of 5 values, the largest is chosen, and the size of the output decreases with an inverse relationship to the chosen $pool\_size$. In this case, the dimensionality of the output decreases five times.
 
 \begin{figure}[h!]
     \centering
@@ -514,9 +549,9 @@ Usually, along with the \ac{CNN} layers, pooling layers are used. The pooling op
     \end{center}
 \end{figure}
 
-As for the problem under study in this thesis, it is essential to maintain the dimensionality of the input data. To accomplish this, padding was added to this layer. In Figure \ref{maxpooling}, for the last 10 time-steps, it is possible to observe Max pooling with padding, where the beginning of the process is similar as pooling without padding, but inside the output windows of dimension $pool\_size$, the higher selected value is copied to all the remaining empty spaces. 
+If the user intends to apply a normal pooling process, there is an obvious reduction in dimensionality. If you one intends to extract the most relevant features while maintaining the same dimensionality, it is also possible. To accomplish this, padding should also be added to this layer. In Figure \ref{maxpooling}, for the last 10 time-steps, it is possible to observe Max pooling with padding, where the beginning of the process is similar as pooling without padding, but inside the output windows of dimension $pool\_size$, the higher selected value is copied to all the remaining empty spaces. 
 
-In order to aggregate all the information covered in this section, the transformation that the data undergo, from the moment they serve as input to the 1D CNN, until the moment when the Max pooling  is performed, is portrayed in Figure \ref{resdata}.
+In order to aggregate all the information entered regarding the layers {1D CNN}, a simple example is shown in Figure \ref{resdata}, which illustrates the process of convolution between a simple size 5 kernel and a random time signal.
 
 \begin{figure}[h!]
 \captionsetup[subfigure]{position=b}
@@ -529,25 +564,102 @@ In order to aggregate all the information covered in this section, the transform
 \end{figure}
 
 
-Figure \ref{inputseq} shows a 20 time-steps random signal, as the one used in the other examples used in this section. At this stage, the signal is in its original form, without any treatment. Figure \ref{afterconv} represents the result after the convolution operation with $kerne\_size$ 5. It can be seen that at this point, the signal is a smooth representation of the initial signal. The convolution operation extracts the main characteristics of the signal, ignoring intermediate oscillations. Afterwards, the Max pooling operation with $pool_size$ 5 is applied to the signal resulting from the convolution operation. The result of this operation is represented in Figure \ref{aftermaxp}, which consists of extending the point with the highest value within each of the 4 defined windows. This is the final signal resulting from the convolution operation with Max pooling, a simplified representation of the initial sequence.
+Figure \ref{inputseq} shows a 20 time-steps random signal, as the one used in the other examples used in this section. At this stage, the signal is in its original form, without any treatment. Figure \ref{afterconv} represents the result after the convolution operation with kernel\_size 5. It can be seen that at this point, the signal is a smoothed representation of the initial signal. The convolution operation extracts the main characteristics of the signal, ignoring intermediate oscillations. Afterwards, the Max pooling operation with pool\_size 5 is applied to the signal resulting from the convolution operation. The result of this operation is represented in Figure \ref{aftermaxp}. In red, is the result of the operation of Max pooling without padding, where the main points of the sequence are extracted, thus reducing the dimensionality of the time series. In gray, the same operation can be observed but with padding,  which consists of extending the point with the highest value within each of the 4 defined windows. This is the final signal resulting from the convolution operation with Max pooling, a simplified representation of the initial sequence. It is important to point out that the process described is a very simplified representation of the way the layers \ac{1D CNN} work. In practice, this process is much more complex, and is carried out taking into account multiple variables simultaneously.A more detailed description of this process will be provided later on. 
 
 \subsection{Networks specifications}\label{chap3:subsec:networks_specifications}
 
 The process of designing the architectures to be tested is a complex and demanding task. This section describes the architectures used, as well as some techniques used in their development.
 
 \subsubsection{Studied architectures}\label{chap3:subsubsec:studied_architectures}
-In the development of this thesis, different types of neural networks were tested, composed of the layers introduced in section \ref{chap3:subsec:artificial_neural_networks}. The objective was to study the influence that each of the three layers introduced has on a predictive model, and to study the results obtained by pairing multiple layers into a single model. In Figure \ref{models}, are represented the five main architectures studied.
+In the development of this thesis, different types of neural networks were tested, composed of the layers introduced in section \ref{chap3:subsec:artificial_neural_networks}. The objective was to study the influence that each of the three layers introduced has on a predictive model, and to study the results obtained by pairing multiple layers into a single model. 
+
+\paragraph{Vanilla architecture}
+
+The first architecture proposed for this study is a simple architecture, based on the many-to-one concept, which consists of using the input features of the last instants to predict a single value in the future. 
+In Figure \ref{arc1} one can see an illustrative scheme of how this architecture works.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=1\textwidth]{Images/models.png}
-    \caption{Tested model architectures.}
-    \label{models}
+    \includegraphics[width=0.7\textwidth]{Images/arc1.png}
+    \caption{Vanilla architecture}
+    \label{arc1}
     \end{center}
 \end{figure}
 
-Model 1, Model 2 and Model 3 are composed of a single layer of \ac{GRU}, \ac{LSTM} and \ac{1D CNN} respectively. The purpose of these three models is to compare the performance between the three types of single layer. In order to study the effect that the combination of \ac{CNN}s with \ac{GRU}s and\ac{LSTM}s has, the architecture of Model 4 is similar to that of Model 1, with the addition of a \ac{1D CNN} layer and a Maxpooling layer before the \ac{GRU} layer. Similarly, Model 5 is like to Model 2 with the addition of \ac{1D CNN} layer and a Maxpooling layer before the \ac{LSTM} layer. All five architectures present, as their last layer, a Dense layer with three units, responsible for converting the outputs of the previous layers into only three outputs, one for each of the forecasts ((t+5), (t+10) and (t+15)).
+This is a very common architecture that uses the capacity of the \ac{RNN}s to predict the future value of the sequence. In Figure \ref{arc1}, one can see the working mode of the architecture where on the left side there is a representation of the functioning of a RNN cell, and on the right side there is a more detailed representation of the functioning of that same cell. As explained in section \ref{chap3:subsec:artificial_neural_networks}, there are two types of cells \ac{RNN} that present this type of behavior, the cells \ac{GRU} and \ac{LSTM}. In this sense, two models have been created, Model 1.1 whose architecture is similar to the structure presented in Figure \ref{arc1} and uses cells of type \ac{GRU}, and Model 1.2 whose architecture is similar but uses cells \ac{LSTM}. A relevant point to mention is that, as can be seen in Figure \ref{arc1}, for each Xt a Yt is generated. In this case, it is intended to forecast three values with a many to one architecture. The problem was modeled so that Yt corresponds to a vector Yt = [y(t+5), y(t+10), y(t+15)], that is, the vanilla model was adapted to produce an output with three values at each iteration. For this purpose, the data processing detailed in section \ref{chap3:subsec:data_shifting}, was then applied.
+
+
+\paragraph{Encoder-decoder architecture}
+
+The second proposed architecture is known as Encoder-decoder.  This is a many-to-many architecture, that is, from a data sequence the architecture is able to predict a new data sequence. Contrary to the previous architecture, which produced only one value per iteration, this architecture uses the values up to intante t to produce data sequences for the next N steps (t+1, t+2, ..., t+N). This architecture is then more suitable in the context of this problem, since it can be used to predict for each instant t, the next 15 steps (t+1, t+2, ..., t+15). In Figure \ref{arc3}, a schematic representation of the functioning mode of the Encoder-decoder architecture can be observed. 
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=0.9\textwidth]{Images/arc2.png}
+    \caption{Encoder-decoder architecture}
+    \label{arc2}
+    \end{center}
+\end{figure}
+
+As can be seen in Figure \ref{arc2}, this architecture is subdivided into two levels. The encoder level, present on the left, and the decoder level, present on the right. The encoder is composed of a set of recurrent cells, responsible for aggregating important information about the input in the encoder vector. The decoder, present on the right side of the Figure \ref{arc2} is responsible for using the information present in the encoder vector to make a forecast for the next N steps. As in Vanilla architecture, the Encoder-decoder architecture has been implemented with two types of cells, \ac{GRU} which refers to Model 2.1 and \ac{LSTM} which refers to Model 2.2.
+
+
+
+\paragraph{1D CNN Encoder-decoder architecture}
+
+
+The third architecture proposed is similar to the Encoder-decoder architecture, but in this case the encoder, instead of being formed by a \ac{RNN} similar to the decoder, is formed by a \ac{1D CNN} network. Using the \ac{1D CNN} network as an encoder may bring some advantages, namely the ability of this type of layers to identify small patterns in the input data.  As its name indicates, the \ac{1D CNN} layer applies the process of convolution between two functions, determining the relationship between them. The integral of this convolution, in turn, expresses how the form of a function is altered by the form of another function. This type of network is usually used in image processing, but by applying it to signals of only one dimension, as is the case with the input features available for the model to be developed, it is possible through the convolution process to identify how small patterns in one feature can affect the others. For this reason, it is then possible to combine this capacity if \c{1D CNN}s with the predictive capacity of \c{RNN}s from a hybrid model Encoder-decoder. In Figure \ref{arc3}, the reader can find a diagram illustrating the operation mode of the Hybrid Encoder-decoder model.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/ED.png}
+    \caption{1D CNN Encoder-decoder architecture}
+    \label{arc3}
+    \end{center}
+\end{figure}
+
+By examining Figure \ref{arc3}, one can see how the third architecture proposed works. Given a temporal sign where the length represents the number of timesteps and the width the number of variables in a multivariate temporal series, the convolution kernels, with the same width as the temporal series, are sliding windows of defined length that travel through the temporal series performing the convolution process. The kernel elements are multiplied by the elements of the time series that they pass through at each instant. Then, the results of the multiplications are added together and a non-linear activation function is applied to the resulting value. As a result of the whole process, an element of an univariate time series is obtained. Then the kernel moves down one position and this process is repeated, generating the second value of the univariate time series. This is the process performed by a kernel. The number of univariate time series obtained corresponds to the number of kernels used. A set of univariate time series is then obtained which can be said to be "filtered". The second stage involves carrying out the Pooling process with each time series where the largest or the largest values are selected. A new vector, of smaller dimension, is then formed for each series. Then, all the vectors are flattened generating a single vector of larger dimension. This vector corresponds to the encoder vector detailed in Architecture 2. From this point on, the process is similar to the previous architecture. 
+
+As in the other architectures, this architecture can be divided into two models, Model 3.1 where the recurring cells are \ac{GRU}s, and Model 3.2 where the reoccurring cells are \ac{LSTM}s.
+
+
+
+%In Figure \ref{models}, are represented the five main architectures studied.
+
+%\begin{figure}[h!]
+%    \centering
+%    \begin{center}
+%    \includegraphics[width=1\textwidth]{Images/models.png}
+%    \caption{Tested model architectures.}
+%    \label{models}
+%    \end{center}
+%\end{figure}
+
+%Model 1 and Model 2 are composed of a single layer of \ac{GRU} and \ac{LSTM} respectively. The purpose of these two models is to compare the performance between the two types of single layer. These two models were chosen, because both architectures are already known to perform well when it comes to time series forecasting problems. So one has a set of two simple models with predictive capabilities. These two models use as input all the variables selected through the \ac{ac} process based on the assumption that all the features help to predict the target, the Available Power of the building in the feature. 
+
+%Although the \ac{PCA} procedure detailed in section \ref{chap3:subsec:feature_selection}, which defined the best features to be used as inputs of the selected models, it was decided to test the models with a single input feature, the past Available Power. The reason behind this choice is that it is suspected that a more complex model that has access to a larger number of features can also be easily deceived by those features. Once there is access to past measurements of the variable to predict, it was also experimented to use only this variable as an input feature. Models 3 and 4 present an architecture quite similar to the architecture of models 1 and 2, with the slight difference that only the past records of the output variable are used as input, i.e., with input only the measure of available power is given, and as output is expected the future value of available power and 5, 10 and 15 minutes. The study of these two models aims to evaluate simpler models with access to fewer variables, and compare their performance with models 1 and 2 that use all the features they have available to meet all the necessary requirements. Although the best 13 input variables from a set of 70 have been defined, nothing guarantees that the use of the larger set of variables will produce better results than the introduction of only past values of the variable to be predicted. 
+
+%The layers \ac{1D CNN} layers introduced in section \ref{chap3:subsubsec:1dcnn}, thanks to their mode of operation, are often used for feature extraction on input data, since they have the ability to identify patterns in the input features. By combining this capability with the capability of \ac{GRU} and \ac{LSTM}s to support sequence prediction, it is hoped to obtain more capable models for predicting the proposed variable. In order to study the effect that the combination of \ac{CNN}s with \ac{GRU}s and\ac{LSTM}s has, the architecture of model 5 is similar to that of model 3, with the addition of a set of \ac{1D CNN} layers, and a Maxpooling layer before the \ac{GRU} layer. Similarly, model 6 is like to model 4 with the addition of a set of \ac{1D CNN} layers and a Maxpooling layer before the \ac{LSTM} layer. 
+
+%All six architectures present, as their last layer, a Dense layer with three units, responsible for converting the outputs of the previous layers into only three outputs, one for each of the forecasts ((t+5), (t+10) and (t+15)). There are a total of two multivariate models, which use all the variables selected as input features, two similar models but using only one input feature, and two hybrid models with combine the capabilities of convolutional networks with the predictive capabilities of the models proposed so far. 
+
+
+\subsubsection{Data standardization}\label{chap3:subsubsec:data_standardization}
+
+As mentioned in section \ref{chap3:subsec:feature_selection}, there are several features that can be used in the implementation of \ac{ML} methodologies, namely in the use of \ac{ANNs}. Besides the several features have different scales, the \ac{ANNs} have a better performance when the data is standardized. Also, if inputs are not limited to a range like (0.1) or (-1.1) the model used will have difficulty in equally distribute importance of each feature, thus naturally large values become dominant relatively smaller values during the training of \ac{ANNs}.
+
+From mod to avoid this kind of failures, a $MinMaxScaler$ \ref{minmax} was applied, whose mode of operation consists in transforming each feature individually, scaling it to a given interval(by default (0.1)).  Arithmetically, this function is given by
+
+\begin{equation}
+     X_{scaled} = \frac{X - X.min(axis=0)}{X.max(axis=0) - X.min(axis=0)} * (max - min) + min,
+\label{minmax}
+\end{equation}
+
+where min and max represent the feature\_range. The standardized feature is then obtained in the defined range. Usually, this process consists of two phases, a phase in which the scaler used is adapted to the data and a phase in which it is used to transform the data. It is good practice to use the training data to adapt the scaler and transform the data, and the test data are only transformed. This reduces the bias associated with transforming unknown data. The inverse process to that presented in the equation \ac{ANN} is applied to the output of the \ac{ANN}, in order to transform the data back to its original scale.
+
 
 
 \subsubsection{Hyperparameter optimization} \label{chap3:subsubsec:hyperparameter_optimization}
@@ -640,6 +752,8 @@ By applying the square root to the \ac{MSE}, the \ac{RMSE} is then defined as
 \end{equation}
 Mathematically, the \ac{RMSE} is the square root of the average of the squared difference between the predicted values and the observed ones. The advantage of \ac{RMSE} over \ac{MSE} is that it is on the same scale as the targets, facilitating its interpretation in the concrete context of the problem. 
 
-\ac{RMSE} and \ac{MAE} were the metrics implemented in the development of this research. These two measurements present some similarities, but also some differences that make it relevant to use the two metrics separately. In terms of similarities, both are expressed in the units of the variable in question, which means that both errors are easily interpretable given the context of the problem. The major difference between the two metrics lies in the contribution that individual error values make to the final result. In the case of \ac{MAE}, the contribution of individual errors follows a linear behavior. An error of 20 units contributes twice as much as an error of 10 units, and an error of 500 units contributes half as much as an error of 1000 units. In the case of \ac{RMSE} the errors are squared before being averaged, which means that this metric gives more weight to larger errors.  This means that very small errors tend to be ignored while large errors tend to be magnified. One can then conclude that \ac{RMSE} is especially useful when one intends to emphasize large errors and reduce the importance of smaller errors. It was then chosen to use both \ac{RMSE} and \ac{MAE} in the evaluation of the implemented models since both express interesting results that could be advantageous in the development of the research.
+\ac{RMSE} and \ac{MAE} were the metrics implemented in the development of this research. These two measurements present some similarities, but also some differences that make it relevant to use the two metrics separately. In terms of similarities, both are expressed in the units of the variable in question, which means that both errors are easily interpretable given the context of the problem. The major difference between the two metrics lies in the contribution that individual error values make to the final result. In the case of \ac{MAE}, the contribution of individual errors follows a linear behavior. An error of 20 units contributes twice as much as an error of 10 units, and an error of 500 units contributes half as much as an error of 1000 units. In the case of \ac{MSE} the errors are squared before being averaged, which means that this metric gives more weight to larger errors.  This means that very small errors tend to be ignored while large errors tend to be magnified. One can then conclude that \ac{MSE} is especially useful when one intends to emphasize large errors and reduce the importance of smaller error. This is why this was the metric chosen as loss\_function, since by emphasizing large-scale errors, they end up being penalized, which is quite useful in time series, where the intention is to avoid this type of failure as much as possible. It was also decided to calculate, for all training, validations and tests, the \ac{MSE} and the \\ac{MAE}. The first one because it translates the \ac{MSE} to the scale of the problem, allowing a better interpretation, and the second one because given its nature, it can be useful in the evaluation of the results obtained.
 
 \section{Conclusion}\label{chap3:sec:conclusion}
+
+In this chapter, we present the case-study of the problem. In the section \ref{chap3:sec:building}, we introduce the building used in the context of the problem, its characteristics and particularities. Then, in the section \ref{chap3:sec:variable_to_predict}, we presented two proposals of variables to predict, and one of the approaches was selected. In the section \ref{chap3:sec:data}, we presented all the available data and referred the whole process done on this data so that it could be used in the context of the problem.  In the section \ref{chap3:subsec:artificial_neural_networks} we also presented the models proposed to solve the problem proposed by \ac{EDP}, their specifications, the motivation behind their use, and the mechanisms used during their training and validation process. In the section \ref{chap3:sec:implementation_enviromnet} we explored the environment used to implement the proposed models, and finally, in the section \ref{chap3:sec:performance_evaluation_metrics}, we presented the metrics used to evaluate the performance of the models.

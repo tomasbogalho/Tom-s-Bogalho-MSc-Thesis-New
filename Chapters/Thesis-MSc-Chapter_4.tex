@@ -8,73 +8,101 @@
 % The following line allows to ref this chapter
 \label{chap:results}
 
-So far we have introduced the theme to be developed in this thesis \ref{chap:intro}, we have presented some studies developed in this area \ref{chap:background}, we have presented the concrete case studied in this thesis and we propose a schematization of the work to be developed \ref{chap:architecture}, we have introduced the models that we will implement \ref{chap:architecture}, and we have described in detail both the datasets used, as well as the experimental process implemented in this study \ref{chap:architecture}. In this chapter, we present the experimental results obtained in this thesis as well as a discussion section.
-
-
-\section{Stage 1 - Block cross-validation}\label{chap3:section:stage_1}
-
-In this section, the process of training and validation of the proposed architectures begins. In a first stage, the five architectures are trained and validated in order to perform hyperparameter optimization. It is at this stage that the performance of each architecture is evaluated for the training and validation scenario, by performing the block cross-validation procedure. At the end of this stage, the five models are retrained on the entire dataset 4 (the combination of datasets 1, 2 and 3), used for the block cross-validation, and are tested in a new unseen set of data, the Test set.
-
-The main reason for this step is the possibility to evaluate the behavior of each of the proposed models in different scenarios. The possibility of observing the behavior of any system in different scenarios, allows the user to perform a more robust evaluation of the system in question. The larger the number of blocks used, the more robust the evaluation because more different scenarios are tested.
+So far, we have introduced the theme to be developed in this thesis in Chapter \ref{chap:intro}, we have presented some studies developed in this area in Chapter \ref{chap:background}, and we have presented the specific case studied approached in this thesis during Chapter \ref{chap:architecture}. In this chapter, we present the experimental procedure put into practice, and the results obtained.
 
 
 
+\section{Initial considerations}
 
-Stage 1 consists of optimizing the hypterparameters of the five proposed architectures. To do so, the datasets 1, 2 and 3 represented in Figure \ref{hyptun}, were used, each one consisting of a total of 6 weeks of data, 5 of which were used for training and 1 for validation. The Block cross-validation process described before, is put into practice with these three sets of data, where the five models are tested and validated in each of the three sets and the errors presented in each of the validation processes are recorded. At the end of this stage, an average of the errors presented in each of the three datasets is computed and for each of the five models, the combination of hyperparameters that produces the smallest error, is selected as the final architecture of the model. 
+Before diving into the details of the experimental work, it is necessary to establish a baseline for the results obtained. Without establishing the basis it is quite difficult to know what kind of values to expect during the development of the predictive models. In order to establish a comparative basis, a baseline model was developed which can be called the Naive Model. The mode of operation of this new model is relatively simple and is given by:
+
+\begin{equation}
+   Pred(x_{t+5}) = Pred(x_{t+10}) = Pred(x_{t+15}) = Real(x_{t}),
+   \label{naive}
+\end{equation}
+
+i.e., the forecast that this model produces for each of the three cases (t+5), (t+10) and (t+15) is exactly the value measured at instant t. The Naive Model is useful for establishing a reference point, serving as a performance comparison basis for the remaining models.
+
+\section{Stage 1 - Expanding window cross-validation}\label{chap3:section:stage_1}
+
+In this section, the process of training and validation of the proposed architectures begins. At this stage, all the architectures were trained and validated in order to perform hyperparameter optimization. It was also at this stage that the performance of each architecture was evaluated for each one of the training and validation scenarios, by performing the expanding window cross-validation procedure. 
+
+The key motivation behind this step is the possibility to evaluate the behavior of each set of hyperparameters for each one of the models in different scenarios. The possibility of observing the behavior of any system in different scenarios, allows the user to perform a more robust evaluation of the system in question, and adapt it based on more information. The larger the number of blocks used, the more robust the evaluation because a larger number of different scenarios are considered. To do so, the blocks 1, 2, 3 and 4 represented in Figure \ref{hyptun}, were used, each one consisting of a total of 6 weeks of data, 5 of which were used for training and 1 for validation. The expanding window cross-validation process described before, is put into practice with these three sets of data, where all the models are trained and validated in each of the three sets and the errors presented in each of the validation processes are recorded. At the end of this stage, an average of the errors presented in each of the three blocks is computed and for each of the models, the combination of hyperparameters that produces the smallest error, is selected as the final architecture of the model. 
 
 \begin{figure}[h!]
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/hyptun.png}
-    \caption{Datasets used for training and validation.}
+    \caption{Datasets used for expanding window cross-validation.}
     \label{hyptun}
     \end{center}
 \end{figure}
 
-The process of tuning hyperparators is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results must be the one selected. All the five models started this phase with layers of 8 units. In models 3, 4 and 5, the initial number of filters of the \ac{1D CNN} layer was also 8 and the kernel\_size used was initially 2. If the models behaved well in the validation set and showed no signs of overfitting or underfitting, the initial values would be maintained. If any of these behaviors were observed in at least one of the datasets, the hyperparameters would be changed, until the model presented the desired behavior for all the three datasets. It was chosen to start with simple architectures and one would only increase the complexity of the architecture (increasing the number of units per layer, for example) if the model did not present all the desired behavior. The increase in the complexity of the model is associated with an increase in its running time, so it was essential to use models as simple as possible. 
+The process of tuning hyperparameters is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results for each model, must be the one selected. 
 
 
-Model 1 consists of a input layer with 13 inputs, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower.  In this sense, one tested initially a \ac{GRU} layer with 8 units and later a \ac{GRU} with 32 units. Between the two, the structure that presented the best performance was the one with 8 units. In order to avoid overfitting, a drop layer with $p$=0.2 to the \ac{GRU} layer output.Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units or 32 units.  Again, the 8-unit layer showed better performance and was therefore chosen. The remaining structure used is similar to model 1. Since the layers of 8 units showed a good behavior for models 0 and 1, this variable was not altered anymore for the remaining models. In the remaining three models, \ac{GRU} and \ac{LSTM} layers of 8 units were always used. In model 3, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 2 units, which means that the output of this layer consists of the result of consecutive convolutions of 2 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps that represent 10 minutes, and also of 60 time-steps, i.e. one hour. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. In models 4, 5 since they since they are composed of \ac{GRU} and/or \ac{LSTM} layers, combined with a \ac{1D CNN} layer, the same procedure taken into account in models 1, 2 and 3 was put into practice. In Table \ref{tableModels}, a summary of the final models used in the validation process can be found. Factors such as the proposed structure and the number of parameters used are detailed.
+Model 1 consists of a input layer, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. In this sense, one tested initially a \ac{GRU} layer with 8 units, then 16 units and later a \ac{GRU} with 32 units. In order to avoid overfitting, a dropout layer with $p$=0.2 to the \ac{GRU} layer output.
 
+Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units, 16 units or 32 units. The remaining structure used is similar to model 1.
+
+Models 3 and 4 are similar to models 1 and 2, respectively, with the difference that they are univariates and not multivariates. This means that they have an input feature, Available Power, unlike models 1 and 2, which besides Available Power, also have the remaining features resulting from the \ac{PCA} process.
+
+In models 5 and 6, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 5 units, which means that the output of this layer consists of the result of consecutive convolutions of 5 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. 
+
+
+For each of the three blocks defined in the expanding window cross-validation process, the architectures were trained and validated. The hyperarameters already mentioned were progressively optimized in the three blocks, for each model. In Table \ref{tab:layouts}, a summary of the final layouts resulting from the validation process can be found.
+
+% Table generated by Excel2LaTeX from sheet 'Sheet6'
 \begin{table}[htbp]
   \centering
-  \caption{Model specifications.}
-    \begin{tabular}{r|cccccccc}
-          & \multicolumn{8}{c}{Level 1 Model} \\
+  \caption{Models layout with tuned hyperparameters}
+    \begin{tabular}{ccc}
+    \toprule
+    \textbf{Model 1} & \textbf{Model 2} & \textbf{Model 3} \\
     \midrule
-    \textbf{Model} & \multicolumn{2}{c}{0} & \multicolumn{2}{c}{1} & \multicolumn{2}{c}{2} & \multicolumn{2}{c}{3} \\
+    Input (1) & Input (1) & Input (13) \\
+    GRU (8) & LSTM (8) & GRU (8) \\
+    Dropout (0.2) & Dropout (0.2) & Dropout (0.2) \\
+    Dense (3) & Dense (3) & Dense (3) \\
     \midrule
-          & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} \\
-          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{Conv1D (8, 2)} & \multicolumn{2}{c}{Conv1D (8, 2)} \\
-          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Maxpooling(10)} & \multicolumn{2}{c}{Maxpooling(10)} \\
-          & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} \\
-          & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
-          & \multicolumn{2}{c}{} & \multicolumn{2}{c}{} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} \\
+    \textbf{Model 4} & \textbf{Model 5} & \textbf{Model 6} \\
     \midrule
-    \textbf{Model} & \multicolumn{2}{c}{4} & \multicolumn{2}{c}{5} & \multicolumn{2}{c}{6} & \multicolumn{2}{c}{7} \\
-    \midrule
-          & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} & \multicolumn{2}{c}{Input (15)} \\
-          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} \\
-          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
-          & \multicolumn{2}{c}{GRU (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{LSTM (8)} & \multicolumn{2}{c}{GRU (8)} \\
-          & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} & \multicolumn{2}{c}{Dropout (0.2)} \\
-          & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} & \multicolumn{2}{c}{Dense (3)} \\
-    \midrule
-    \textbf{Model} & 0     & 1     & 2     & 3     & 4     & 5     & 6     & 7 \\
-    \midrule
-    \# inputs & 15    & 15    & 15    & 15    & 15    & 15    & 15    & 15 \\
-    \# hidden layers & 2     & 2     & 4     & 4     & 4     & 4     & 4     & 4 \\
-    \# hidden nodes & 16    & 16    & 16    & 16    & 16    & 16    & 16    & 16 \\
-    \# outputs & 3     & 3     & 3     & 3     & 3     & 3     & 3     & 3 \\
+    Input (13) & Input (13) & Input (13) \\
+    LSTM (8) & 2 * Conv1D (8, 10) & 2 * Conv1D (8, 10) \\
+    Dropout (0.2) & Maxpooling(10) & Maxpooling(10) \\
+    Dense (3) & GRU (8) & LSTM (8) \\
+      & Dropout (0.2) & Dropout (0.2) \\
+      & Dense (3) & Dense (3) \\
     \end{tabular}%
-  \label{tableModels}%
+  \label{tab:layouts}%
 \end{table}%
 
-After defining the structural details of the models to be evaluated, a block cross-validation process was then carried out where Datasets 1, 2 and 3 were trained and validated with a distribution of 75\% training and 25\% validation, i.e. three weeks training and one week of validation. In Appendix D, Tables \ref{table4}, \ref{table5} and \ref{table6}, the reader can find the results of the errors presented in each one of the three datastes. In Table \ref{valres}, the reader may consult the results of the block cross-validation process, which consists of an average of the errors presented in datasets 1, 2 and 3.
+
+Of all the hyperparameter combinations tested, the models referred to in Table \ref{tab:layouts}, were those that presented the best performance in the expanding window cross-validation process, and were therefore considered the final combinations of hyperparameters used in this study. The Table \ref{tab:characteristics} details the number of inputs, hidden layers, hidden nodes and outputs of each model. 
+
+
+% Table generated by Excel2LaTeX from sheet 'Sheet6'
+\begin{table}[htbp]
+  \centering
+  \caption{Hyperparameters of the final models}
+    \begin{tabular}{r|cccccc}
+    \toprule
+    \multicolumn{1}{c|}{\textbf{Model}} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+    \midrule
+    \# inputs & 13 & 13 & 1 & 1 & 1 & 1 \\
+    \# hidden layers & 2-2 & 2-2 & 6-6 & 6-6 & 6-7 & 6-8 \\
+    \# hidden nodes &   &   &   &   &   &  \\
+    \# outputs & 3 & 3 & 3 & 3 & 4 & 5 \\
+    \end{tabular}%
+  \label{tab:characteristics}%
+\end{table}%
+
+
+In Table \ref{valres}, the reader may consult the results of the expanding window cross-validation process, which consists of an average of the errors presented in blocks 1, 2 and 3.
 
 \begin{table}[htbp]
   \centering
-  \caption{Stage 1 - Block cross-validation results}
+  \caption{Stage 1 - Expanding window cross-validation results}
        \begin{tabular}{r|cccccccc}
     \toprule
     \multicolumn{1}{c}{} & 0     & 1     & 2     & 3     & 4     & 5     & 6     & 7 \\
@@ -104,10 +132,8 @@ After defining the structural details of the models to be evaluated, a block cro
 
 
 
-The Table presents the validation \ac{MSE}, \ac{RMSE} and \ac{MAE} for each of the eight models, both for the individual forecast for power available in 5, 10 and 15 minutes, as well as for the overall performance of the model.
+The Table presents the validation \ac{MSE}, \ac{RMSE} and \ac{MAE} for each one of the models, both for the individual forecast for power available in 5, 10 and 15 minutes.
 
-
-It turns out that of all the models tested, the one with the lowest \ac{MSE} and \ac{RMSE}, also presents the lowest \ac{MAE}, Model 2. Since a more detailed comparative study is intended, the three models with the best validation performance, Models 0, 2 and 3, were selected as the three Finalist Models of level 1. These are the three models with the best performance during the block cross-validation procedure. 
 
 
 (COMENTÁRIOS AOS DADOS)
