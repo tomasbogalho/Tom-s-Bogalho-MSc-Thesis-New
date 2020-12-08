@@ -654,11 +654,11 @@ As mentioned in section \ref{chap3:subsec:feature_selection}, there are several 
 From mod to avoid this kind of failures, a $MinMaxScaler$ \ref{minmax} was applied, whose mode of operation consists in transforming each feature individually, scaling it to a given interval(by default (0.1)).  Arithmetically, this function is given by
 
 \begin{equation}
-     X_{scaled} = \frac{X - X.min(axis=0)}{X.max(axis=0) - X.min(axis=0)} * (max - min) + min,
+     X_i' = \frac{X_i - min(x) }{max(x)-min(x)},
 \label{minmax}
 \end{equation}
 
-where min and max represent the feature\_range. The standardized feature is then obtained in the defined range. Usually, this process consists of two phases, a phase in which the scaler used is adapted to the data and a phase in which it is used to transform the data. It is good practice to use the training data to adapt the scaler and transform the data, and the test data are only transformed. This reduces the bias associated with transforming unknown data. The inverse process to that presented in the equation \ac{ANN} is applied to the output of the \ac{ANN}, in order to transform the data back to its original scale.
+where $X_i'$ represents the rescaled value, $X_i$ the original value, $min(x)$ is the minimum value in the specific feature, and $max(x)$ is the maximum value in the feature. The standardized feature is then obtained in the defined range. Usually, this process consists of two phases, a phase in which the scaler used is adapted to the data and a phase in which it is used to transform the data. It is good practice to use the training data to adapt the scaler and transform the data, and the test data are only transformed. This reduces the bias associated with transforming unknown data. The inverse process to that presented in the equation \ac{ANN} is applied to the output of the \ac{ANN}, in order to transform the data back to its original scale.
 
 
 

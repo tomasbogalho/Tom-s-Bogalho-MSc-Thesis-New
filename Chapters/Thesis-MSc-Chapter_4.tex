@@ -25,9 +25,11 @@ i.e., the forecast that this model produces for each of the three cases (t+5), (
 
 \section{Stage 1 - Expanding window cross-validation}\label{chap3:section:stage_1}
 
-In this section, the process of training and validation of the proposed architectures begins. At this stage, all the architectures were trained and validated in order to perform hyperparameter optimization. It was also at this stage that the performance of each architecture was evaluated for each one of the training and validation scenarios, by performing the expanding window cross-validation procedure. 
+In this section, the process of training and validation of the proposed architectures begins. At this stage, by performing the expanding window cross-validation procedure, all the architectures were trained and validated in order to perform hyperparameter optimization. 
 
-The key motivation behind this step is the possibility to evaluate the behavior of each set of hyperparameters for each one of the models in different scenarios. The possibility of observing the behavior of any system in different scenarios, allows the user to perform a more robust evaluation of the system in question, and adapt it based on more information. The larger the number of blocks used, the more robust the evaluation because a larger number of different scenarios are considered. To do so, the blocks 1, 2, 3 and 4 represented in Figure \ref{hyptun}, were used, each one consisting of a total of 6 weeks of data, 5 of which were used for training and 1 for validation. The expanding window cross-validation process described before, is put into practice with these three sets of data, where all the models are trained and validated in each of the three sets and the errors presented in each of the validation processes are recorded. At the end of this stage, an average of the errors presented in each of the three blocks is computed and for each of the models, the combination of hyperparameters that produces the smallest error, is selected as the final architecture of the model. 
+The key motivation behind this step is the possibility to evaluate the behavior of each set of hyperparameters for each one of the models in different scenarios. The possibility of observing the behavior of any system in different scenarios, allows the user to perform a more robust evaluation of the system in question, and adapt it based on more information. The larger the number of blocks used, the more robust the evaluation because a larger number of different scenarios are considered. To do so, the blocks 1, 2, 3 and 4 represented in Figure \ref{hyptun}, were used. As the name implies, the expanding window cross-validation procedure consists of gradually expanding the training window, which is particularly useful when there is little data available. In this case, all blocks use 2 weeks of data for validation, and the number of weeks of training is expanded gradually, 10 for block 1, 12 for block 2, 14 for block 3, and 16 for block 4.
+
+The expanding window cross-validation process described before, is put into practice with these four sets of data, where all the models are trained and validated in each of the sets and the errors presented in each of the validation processes are recorded. At the end of this stage, an average of the errors presented in each of the three blocks is computed and for each of the models, the combination of hyperparameters that produces the smallest error, is selected as the final architecture of the model. 
 
 \begin{figure}[h!]
     \centering
@@ -38,19 +40,21 @@ The key motivation behind this step is the possibility to evaluate the behavior 
     \end{center}
 \end{figure}
 
-The process of tuning hyperparameters is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results for each model, must be the one selected. 
+The process of tuning hyperparameters is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results for each model, must be the one selected. To speed up this process, a script \cite{} was created, responsible for training and validating multiple combinations of hyperparameters for each of the proposed models. In total, about 84 different combinations were tested in each of the four blocks. Based on the results obtained in each block for each of the 84 combinations, the ideal hyperparameter combination for each of the six proposed models is defined, being the one that, on average, presents a lower error value in the four cases. In Appendix XXXX, one can find the tables with the validation errors registered for each of the four blocks.
+
+In the layers \ac{GRU} and \ac{LSTM}, the number of units of each layer was consecutively changed.
+The number of units is a positive integer that represents the dimensionality of the output space of the layer. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. Regarding the \ac{1D CNN} layers, the hyperparameters that were tested were the number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), the kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used. In the Max pooling layer, a pool\_size was fixed to 2 units, which means that only the highest value every 2 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. In order to avoid overfitting, dropout layers with $p$=0.2 were also used.
+
+%Model 1 consists of a input layer, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. In this sense, one tested initially a \ac{GRU} layer with 8 units, then 16 units and later a \ac{GRU} with 32 units. In order to avoid overfitting, a dropout layer with $p$=0.2 to the \ac{GRU} layer output.
+
+%Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units, 16 units or 32 units. The remaining structure used is similar to model 1.
+
+%Models 3 and 4 are similar to models 1 and 2, respectively, with the difference that they are univariates and not multivariates. This means that they have an input feature, Available Power, unlike models 1 and 2, which besides Available Power, also have the remaining features resulting from the \ac{PCA} process.
+
+%In models 5 and 6, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 5 units, which means that the output of this layer consists of the result of consecutive convolutions of 5 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. 
 
 
-Model 1 consists of a input layer, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. In this sense, one tested initially a \ac{GRU} layer with 8 units, then 16 units and later a \ac{GRU} with 32 units. In order to avoid overfitting, a dropout layer with $p$=0.2 to the \ac{GRU} layer output.
-
-Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units, 16 units or 32 units. The remaining structure used is similar to model 1.
-
-Models 3 and 4 are similar to models 1 and 2, respectively, with the difference that they are univariates and not multivariates. This means that they have an input feature, Available Power, unlike models 1 and 2, which besides Available Power, also have the remaining features resulting from the \ac{PCA} process.
-
-In models 5 and 6, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 5 units, which means that the output of this layer consists of the result of consecutive convolutions of 5 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. 
-
-
-For each of the three blocks defined in the expanding window cross-validation process, the architectures were trained and validated. The hyperarameters already mentioned were progressively optimized in the three blocks, for each model. In Table \ref{tab:layouts}, a summary of the final layouts resulting from the validation process can be found.
+For each of the four blocks defined in the expanding window cross-validation process, the architectures were trained and validated. The hyperarameters already mentioned were progressively optimized in the four blocks, for each model. In Table \ref{tab:layouts}, a summary of the selected layouts resulting from the validation process can be found.
 
 % Table generated by Excel2LaTeX from sheet 'Sheet6'
 \begin{table}[htbp]
@@ -98,37 +102,38 @@ Of all the hyperparameter combinations tested, the models referred to in Table \
 \end{table}%
 
 
-In Table \ref{valres}, the reader may consult the results of the expanding window cross-validation process, which consists of an average of the errors presented in blocks 1, 2 and 3.
+In Table \ref{valres}, the reader may consult the results of the expanding window cross-validation process, which consists of an average of the errors presented in blocks 1, 2, 3 and 4.
 
+% Table generated by Excel2LaTeX from sheet 'Tabel Creation'
 \begin{table}[htbp]
   \centering
-  \caption{Stage 1 - Expanding window cross-validation results}
-       \begin{tabular}{r|cccccccc}
-    \toprule
-    \multicolumn{1}{c}{} & 0     & 1     & 2     & 3     & 4     & 5     & 6     & 7 \\
+  \caption{Add caption}
+    \begin{tabular}{r|cc|cccc}
+    \multicolumn{1}{c|}{\multirow{2}[1]{*}{\textbf{Model}}} & \multicolumn{2}{c|}{Vanilla} & \multicolumn{4}{c}{Encoder-Decoder} \\
+      & GRU & LSTM & GRU-GRU & LSTM-LSTM & 1D CNN-GRU & 1D CNN-LSTM \\
     \midrule
-    \multicolumn{1}{l|}{\textbf{Non normalized data}} &       &       &       &       &       &       &       &  \\
-    \multicolumn{1}{l|}{\textbf{            Validation Score (t+5)      }} &       &       &       &       &       &       &       &  \\
-    MSE (E+09)   & \textbf{0.82} & 0.87  & \textbf{0.58} & \textbf{0.67} & 0.90  & 1.18  & 0.91  & 1.02 \\
-    RMSE (E+04)   & \textbf{2.84} & 2.92  & \textbf{2.40} & \textbf{2.58} & 2.99  & 3.40  & 2.97  & 3.16 \\
-    MAE (E+04)   & \textbf{2.20} & 2.25  & \textbf{1.86} & \textbf{2.06} & 2.30  & 2.62  & 2.30  & 2.45 \\
-    \multicolumn{1}{l|}{\textbf{            Validation Score (t+10)               }} &       &       &       &       &       &       &       &  \\
-    MSE (E+09)   & \textbf{1.11} & 1.17  & \textbf{0.98} & \textbf{0.99} & 1.20  & 1.42  & 1.16  & 1.28 \\
-    RMSE (E+04)   & \textbf{3.30} & 3.39  & \textbf{3.11} & \textbf{3.12} & 3.44  & 3.74  & 3.37  & 3.54 \\
-    MAE (E+04)   & \textbf{2.54} & 2.63  & \textbf{2.37} & \textbf{2.43} & 2.65  & 2.89  & 2.59  & 2.76 \\
-    \multicolumn{1}{l|}{\textbf{            Validation Score (t+15)               }} &       &       &       &       &       &       &       &  \\
-    MSE (E+09)   & \textbf{1.31} & 1.38  & \textbf{1.25} & \textbf{1.24} & 1.43  & 1.63  & 1.38  & 1.51 \\
-    RMSE (E+04)   & \textbf{3.58} & 3.68  & \textbf{3.51} & \textbf{3.50} & 3.76  & 4.01  & 3.68  & 3.85 \\
-    MAE (E+04)   & \textbf{2.76} & 2.83  & \textbf{2.70} & \textbf{2.71} & 2.89  & 3.09  & 2.82  & 3.01 \\
+    \textbf{Validation (t+5)} &   &   &   &   &   &  \\
+    RMSE (E-02) & 2.895 & 3.001 & 2.661 & 2.783 & 2.756 & 2.739 \\
+    MSE(E-03) & 0.854 & 0.917 & 0.714 & 0.780 & 0.762 & 0.753 \\
+    MAE (E-02) & 2.055 & 2.146 & 1.925 & 2.101 & 2.051 & 2.040 \\
+    \textbf{Validation (t+10)} &   &   &   &   &   &  \\
+    RMSE (E-02) & 3.316 & 3.498 & 3.076 & 3.141 & 3.139 & 3.145 \\
+    MSE(E-03) & 1.114 & 1.246 & 0.951 & 0.989 & 0.987 & 0.992 \\
+    MAE (E-02) & 2.384 & 2.502 & 2.244 & 2.360 & 2.329 & 2.353 \\
+    \textbf{Validation (t+15)} &   &   &   &   &   &  \\
+    RMSE (E-02) & 3.599 & 3.705 & 3.354 & 3.466 & 3.438 & 3.444 \\
+    MSE(E-03) & 1.317 & 1.386 & 1.130 & 1.204 & 1.184 & 1.189 \\
+    MAE (E-02) & 2.585 & 2.709 & 2.454 & 2.609 & 2.546 & 2.578 \\
     \midrule
-    \multicolumn{1}{l|}{\textbf{Normalized data}} &       &       &       &       &       &       &       &  \\
-    \textbf{Total Validation Score         } &       &       &       &       &       &       &       &  \\
-    MSE (E-03)   & \textbf{2.28} & 2.43  & \textbf{2.00} & \textbf{2.11} & 2.47  & 3.03  & 2.36  & 2.56 \\
-    RMSE (E-02)   & \textbf{4.70} & 4.84  & \textbf{4.39} & \textbf{4.51} & 4.91  & 5.44  & 4.80  & 5.03 \\
-    MAE (E-02)   & \textbf{3.61} & 3.73  & \textbf{3.37} & \textbf{3.51} & 3.77  & 4.20  & 3.69  & 3.90 \\
+    \textbf{Total Validation} &   &   &   &   &   &  \\
+    RMSE (E-02) & 3.270 & 3.402 & 3.031 & 3.130 & 3.111 & 3.109 \\
+    MSE(E-03) & 1.095 & 1.183 & 0.932 & 0.991 & 0.978 & 0.978 \\
+    MAE (E-02) & 2.342 & 2.453 & 2.208 & 2.357 & 2.309 & 2.324 \\
     \end{tabular}%
   \label{valres}%
 \end{table}%
+
+
 
 
 
@@ -139,5 +144,17 @@ The Table presents the validation \ac{MSE}, \ac{RMSE} and \ac{MAE} for each one 
 (COMENTÁRIOS AOS DADOS)
 
 \section{Stage 2 - Results}\label{chap3:section:stage_2}
+
+In the previous step, the 6 models that presented the best performance for the defined scenarios were defined. In this step, the 6 models are trained again in all available training data, which consists of training the models in the whole block 4 and testing their performance in the test data. In Figure \ref{test} the reader can find a graphic representation of this process.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/test2.png}
+    \caption{Dataset used for testing the final models.}
+    \label{test}
+    \end{center}
+\end{figure}
+
 
 \section{Stage 3 - Discussion}\label{chap3:section:stage_3}
