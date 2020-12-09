@@ -21,7 +21,7 @@ Before diving into the details of the experimental work, it is necessary to esta
    \label{naive}
 \end{equation}
 
-i.e., the forecast that this model produces for each of the three cases (t+5), (t+10) and (t+15) is exactly the value measured at instant t. The Naive Model is useful for establishing a reference point, serving as a performance comparison basis for the remaining models.
+i.e., the forecast that this model produces for each of the three cases $(t+5)$, $(t+10)$ and $(t+15)$ is exactly the value measured at instant t. The Naive Model is useful for establishing a reference point, serving as a performance comparison basis for the remaining models.
 
 \section{Stage 1 - Expanding window cross-validation}\label{chap3:section:stage_1}
 
@@ -42,64 +42,35 @@ The expanding window cross-validation process described before, is put into prac
 
 The process of tuning hyperparameters is a long and time consuming process. Although the meaning of each hyperparameter and what it represents in the context of the layer is known, there is no rule dictating which hyperparamters are best for each case. It is an experimental process in which the models must be trained, and validated. The results obtained in the validation data are then compared for different hyperparameter combinations. The combination that presents the best results for each model, must be the one selected. To speed up this process, a script \cite{} was created, responsible for training and validating multiple combinations of hyperparameters for each of the proposed models. In total, about 84 different combinations were tested in each of the four blocks. Based on the results obtained in each block for each of the 84 combinations, the ideal hyperparameter combination for each of the six proposed models is defined, being the one that, on average, presents a lower error value in the four cases. In Appendix XXXX, one can find the tables with the validation errors registered for each of the four blocks.
 
-In the layers \ac{GRU} and \ac{LSTM}, the number of units of each layer was consecutively changed.
-The number of units is a positive integer that represents the dimensionality of the output space of the layer. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. Regarding the \ac{1D CNN} layers, the hyperparameters that were tested were the number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), the kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used. In the Max pooling layer, a pool\_size was fixed to 2 units, which means that only the highest value every 2 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. In order to avoid overfitting, dropout layers with $p$=0.2 were also used.
+As explained earlier, exhaustive grid-search was then used to test various combinations of hyperparameters for each of the models. In the layers \ac{GRU} and \ac{LSTM}, the number of units of each layer was consecutively changed.
+The number of units is a positive integer that represents the dimensionality of the output space of the layer. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. Regarding the \ac{1D CNN} layers, the hyperparameters that were tested were the number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), the kernel\_size - An integer specifying the length of the 1D convolution window used. In the Max pooling layer, a pool\_size was fixed to 2 units, which means that only the highest value every 2 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. In order to avoid overfitting, dropout layers with $p=0.2$ were also used.
 
-%Model 1 consists of a input layer, a \ac{GRU} layer, and a dense layer for the output with 3 units, one for each forecast ((t+5), (t+10) and (t+15)). In \ac{GRU} layers, the hyperparameter that can be changed is the number of Units - A positive integer that represents the dimensionality of the output space. This hyperparameter must be tuned in to find a value for which the system performs well. However, the increase of this value represents an increase in the complexity of the model, which makes it slower. In this sense, one tested initially a \ac{GRU} layer with 8 units, then 16 units and later a \ac{GRU} with 32 units. In order to avoid overfitting, a dropout layer with $p$=0.2 to the \ac{GRU} layer output.
-
-%Regarding model 2, the structure is relatively similar to model 1 with the difference that it has an \ac{LSTM} layer instead. As in the previous case, it was tested which number of units should be used in the layer, 8 units, 16 units or 32 units. The remaining structure used is similar to model 1.
-
-%Models 3 and 4 are similar to models 1 and 2, respectively, with the difference that they are univariates and not multivariates. This means that they have an input feature, Available Power, unlike models 1 and 2, which besides Available Power, also have the remaining features resulting from the \ac{PCA} process.
-
-%In models 5 and 6, regarding the \ac{1D CNN} layer, some experiments dictated that a good number of filters - An integer that represents dimensionality of the output space (i.e. the number of output filters in the convolution), to be used could be 8, that is, 8 convolutions are performed that produce the 8 outputs of this layer, but 32 was also tested. The kernel\_size - An integer or tuple/list of a single integer, specifying the length of the 1D convolution window used was 5 units, which means that the output of this layer consists of the result of consecutive convolutions of 5 values, but it was also tested to use a kernel of dimension 10, i.e. convolutions of 10 time-steps. In the Max pooling layer, a pool\_size of 10 units was used, which means that only the highest value every 10 values is taken into account, as explained in the section \ref{chap3:subsubsec:1dcnn}. 
-
-
-For each of the four blocks defined in the expanding window cross-validation process, the architectures were trained and validated. The hyperarameters already mentioned were progressively optimized in the four blocks, for each model. In Table \ref{tab:layouts}, a summary of the selected layouts resulting from the validation process can be found.
-
-% Table generated by Excel2LaTeX from sheet 'Sheet6'
-\begin{table}[htbp]
-  \centering
-  \caption{Models layout with tuned hyperparameters}
-    \begin{tabular}{ccc}
-    \toprule
-    \textbf{Model 1} & \textbf{Model 2} & \textbf{Model 3} \\
-    \midrule
-    Input (1) & Input (1) & Input (13) \\
-    GRU (8) & LSTM (8) & GRU (8) \\
-    Dropout (0.2) & Dropout (0.2) & Dropout (0.2) \\
-    Dense (3) & Dense (3) & Dense (3) \\
-    \midrule
-    \textbf{Model 4} & \textbf{Model 5} & \textbf{Model 6} \\
-    \midrule
-    Input (13) & Input (13) & Input (13) \\
-    LSTM (8) & 2 * Conv1D (8, 10) & 2 * Conv1D (8, 10) \\
-    Dropout (0.2) & Maxpooling(10) & Maxpooling(10) \\
-    Dense (3) & GRU (8) & LSTM (8) \\
-      & Dropout (0.2) & Dropout (0.2) \\
-      & Dense (3) & Dense (3) \\
-    \end{tabular}%
-  \label{tab:layouts}%
-\end{table}%
-
-
-Of all the hyperparameter combinations tested, the models referred to in Table \ref{tab:layouts}, were those that presented the best performance in the expanding window cross-validation process, and were therefore considered the final combinations of hyperparameters used in this study. The Table \ref{tab:characteristics} details the number of inputs, hidden layers, hidden nodes and outputs of each model. 
+For each of the four blocks defined in the expanding window cross-validation process, the architectures were trained and validated. The hyperarameters already mentioned were progressively optimized in the four blocks, for each model. The Table \ref{tab:characteristics} details the number of inputs, hidden layers and hidden nodes of each model. 
 
 
 % Table generated by Excel2LaTeX from sheet 'Sheet6'
 \begin{table}[htbp]
   \centering
-  \caption{Hyperparameters of the final models}
-    \begin{tabular}{r|cccccc}
-    \toprule
-    \multicolumn{1}{c|}{\textbf{Model}} & \textbf{1} & \textbf{2} & \textbf{3} & \textbf{4} & \textbf{5} & \textbf{6} \\
+  \caption{Hyperparameters of the selected models.}
+    \begin{tabular}{r|cccc}
+    \multicolumn{1}{c|}{\multirow{2}[1]{*}{\textbf{Model}}} & \multicolumn{2}{c}{\textbf{Vanilla}} &   &  \\
+      & GRU & LSTM &   &  \\
+\cmidrule{1-3}    \# inputs & 13 & 13 &   &  \\
+    \# hidden layers & 1 & 1 &   &  \\
+    \# hidden nodes & 128 & 64 &   &  \\
     \midrule
-    \# inputs & 13 & 13 & 1 & 1 & 1 & 1 \\
-    \# hidden layers & 2-2 & 2-2 & 6-6 & 6-6 & 6-7 & 6-8 \\
-    \# hidden nodes &   &   &   &   &   &  \\
-    \# outputs & 3 & 3 & 3 & 3 & 4 & 5 \\
+    \multicolumn{1}{c|}{\multirow{2}[2]{*}{\textbf{Model}}} & \multicolumn{4}{c}{\textbf{Encoder-Decoder}} \\
+      & GRU-GRU & LSTM-LSTM & 1D CNN-GRU & 1D CNN-LSTM \\
+    \midrule
+    \# inputs & 13 & 13 & 13 & 13 \\
+    \# encoder nodes & 16 & 256 & 16 & 16 \\
+    \# decoder nodes & 16 & 256 & 8 & 64 \\
     \end{tabular}%
   \label{tab:characteristics}%
 \end{table}%
+
+
+
 
 
 In Table \ref{valres}, the reader may consult the results of the expanding window cross-validation process, which consists of an average of the errors presented in blocks 1, 2, 3 and 4.
@@ -109,7 +80,7 @@ In Table \ref{valres}, the reader may consult the results of the expanding windo
   \centering
   \caption{Add caption}
     \begin{tabular}{r|cc|cccc}
-    \multicolumn{1}{c|}{\multirow{2}[1]{*}{\textbf{Model}}} & \multicolumn{2}{c|}{Vanilla} & \multicolumn{4}{c}{Encoder-Decoder} \\
+    \multicolumn{1}{c|}{\multirow{2}[1]{*}{\textbf{Model}}} & \multicolumn{2}{c|}{\textbf{Vanilla}} & \multicolumn{4}{c}{\textbf{Encoder-Decoder}} \\
       & GRU & LSTM & GRU-GRU & LSTM-LSTM & 1D CNN-GRU & 1D CNN-LSTM \\
     \midrule
     \textbf{Validation (t+5)} &   &   &   &   &   &  \\
@@ -145,7 +116,35 @@ The Table presents the validation \ac{MSE}, \ac{RMSE} and \ac{MAE} for each one 
 
 \section{Stage 2 - Results}\label{chap3:section:stage_2}
 
-In the previous step, the 6 models that presented the best performance for the defined scenarios were defined. In this step, the 6 models are trained again in all available training data, which consists of training the models in the whole block 4 and testing their performance in the test data. In Figure \ref{test} the reader can find a graphic representation of this process.
+In the previous step, the six models that presented the best performance for the defined scenarios were defined. In this step, the six models are trained again in all available training data, which consists of training the models in the whole block 4 and testing their performance in the test data. In Figure \ref{test} the reader can find a graphic representation of this process.
+
+\begin{figure}[h!]
+    \centering
+    \begin{center}
+    \includegraphics[width=1\textwidth]{Images/test2.png}
+    \caption{Dataset used for testing the final models.}
+    \label{test}
+    \end{center}
+\end{figure}
+
+\section{Stage 3 - Confidence intervals}\label{chap3:section:stage_3}
+
+It is true that the main goal is to set a value for the available power at 5, 10 and 15 minutes, but it would be interesting to set a maximum and a minimum value for each of these three forecasts. In other words, it would be important to be able to project a confidence interval of the forecasts carried out. 
+
+In order to project the confidence interval of a forecast from a set of points $x(t, ..., N)$, multiple sets of values are needed for this interval, that is, based on the same input data, the model would have to be able to generate several forecast values for this instant, but this does not happen. As we know, \ac{ANNs}, after the training process in which the weights are defined, become deterministic functions, which means that for the same input, the same predicted output will always be produced, regardless of the number of times the algorithm runs. We are then faced with a limitation, the impossibility of obtaining several values for the same instant, so that a confidence interval of the forecast can be computed.
+
+In 2017, Zhu proposed a technique to solve this problem \cite{uber}. The principle is to adapt the predictive model so that it can return multiple (different) predictions by applying dropout in the forecast process. As discussed in section \ref{chap3:subsubsec:regularization_techniques}, one of the most common techniques to avoid overfitting is the use of dropout layers. Usually, these layers are active in the training process, in order to introduce some error in the model to prevent it from overadapting to the data provided. But in the testing phase, these layers are disabled. The application of dropout "turns off" a randomly chosen fraction of the units of the model. Applying dropout in the testing process would imply that the model ceases to be deterministic, that is, for the same input, different outputs are generated each time forecasts are made. 
+This principle is also known as Mote Carlo \cite{uber2} dropout, which dictates that the uncertainty of the model can be estimated by sample variance of the forecasts of the adapted model in some repetitions. For example, if for each input sequence, 100 distinct output sequences are predicted, assuming the dropout is maintained, all 100 sequences are different. By averaging the 100 sequences, one obtains an average forecast of the model, which can be assumed to be the actual result of the model forecast, that can be called MC Dropout Forecast. On the other hand, since for each instant you have 100 different values, the standard deviation of the 100 values can then be used to calculate the confidence interval of each of the values and, ultimately, the complete sequence. Assuming that the forecasts have a normal distribution $N(\mu, \sigma^2)$, with a mean $\mu$ and a standard deviation $\sigma$, it is then possible to determine the confidence intervals given by: 
+
+\begin{equation}
+    [\hat{y}^* - z_{\frac{\alpha}{2}}\mu,\ \hat{y}^* + z_{\frac{\alpha}{2}}\mu], 
+\end{equation}
+
+where $\hat{y}^* = \frac{1}{B}\sum_{b=1}^B\hat{y_b}$ and $\mu = \sqrt{\frac{1}{B}\sum_{b=1}^B(\hat{y_b} -\hat{y}^*)^2}$. In order to to compute the 95\% confidence interval, for example, the parameters should be $\alpha=0.05$ and $z_{\frac{\alpha}{2}}= 1.92$ . 
+
+Another consideration that should be made is the selection of the parameter $p$ in the MC dropout. If the MC dropout is too large, the forecasts generated will be quite sparse, which in turn implies that the confidence intervals created will be too large. On the other hand, if the MC dropout is too small, the forecasts made will be too similar to each other, which results in very small confidence intervals. When $p$ value is ideal, there is an almost perfect correspondence between the confidence interval and the values obtained. For the problem in question, the parameter $p$ of the MC dropout was tested for various values, and it was concluded that a good value would again be $p = 0.2$.
+
+In Figure XXX we can see the result of applying the Monte Carlo dropout method.
 
 \begin{figure}[h!]
     \centering
@@ -157,4 +156,13 @@ In the previous step, the 6 models that presented the best performance for the d
 \end{figure}
 
 
-\section{Stage 3 - Discussion}\label{chap3:section:stage_3}
+Another issue to consider is that in the standard model, which applies dropout only in the training process, only one forecast sequence is produced, which can be called Standard Dropout Forecast. In the case where a dropout is applied in the training process and MC Dropout in the test process, a set of $N$ sequences, defined by the user, is obtained. The forecast produced in this second case is an average of the $N$ sequences produced, which can be called MC Dropout Forecast. It would be intuitive to assume that MC Dropout Forecast, since it is computed based on a set of different $N$ tests, presents a more robust estimate for the predicted values. However, the experiment was performed, where each of the 6 finalist architectures tested, for the case where it features Standard Dropout, and for the case where it features MC Dropout. The results obtained can be confirmed in Table xxx. 
+
+TABELA
+
+
+COMMENTS.
+
+Although the results obtained for models with MC Dropout present a lower \ac{RMSE} value, it should be remembered that the forecasts resulting from the application of Standard Dropout are generated with a single iteration of the forecast process, while the models that apply MC Dropout result from N iterations. The more iterations carried out, the more accurate the stipulated interval will be, however the forecasting process will also take longer. It is then necessary to balance the value of $N$ with the time that $N$ iterations take to be processed. In very short-term forecasting models, as is the case, this factor is preponderant since the granularity of the data is very high and the forecasts should be immediate. It is also a factor that is directly linked to the available computing capacity.
+
+
