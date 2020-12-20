@@ -6,11 +6,32 @@
 \label{chapter:appendixA}
 
 
-The purpose of this appendix is to explain in a comprehensive manner the code developed in this work. 
+The purpose of this appendix is to explain in a comprehensive manner the code developed in this work. All the code is available on GitHub.
+
+\textbf{Note:} The EDP database access automation files were not made available for confidentiality reasons. However, it is possible to run the code through the developed "local" functionality that uses previously built csv files.
 
 \section{Code organization}
-The code developed code is divided into three files, \textbf{Main.ipynb}, \textbf{AuxFunctions.ipynb} and \textbf{Database.ipynb}.
-
-\section{Used libraries}
+The code is organized as follows:
+\begin{itemize}
+    \item \textbf{AuxFunctions.ipynb}: Contains all the auxiliary functions used by the remaining files;
+    \item \textbf{Naive.ipynb}: Contains all the code responsible for implementing the Naive model;
+    \item \textbf{Vanilla.ipynb}: Contains all the code responsible for implementing the two Vanilla models;
+    \item \textbf{Encoder-Decoder.ipynb}: Contains all the code responsible for implementing the four Encoder-Decoder models;
+    \item \textbf{AzureScript.py}: Pyhton script used for training and validating multiple model configurations, performing grid search and expanding-window cross-validation simultaneously;
+\end{itemize}
 
 \section{Data files organization}
+The data files are organized as follows:
+\begin{itemize}
+    \item \textbf{dados\_\_Met.dat}: Contains the meteorological data provided by \ac{FCUL}
+    \item \textbf{dados\_\_Rad.dat}: Contains the radiation data provided by \ac{FCUL}
+    \item \textbf{dfinal.csv}: Contains the result from the data preprocessing procedure. 
+    \item \textbf{validation.csv}: Contains the results grid search and expanding-window cross-validation simultaneously. 
+\end{itemize}
+
+\section{Folders organization}
+The data files are organized as follows:
+\begin{itemize}
+    \item \textbf{checkpoints}: Contains the checkpoint files generated while training and validating the models
+    \item \textbf{models}: Contains the .h5 files of all the created models
+\end{itemize}
