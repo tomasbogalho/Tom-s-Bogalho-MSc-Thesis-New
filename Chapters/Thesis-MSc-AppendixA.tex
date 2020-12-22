@@ -6,18 +6,21 @@
 \label{chapter:appendixA}
 
 
-The purpose of this appendix is to explain in a comprehensive manner the code developed in this work. All the code is available on GitHub.
+The purpose of this appendix is to explain in a comprehensive manner the code developed in this work. All the code is available on GitHub \cite{code}.
 
-\textbf{Note:} The EDP database access automation files were not made available for confidentiality reasons. However, it is possible to run the code through the developed "local" functionality that uses previously built csv files.
+\textbf{Note:} The EDP database access automation files were not made available for confidentiality reasons. However, it is possible to run the code through the developed "local" functionality that uses previously built \textit{csv} files.
 
 \section{Code organization}
 The code is organized as follows:
 \begin{itemize}
     \item \textbf{AuxFunctions.ipynb}: Contains all the auxiliary functions used by the remaining files;
+    \item \textbf{Database.ipynb}: Contains all the auxiliary functions used to establish a connection with EDP database;
+    \item \textbf{InitialScript.ipynb}: Contains all data treatment procedure, as well as the \ac{PCA} implemented;
     \item \textbf{Naive.ipynb}: Contains all the code responsible for implementing the Naive model;
     \item \textbf{Vanilla.ipynb}: Contains all the code responsible for implementing the two Vanilla models;
     \item \textbf{Encoder-Decoder.ipynb}: Contains all the code responsible for implementing the four Encoder-Decoder models;
-    \item \textbf{AzureScript.py}: Pyhton script used for training and validating multiple model configurations, performing grid search and expanding-window cross-validation simultaneously;
+    \item \textbf{StandardScript.py}: Pyhton script used for training and validating multiple model configurations, performing grid search and expanding-window cross-validation simultaneously for the standard version of the six models;
+    \item \textbf{MonteCarloScript.py}: Pyhton script used for training and validating multiple model configurations, performing grid search and expanding-window cross-validation simultaneously for the Monte Carlo Dropout version of the six models;
 \end{itemize}
 
 \section{Data files organization}
@@ -25,8 +28,11 @@ The data files are organized as follows:
 \begin{itemize}
     \item \textbf{dados\_\_Met.dat}: Contains the meteorological data provided by \ac{FCUL}
     \item \textbf{dados\_\_Rad.dat}: Contains the radiation data provided by \ac{FCUL}
-    \item \textbf{dfinal.csv}: Contains the result from the data preprocessing procedure. 
-    \item \textbf{validation.csv}: Contains the results grid search and expanding-window cross-validation simultaneously. 
+    \item \textbf{consumption.csv}: Contains the consumption data provided by \ac{EDP} (should be used when \ac{EDP} database is not accessible). 
+    \item \textbf{PV.csv}: Contains the production data provided by \ac{EDP} (should be used when \ac{EDP} database is not accessible). 
+    \item \textbf{Validation.csv}: Contains the results grid search and expanding-window cross-validation simultaneously for the standard models.
+    \item \textbf{Test.csv}: Contains the testing results for the standard models.
+    \item \textbf{MonteCarlo.csv}: Contains the results grid search and expanding-window cross-validation simultaneously for the Monte Carlo Dropout models, as well as the testing results.
 \end{itemize}
 
 \section{Folders organization}

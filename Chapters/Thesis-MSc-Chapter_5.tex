@@ -10,33 +10,39 @@
 
 \section{Conclusions}
 
-We began this study with the aim of being able to provide the \ac{EVCS} with more information regarding the power behavior of the building. With more information, this system should be able to make more informed decisions regarding the processing of electric car loads. We then introduced the challenge: "How can one forecast the power available in a near future, in order to optimize the \ac{EVCS}?". In this thesis, data from different sources (radiation, meteorology, production and consumption) was used in the construction of a predictive model whose outputs can used as inputs in the \ac{EVCS}. The result of the research is a set of models capable of producing a maximum and minimum power output forecast algorithm to boost the capabilities of the \ac{EVCS} by predicting \ac{EDP} building power availability for the next 5, 10 and 15 minutes. We proposed six different solutions to address this challenge, two adapted Vanilla solutions, in which simple typologies of \ac{RNN}s, \ac{GRU} and \ac{LSTM} are applied, two Encoder-Decoder models that use the same types of \ac{RNN}s in a more complex way in order to predict whole sequences, and two hybrid models that combine the predictive capabilities of Encoder-Decoder models with the extrapolative capabilities of \ac{CNN}s. Data from January 25, 2020 to June 12 of the same year was used in order to train, validate and test the six models. Of the six, the one that presented the best results was the simplest model, the \ac{GRU} Vanilla, surpassing in all cases the baseline performance achieved by the Naive model.
+We began this study with the aim of being able to feed the \ac{EVCS} with more information regarding the power behavior of the building. With more information, this system should be able to carry out more informed decisions regarding the \ac{EV}s charging procedure. We then introduced the challenge: "How can one forecast the power available in a near future, in order to optimize the \ac{EVCS}?". In this thesis, data from different sources (radiation, meteorology, production and consumption) was used in the construction of a predictive model whose outputs can be used to feed the \ac{EVCS}. The result of the research is a set of models capable of producing a maximum and minimum power output forecast algorithm to boost the capabilities of the \ac{EVCS} by predicting \ac{EDP} building power availability for the next 5, 10 and 15 minutes. We proposed six different solutions to address this challenge, two adapted Vanilla solutions, in which simple typologies of \ac{RNN}s, \ac{GRU} and \ac{LSTM} were applied, two Encoder-Decoder models that use the same types of \ac{RNN}s in a more complex way in order to predict whole sequences, and two hybrid models that combine the predictive capabilities of Encoder-Decoder models with the extrapolative capabilities of \ac{CNN}s. Data from January 25, 2020 to June 12 of the same year was used in order to train, validate and test the six models. From the six, the model that presented the best results was the simplest model, the \ac{GRU} Vanilla, surpassing in all cases the baseline performance achieved by the Naive model, and also outperformed the remaining five models.
 
 Some main contributions of this thesis are:
 \begin{itemize}
 \setlength\itemsep{0.1em}
-    \item Automation of data manipulation treatment from various sources;
+    \item Automation of data manipulation treatment from multiple sources;
     \item Development of a \ac{ML} system capable of making forecasts for the available power in the building in 5, 10 and 15 minutes;
     \item Development, evaluation and comparison of the performance of six different predictive architectures;
-    \item Development of models capable of calculating not only the forecasts, but also their confidence intervals;
+    \item Development of models capable of computing not only the forecasts, but also their confidence intervals;
     \item Availability of the code developed during the research.
     
 \end{itemize}
 
-In the end, it is considered that the work carried out was successful, having developed a system to effectively predict the power available in the \ac{EDP} building in 5, 10 and 15 minutes, and also capable of determining confidence intervals of the forecasts made. It can also be said that on a global scale, the system developed contributes to a more sustainable building, helping to optimize energy use in the building.
+In the end, one must consider that the research carried out was successful, having been developed a system to effectively predict the power available in the \ac{EDP} building in 5, 10 and 15 minutes, and also capable of determining confidence intervals of the forecasts generated. It can also be said that on a global scale, the system developed contributes to a more sustainable building, since it helps to optimize the power distribution in the building.
 
 
 
 \newpage
 \section{Future Work}
 
-When it comes to future work, there are numerous factors that can be explored. As for the development of the models developed, it can still be explored: 
+The work developed has several aspects that can and should be developed. Limiting the analysis to the prediction of the available power in the building, there are two paths that can be explored: the optimization and improvement of the models already implemented (1) or the creation and implementation of new forecasting methodologies (2). 
+
+Regarding the models already implemented (1):   
 
 \begin{itemize}
 \setlength\itemsep{0.1em}
-    \item Deepen the role that each of the features has in the forecast results obtained;
-    \item Building a system that uses, parallel to the variables registered in the past, future variables that are certain, such as the day of the week, month, holiday, etc.
-    \item Development of a stacked system that combines the capabilities of the different models developed, and construction of a voting system capable of defining the best model to use for each specific situation.
-    \item Development of models with a superior time goal;
-    \item Use of a time window of data of several years, which allows the development of models capable of identifying patterns in the long term, which can be used in the enrichment of predictive models.
+    \item Implementing a system that uses, parallel to the variables registered in the past, future variables that are certain, such as the day of the week, month, holiday, etc.
+    \item Developing of a stacked system that combines the capabilities of the different models developed, and construction of a voting system capable of defining the best model to use for each specific situation.
+    \item Developing models with a superior time horizon - Although it was not the proposed challenge, it might be relevant to design a system capable of predicting more than just the power behavior of fifteen minutes in the future;
+    \item Using more data for training and testing the models. Several years of data would allow the development of models capable of identifying patterns in the long term, which can be used in the enrichment of predictive models;
+    \item Applying a transformation through differencing  of the time series (method used to ensure stationarity) may lead to better results. Although in the short term positive results have been obtained in the forecasts obtained, in the long term it is more difficult to guarantee stationarity. Although the \ac{RNN} models implemented are able to learn nonlinearities, namely long-term dependencies (which implies that ensuring that the time series is stationary is less relevant), it may be a factor to consider in a future implementation.
 \end{itemize}
+
+Although there are multiple elements to be improved in the systems already developed, it is believed that the path to be taken is not by improving the existing models, but by applying new techniques and comparing them with those already developed. 
+
+Regarding implementing alternative models (2), fortunately, more and more methods can achieve good results in the proposed problem, both data-driven and models of the other categories. One suggestion would be to test the implementation of simple models, particularly \ac{ARIMA}, which have proved their worth in this type of challenge \cite{arimafuture}.
