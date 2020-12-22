@@ -1,88 +1,10 @@
-The Thesis-MSC LaTeX template can be used for Instituto Superior Técnico Master of Science thesis of DEI (or other departments), as it follows the regulations published by the Scientific Council of IST.
+# Short term power availability forecast
+Repository containing the code for :
+"Short term power availability forecast for EV charging hubs using Machine Learning techniques" 
+(Master Thesis in Electrical and Computer Engineering - Técnico Lisboa). 
 
-To start using, just open and modify your data in the following files:
+# Author:
+Tomás Maria Reis Bogalho - tomas.bogalho@tecnico.ulisboa.pt
 
-1. Thesis-MSc-Preamble_commands.tex
-Select the ‘main’ language of your thesis in the line that loads the package ‘babel’:
-line.22
-	\usepackage[main=english,portuguese]{babel}	
-	or 
-	\usepackage[english,main=portuguese]{babel}
-	
-The thesis document will then auto-magically modify all the adequate keywords, titles, captions, etc. according to the selected language.
-
-Later, you may modify parameters or include other packages if deemed necessary.
-
-To deliver a PDF version without annotations/todonotes, Track Changes, you need to modify the options as follows:
-
-For TODO Notes, the following lines:
-line.121/122
-    % use the line with the 'disable' option for the TODO Notes
-    \usepackage[textwidth=2cm, textsize=small, disable]{todonotes}
- 
-For Track Changes, the following lines: 
-line.130/131
-    % use the line with the 'final' option for the Track Changes
-    \usepackage[authormarkup=superscript,authormarkuptext=id,markup=underlined,ulem={ULforem,normalbf},final]{changes}
-
-
-
-
-2. Thesis-MSc-Front_Cover.tex
-In this document insert your data (your full name, thesis titles, supervisors names, date, degree, etc.):
-
-	\title{}
-	\subtitle{}
-	\author{}
-	\degree{}
-	\supervisor{}
-	\othersupervisor{}
-	\date{}
-
-For Tracking changes, you can also replace the id of the collaborators, in the lines:
-
-    \definechangesauthor[color=colorname]{id}
-
-For a draft thesis (before examination) modify the following command to the value ‘false’:
-
-	\finalthesis{false}
-
-If it is for the final version (approved after examination) then modify the command to the value ‘true’:
-
-	\finalthesis{true}
-
-and include the full names of all the members of the Examination Committee (except the Supervisor):
-
-	\chairperson{}
-	\vogalone{}
-	\vogaltwo{}
-	\vogalthree{}
-
-3. The content of your thesis will be written in the documents in folder ‘Chapters’
-Do not modify the ‘header’ in all those documents, except the name of the document as it contains compilation directives.
- 
-If you need to add more Chapters, just create new .tex documents and add the header.
-If you do not need that many Chapters in your thesis, just comment the lines in the main document:
-
-  	‘Thesis-MSc-Main_Document.tex’
-
-For example, if you do not need a 6th Chapter, comment the following lines:
-
-	%Chapter 6
-	\input{./Chapters/Thesis-MSc-Chapter_6.tex}
-	% If Printing on DOUBLE SIDED pages, the second page should be white.
-	% Otherwise, comment the following command:
-	\cleardoublepage
-
-4. Thesis-MSc-Bibliography.bib
-This file is the default Bibliography database. 
-If you are using Mendeley.com as Reference Manager, you can link the .bib file to your account in that swervice in order to keep the data automatically synchronized.
-For those purposes, replace that file with your own file, and if the name is different, just modify the corresponding line in in the main document ‘Thesis-MSc-Main_Document.tex’:
-
-	\bibliography{./Thesis-MSc-Bibliography}
-
-#####################
-
-Enjoy
-
-Rui Santos Cruz
+# Abstract:
+The Energias de Portugal (EDP) building located in Lisbon, Portugal is equipped with a Photovoltaic (PV) system responsible for generating 70 kWp (kilowatt ”peak”). In addition, it comprises an Electric Vehicle Central Charging System (EVCS), capable of adjusting the power used according to the overall available power in the building. Although the EVCS has access to the current available power in thebuilding, it would be possible to optimize its operation by also providing it with forecasts of the available power in the building in the near future, for example, with values for 5, 10 and 15 minutes from now. To meet this requirement, we have introduced a system consisting of Machine Learning (ML) techniques. Several factors, both meteorological as well as energetic, have been used to predict the future available power. The implementation was accomplished using three different architectures, Vanilla Recurrent Neural Network (RNN), Encoder-Decoder and One Dimensional Convolutional Neural Network (1D CNN)-Encoder-Decoder. For each of the three architectures, two types of RNNs were tested, Gated RecurrentUnit (GRU) and Long Short-Term Memory (LSTM), thus resulting in a total of 6 different models: Vanilla GRU, Vanilla LSTM, GRU-Encoder-Decoder, LSTM-Encoder-Decoder, 1D CNN-GRU-Encoder-Decoder and 1D CNN-LSTM-Encoder-Decoder. It was also attempted to introduce Monte Carlo Dropout (MCD) to the proposed architectures, allowing a probabilistic interpretation of the results obtained, and  thecomputation of confidence intervals of the forecasts carried out.
