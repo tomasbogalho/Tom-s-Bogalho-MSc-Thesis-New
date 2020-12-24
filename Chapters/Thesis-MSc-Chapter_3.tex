@@ -17,24 +17,24 @@ The proposed objective for this work is to create a system capable of computing 
 
 \section{The building}\label{chap3:sec:building}
 
-The building provided by \ac{EDP} for the development of this research has a total useful area of 39,801$m^2$ distributed in 5 major categories: office area, parking area, technical area, gymnasium area and bar. The first two areas represent 89\% of the total area of the building. In Figure \ref{consedp} the diagram shows the distribution of energy consumption by type of end use in each area of the building, for the year of 2016.
+The building provided by \ac{EDP} for the development of this research has a total useful area of 39 801$m^2$ distributed in 5 major categories: office area, parking area, technical area, gymnasium area and bar. The first two areas represent 89\% of the total area of the building. In Figure \ref{consedp} the diagram shows the distribution of energy consumption by type of end use in each area of the building, for the year of 2016.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=1\textwidth]{Images/ConsumoEDP.png}
+    \includegraphics[width=1\textwidth]{Images/ConsumoEDP.jpeg}
     \caption{Energy consumption for the building typology(s) with the highest consumption (2016).}
     \label{consedp}
     \end{center}
 \end{figure}
 In Figure \ref{consedp}, it can be seen that the \ac{HVAC} system represents almost 50\% of the consumption in the office zone. The use of the \ac{HVAC} system is directly related to the external weather conditions. Since 44\% of the consumption is related to the office cooling process, it can be deduced that in the region where this building is located, in warmer years, the consumption of the office area is higher, contributing to an increase in the total consumption of the building. It can also be seen that only 11\% of consumption is due to the lighting of the office area. On the other hand, 42\% of the consumption in the office area comes from all other factors such as energy plugs. The technical zones represent about 14\% of the total consumption of the building although they represent a small portion of the total area of the building. Most of the consumption performed in these areas is identified as "other" and concerns servers and technical material of high energy consumption, hence the enormous representativeness of these zones in the total consumption of the building. Parking lots also represent a significant portion of the total consumption of the building. It should be noted that 60\% of consumption is also identified as "other" in this area. This portion derives mainly from the electric vehicle charging procedure, that is carried out in the building's garage, managed by the \ac{EVCS}, addressed in Chapter \ref{chap:intro}. This system consists of a total of 13 charging stations for \ac{EV}s, and falls into the category of controllable consumption, i.e., the system can control the power used in vehicle charging, based on the priority level of each vehicle (such as the percentage of full battery charged), and the total power available in the building. The contribution of this thesis falls exactly in this category. Although the system has instantaneous information about the state of available power in the building, it would be of great use to have information regarding the future state of available power. In this sense, the work developed in this dissertation aims to respond to this need, contributing to the optimization of the current system.
 
-Modeling energy consumption behaviour and identifying patterns can be crucial both to minimize power usage, and to develop new methodologies to optimize resources. Figure \ref{consumption} illustrates the energy consumption profile of the building of \ac{EDP} in Lisbon, Portugal, during the month of February 2020. The profile illustrated in Figure \ref{consumption} shows a movement that one can identify as a trend. The data presented provides power consumption details for 4 weeks and 4 weekends. The behaviour of the profile tends to be cyclical, with a 7-day period. 
+Modeling energy consumption behaviour and identifying patterns can be crucial both to minimize power usage, and to develop new methodologies to optimize resources. Figure \ref{consumption} illustrates the energy consumption profile of the building, during the month of February 2020. The profile illustrated in Figure \ref{consumption} shows a movement that one can identify as a trend. The data presented provides power consumption details for 4 weeks and 4 weekends. The behaviour of the profile tends to be cyclical, with a 7-day period. 
 \begin{figure}[h!]
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/power_consumption.png}
-    \caption{EDP's building's a) consumption.}
+    \caption{Power consumed by the building in Watts during the month of February 2020.}
     \label{consumption}
     \end{center}
 \end{figure}
@@ -42,13 +42,13 @@ Modeling energy consumption behaviour and identifying patterns can be crucial bo
 
 Variables that present a trend are more easily examined since it is sometimes possible to associate a cause with their cyclical behavior. By identifying this cause, it becomes not only easier to control its current behavior, but also to predict its future behavior. 
 
-As far as power production is concerned, the building is equipped with a total of 500$m^2$ of \ac{PV} panels area on its roof. The installed panels have an efficiency rounding 15\%, representing a total of 70 kWp (kilowatt "peak") of solar generation. Although this kind of production is not controllable, since it depends solely on weather conditions, there are several relationships that can be established by having access to meteorological information. The increase in production generated by the \ac{PV} panels, directly represents an increase in the available power to consume. This factor then becomes an important indicator in the development of any forecasting system, since its behaviour directly influences the amount of power available to charge \ac{EV}s. In Figure \ref{production}, one may see the power production profile for the same building and time-interval as Figure \ref{consumption}. The \ac{PV} production behaviour is also cyclical, but instead of presenting a 7-day period as consumption does, presents a daily period due to the fact that solar radiation is not influenced by the occupancy rate of the building (it has no direct relation with the day of the week), but with the hour of the day instead.
+As far as power production is concerned, the building is equipped with a total of 500$m^2$ of \ac{PV} panels area on its roof. The installed panels have an efficiency rounding 15\%, representing a total of 70 kWp of solar generation. Although this kind of production is not controllable, since it depends solely on weather conditions, there are several relationships that can be established by having access to meteorological information. The increase in production generated by the \ac{PV} panels, directly represents an increase in the available power to consume. This factor then becomes an important indicator in the development of any forecasting system, since its behaviour directly influences the amount of power available to charge \ac{EV}s. In Figure \ref{production}, one may see the power production profile for the same building and time-interval as Figure \ref{consumption}. The \ac{PV} production behaviour is also cyclical, but instead of presenting a 7-day period as consumption does, presents a daily period due to the fact that solar radiation is not influenced by the occupancy rate of the building (it has no direct relation with the day of the week), but with the hour of the day instead.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/power_production.png}
-    \caption{EDP's building's a) production.}
+    \caption{Power produced by the building in W during the month of February 2020.}
     \label{production}
     \end{center}
 \end{figure}
@@ -58,7 +58,7 @@ Both power consumption and power production are vital information to have in ord
 
 \section{Proposed variable to predict}\label{chap3:sec:variable_to_predict}
 
-The available power is a key factor because it is the indicator provided to the \ac{EVCS} enabling it to proceed with the optimization of the distribution of the available power by the \ac{EV}s present in the building's garage, which need to be charged.
+The available power is a key factor because it is the indicator provided to the \ac{EVCS} enabling it to proceed with the optimization of the distribution of the available power by the \ac{EV}s parked in the \ac{EVCH}, which need to be charged.
 
 The power available is not a measured variable, it is a calculated variable. When it comes to computing it, one question then arises: Should one compute the available power and then predict it, or should one predict both consumed power and produced solar power, and just then perform the calculations to find the available power? Figure \ref{avsol} represents two possible solutions for this problem. The first solution consists in creating a model that has as input, besides the other variables, two variables: consumption power and solar production. This model will have as output a forecast for these two variables, and only then is the available power calculated. The second solution is to compute the available power before inputting the data into the model, which causes a reduction in the number of inputs and outputs in the model. 
 
@@ -71,7 +71,7 @@ The power available is not a measured variable, it is a calculated variable. Whe
     \end{center}
 \end{figure}
 
-Comparing the two proposed hypotheses, solution 1 presents the advantage of predicting two different variables allowing better data manipulation, offering more flexibility. Since the model produces separate results for the consumption and production variables, the amount of possible uses for this data is greater than the amount of possibilities provided by solution 2. On the other hand, solution 2 presents, first of all, the advantage of having a much simpler architecture which makes the user's work easier, and secondly, the main advantage is that it requires the model to predict only one variable instead of two. This factor is quite relevant, namely regarding the time it takes the system to produce forecasts, and also the computational capacity that is required from the hardware to allow the prediction of two variables simultaneously. The prediction of two variables with the same model also has the disadvantage of making it difficult to evaluate the behavior of the proposed solution, since a specific model can be very good for predicting one of the variables and very bad for the other. 
+Comparing the two proposed hypotheses, solution 1 presents the advantage of predicting two different variables allowing better data manipulation, offering more flexibility. Since the model produces separate results for the consumption and production variables, the amount of possible uses for this data is greater than the amount of possibilities provided by solution 2. On the other hand, solution 2 presents, first of all, the advantage of having a much simpler architecture which makes the user's work easier, and secondly, the main advantage is that it requires the model to predict only one variable instead of two. This factor is quite relevant, namely regarding the time it takes the system to produce forecasts, and the computational capacity that is required from the hardware to allow the prediction of two variables simultaneously. The prediction of two variables with the same model also has the disadvantage of making it difficult to evaluate the behavior of the proposed solution, since a specific model can be very good for predicting one of the variables and very bad for the other. 
 Taking all these factors into account, the second approach was then chosen. Thus, simplifying the user’s work, allowing to produce results quicker, and facilitating the process of choosing a model that produces a good solution for a single variable.
 
 
@@ -82,22 +82,22 @@ In Figure \ref{Max_cons_prod}, the reader may see the graph for the power profil
     \captionsetup[subfigure]{position=b}
     \centering
     \label{fig:ap}
-    \subcaptionbox{\label{Max_cons_prod}}{\includegraphics[width=1\linewidth]{Images/Max_cons_prod.png}}
-    \subcaptionbox{ \label{available_power}}{\includegraphics[width=1\linewidth]{Images/Available_power.png}}
-    \caption{EDP's building power trends a) grid capacity, consumption and production b) available power.}
+    \subcaptionbox{Grid capacity, Consumption and Production data\label{Max_cons_prod}}{\includegraphics[width=1\linewidth]{Images/Max_cons_prod.png}}
+    \subcaptionbox{Available Power data\label{available_power}}{\includegraphics[width=1\linewidth]{Images/Available_power.png}}
+    \caption{Building historical data in Watts over time.}
 \end{figure}
 
 
-By analyzing Figure \ref{Max_cons_prod}, one can verify that, compared to the consumption presented by the building, the \ac{PV} panels do not have enough capacity for the building to be self-sustainable. That is to say, that solar power is far from being enough to maintain the regular operation of the building. One can conclude that the influence of the power generated by the \ac{PV} panels on the available power of the building is quite limited. However, in order to make a correct evaluation, it is a parameter that must be taken into account. The value of the available power is a computed metric, given by:
+By analyzing Figure \ref{Max_cons_prod}, one can verify that, compared to the consumption presented by the building, the \ac{PV} panels do not have enough capacity for the building to be self-sustainable. That is to say, that solar power is far from being enough to maintain the regular operation of the building. One can conclude that the influence of the power generated by the \ac{PV} panels on the available power of the building is quite limited. However, in order to make a correct evaluation, it is a parameter that must be taken into account. The value of the available power, $P_a(t)$, is a computed metric, given by:
 
 \begin{equation}
-   P_{available} = P_{grid} + P_{solar} - P_{consumption},
+   P_a(t) = P_g(t) + P_s(t) - P_c(t),
    \label{available}
 \end{equation}
 
-where $P_{grid}$ is the maximum power that is made available to the building, provided by the electrical grid, which in this particular case is around 1.2 MW, $P_{solar}$ is the active solar power produced by the \ac{PV} system, and $P_{consumption}$ denotes the current power consumption of the building. In Figure \ref{available_power}, the available power profile is shown for the same time interval as Figure \ref{Max_cons_prod}. Like the previous variables, it shows an equally cyclical behavior. It is also relevant to introduce the concept of stationarity. A stationary time series is one whose statistical properties such as the mean and the variance are constant over time. Most statistical forecasting methods are based on the assumption that the time series to be forecast is stationary or approximately stationary. By examining the graph presented in Figure \ref{available_power}, it can be seen that the variable to be predicted has, at least a locally stationary behaviour, preserving its statistical properties over time.
+where $P_g(t)$ is the maximum power that is made available to the building, provided by the electrical grid, which in this particular case is around 1.2 MW, $P_s(t)$ is the active solar power produced by the \ac{PV} system, and $P_c(t)$ denotes the current power consumption of the building. In Figure \ref{available_power}, the available power profile is shown for the same time interval as Figure \ref{Max_cons_prod}. Like the previous variables, it shows an equally cyclical behavior. It is also relevant to introduce the concept of stationarity. A stationary time series is one whose statistical properties such as the mean and the variance are constant over time. Most statistical forecasting methods are based on the assumption that the time series to be forecast is stationary or approximately stationary. By examining the graph presented in Figure \ref{available_power}, it can be seen that the variable to be predicted has, at least a locally stationary behaviour, preserving its statistical properties over time.
 
-Taking into account all the factors mentioned, it was then decided to choose solution 2, in which the value of the available power is calculated beforehand, and is then used as input for the predictive model. This solution was chosen because it is a simpler architecture and requires less computational capabilities, since the model produces forecasts for only one variable, and not for two. Furthermore, the flexibility offered by forecasting the two variables separately is irrelevant in the context of the problem, since for the proposed objective, it is not necessary to differentiate the consumption forecast from the production forecast. 
+Taking into account all the factors mentioned, it was then decided to choose solution 2, in which the value of the available power is calculated beforehand, and is then used as input for the predictive model. This solution was chosen because it is a simpler architecture and requires less computation power, since the model produces forecasts for only one variable, and not for two. Furthermore, the flexibility offered by forecasting the two variables separately is irrelevant in the context of the problem, since for the proposed objective, it is not necessary to differentiate the consumption forecast from the production forecast. 
 
 \section{Data}\label{chap3:sec:data}
 
@@ -107,7 +107,7 @@ In this section, we describe the datasets used in the development of this work, 
 
 In the day to day of a building, there are many factors that influence its consumption and, consequently, the available power. In Chapter \ref{chap:background}, some examples of work developed with the objective of predicting the energy consumption of a building were mentioned. In Appendix B, Table \ref{table1}, it is possible to verify that generally, two categories of data are used in this kind of applications: data that concerns the behavior of the building, and climatic data that characterizes the surrounding environment of the building.
 
-Regarding the energy behavior of the building, \ac{EDP} provided two different datasets that present information between January 25, 2020 and September 30, 2020, totaling 8 months and 5 days of data, with a granularity of 5 seconds. The first dataset includes historical data concerning the power consumption of the building, and the second dataset includes historical data regarding the solar power production generated by the \ac{PV} panels installed on the top of the building. It is also relevant to mention that the production data provided showed some gaps, resulting from sensor reading failures. This aspect implies the need for some automatic mechanisms to complete the missing data, which are described below.
+Regarding the energy behavior of the building, \ac{EDP} provided two different datasets that present information between January 25, 2020 and September 30, 2020, totaling 8 months and 5 days of data, with a granularity of 5 seconds. The first dataset includes historical data concerning the power consumption of the building, and the second dataset includes historical data regarding the solar power production generated by the \ac{PV} panels installed on the top of the building. It is also relevant to mention that the production data provided showed some gaps, resulting from sensor reading failures. This aspect implies the need for some data filling mechanisms to complete the missing data, which are described below.
 
 Regarding climate data, \ac{FCUL} provided two different datasets that present information between January 25, 2020 and June 15, 2020, totaling 4 months and 21 days of data, with a granularity of 1 minute. The first dataset includes meteorological data of the geographical location of the building, and the second includes data with respect to solar radiation exerted on the geographical location of the building. Neither of the two datasets had temporal flaws.
 
@@ -136,13 +136,13 @@ As can be seen through the analysis of Table \ref{table2}, the data provided doe
 
 \subsection{Data completion}\label{chap3:subsec:data_completion}
 
-The data completion consists of a process in which the data made available is formatted in such a way that it meets the essential criteria to enable its introduction in the models. During the development of the thesis, this was the most time consuming process. The data treatment is an extremely demanding process, which is illustrated in the diagram of Figure \ref{datatreatment}.
+The data completion consists of a process in which the data made available is formatted in such a way that it meets the essential criteria to enable its introduction in the models. The data treatment is an extremely demanding process, which is illustrated in the diagram of Figure \ref{datatreatment}.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/Data.png}
-    \caption{Data treatment process.}
+    \caption{Process of transformation and aggregation of all available data into a single dataset.}
     \label{datatreatment}
     \end{center}
 \end{figure}
@@ -178,7 +178,7 @@ In order to exemplify the evolution of the incomplete dataset construction, in t
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/int0.png}
-    \caption{Data treatment process.}
+    \caption{Reconstruction process of the Production Active Power signal in phases.}
     \label{int0}
     \end{center}
 \end{figure}
@@ -192,11 +192,10 @@ Based on the equation of the sun's position in the sky throughout the year, the 
 \label{solar}
 \end{equation}
 
-where $I_0$ is the solar intensity external to the Earth's atmosphere that is approximately $1.353 kW/m^2$, $0.7$ represents the overall attenuation of the atmosphere, $AM = \frac{1}{cos\theta}$ is the airmass and $\theta$ is the zenith angle (90° minus the altitude) of the sun. This formula produces an optimal result when there are no clouds. Multiplying the resulting value by the total area of panels in the building and taking into account their positioning efficiency, a theoretical value of power generated by the \ac{PV} panels is obtained, in an ideal scenario. In Phase 5, all missing readings were replaced by the calculated theoretical value, as can be seen in Figure \ref{int0} in green. This way, the Solar dataset was completed. It is possible to verify that the point of change between the theoretical data (the green one) and the original data (the red one) is somewhat sudden, because the green signal considers an ideal scenario and the red signal represents real measurements (affected by clouds, cranes, etc.). The sum of the green, blue and red signals, result in a complete signal for the solar active power generated by the \ac{PV} panels. 
+where $I_0$ is the solar intensity external to the Earth's atmosphere that is $1.353 kW/m^2$, $0.7$ represents the overall attenuation of the atmosphere, $AM = \frac{1}{cos\theta}$ is the airmass and $\theta$ is the zenith angle (90° minus the altitude) of the sun. Multiplying the resulting value by the total area of panels in the building and taking into account the \ac{PV} system’s tilt, orientation, and the position of the sun, a theoretical value of power generated by the \ac{PV} panels is obtained, in an ideal scenario with no clouds. In Phase 5, all missing readings were replaced by the calculated theoretical value, as can be seen in Figure \ref{int0} in green. This way, the Solar dataset was completed. It is possible to verify that the point of change between the theoretical data (the green one) and the original data (the red one) is somewhat sudden, because the green signal considers an ideal scenario and the red signal represents real measurements (affected by clouds, etc.). The sum of the green, blue and red signals, result in a complete signal for the solar active power generated by the \ac{PV} panels. 
 
 
 The completion process of the \textit{Prod.} dataset could have been done before joining it with the other datasets (\textit{Meteo.} and \textit{Rad.}) in the Solar dataset, but it was decided to first reduce the size of the total set from 8 months and 5 days to 4 months and 21 days (Phase 2 $\to$ 3), and only then, with the \textit{Solar} dataset already created, perform the necessary computations to complete the missing data. The two completion procedures described before are computationally expensive. Therefore reducing the size of the dataset to be completed to half of its initial size has a major impact on the running time of the whole process. It is important to emphasize that, although the Phases 4 and 5 present in Figure \ref{datatreatment} represent the process of interpolation and computation of the theoretical solar value regarding the whole Solar dataset. These procedures were applied exclusively to the features concerning production, since these were the only ones that were incomplete until then.
-
 
 
 In Phase 6 the \textit{Solar} and \textit{Cons.} datasets were concatenated, thus reducing the dataset time interval to a final result of 4 months and 21 days.
@@ -209,7 +208,7 @@ In order to study a certain algorithm, it is necessary to have access to past da
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/division.png}
-    \caption{Dataset division.}
+    \caption{Dataset division in training, validation and test sets.}
     \label{division}
     \end{center}
 \end{figure}
@@ -226,7 +225,7 @@ In Figure \ref{partition}, the reader may find four different sub-datasets, resu
     \centering
     \begin{center}
     \includegraphics[width=1\textwidth]{Images/hyptun_.png}
-    \caption{Data partition diagram.}
+    \caption{Data split used in the nested cross-validation process.}
     \label{partition}
     \end{center}
 \end{figure}
@@ -239,33 +238,9 @@ The performance evaluation of the models is then given by the average of the per
 \end{equation}
 
 where $Model\ test\ error$ represents the final model error for all the test sets, $Error_{di}$ represents the error that the model presented while performing in dataset $i$, and $k$ represents the number of datasets used.
-In this specific case, the test error for each model is given by
-
-\begin{equation}
-     Model\ test\ error =\frac {1}{4}\ (Error_{testb1} + Error_{testb2} + Error_{testb3} + Error_{testb4}).
-\label{err_av}
-\end{equation}
 
 The great advantage of using this method is the attenuation of the influence of random errors. In other words, by performing an average of the errors in the four different sets, the robustness of the selection process is increased since different scenarios are considered.
 
-
-%\subsection{Data shifting}\label{chap3:subsec:data_shifting}
-
-%While designing a predictive model, the training process is critical so that the model can learn from the data supplied to it. In a time series problem, it would not make sense for the input data to be of the same instant as the output data. When one wants to determine a future value based on current conditions, one needs to train the model to use the input data of the current instant to predict the output data of a future instant. It is then necessary to apply a shift to the output data so that training the model builds a predictive logic, also known as converting the time series into a supervised learning series. If the shift was not applied, one would be training the model to, based on the current instant data, determine the output data of the current instant, and that is not what is intended. As it is already known, one of the main objectives of this thesis is to forecast the available power of the building in 5, 10 and 15 minutes. To do that, depending on the model selected for that purpose, it might be necessary to develop 3 different supervised learning series. In Figure \ref{shifting}, the reader can find a graphical representation of the performed procedure.
-
-
-%\begin{figure}[h!]
-%    \centering
-%    \begin{center}
-%    \includegraphics[width=1\textwidth]{Images/Data Shift.png}
-%    \caption{Data shifting procedure.}
-%    \label{shifting}
-%    \end{center}
-%\end{figure}
-
-%In a first instance, one has the data set that corresponds to the features identified as the input features of the model. For the initial scenario, the features of a given instant $t_i$, have a direct match with a value of Available Power of the output variables for the same instant $t_i$.  Then the transformation process begins, where the output variables will be shifted 5, 10 and 15 time-steps. The data vector of Available Power is copied originating three identical vectors. In the first step, the first 5, 10 and 15 measurements of each Available Power vector are removed, originating the output vectors with the ranges $[t_0 + 5, t]$, $[t_0 + 10, t]$, $[t_0 + 15, t]$ respectively. At this time, each set of input features already presents a match of Available Power in 5, 10 and 15 minutes, but the output vectors present different dimensions as one would expect. In order to have output vectors with the same dimension, the size of the three vectors is limited to the size of the smallest, as well as the set of input features. In the last step there is then a set of input features with values in the range $[t_0, t-15]$ and the ranges $[t\_0 + 5, t-10]$, $[t_0 + 10, t-5]$ and $[t\_0 + 15, t]$ for the Available Power to 5, 10 and 15 minutes, all four vectors with the same dimension. 
-
-%It should be noted that, depending on the chosen model, it may or may not be necessary to use the three series, this will depend exclusively on the architecture of the model used. In any case, it was thought relevant to have the three series, one in which the input features for instant t link to the output feature for $t+5$, the second in which the input features for instant t link to the output feature for $t+10$, and finally, a third series in which the input features for instant t link to the output feature for $t+15$. Another point to mention is the reduction in the dataset dimension. There is a loss of 15 time-steps of data in this whole process. Since the total dataset contains a total of 201542 time-steps, the elimination of these 15 time-steps corresponds to a loss of only 0.0074$\%$ of the information.
 
 \subsection{Feature selection}\label{chap3:subsec:feature_selection}
 
@@ -339,25 +314,28 @@ In Chapter \ref{chap:background}, some of the most common models were studied wi
 
 This problem presents some characteristics that are determinant in the process of choosing the models to be tested. First of all, the data made available for this study, represents a significantly short time period, which means that the use of models, as statistical regressions, are not ideal to solve this problem. 
 
-On the other hand, the challenge presented by \ac{EDP} implies a 5, 10 and 15 minute data forecast. This specification implies the use of a fast model that is able to produce different forecasts in a short period of time. This is a problem for \ac{SVM}s/\ac{SVR}s because, as mentioned by Zhao et al.\cite{svm3}, Dong et al.\cite{svm2} and Li et al.\cite{svm5}, while producing results with good precision and accuracy, they are slow models for large-scale problems. 
+On the other hand, the challenge presented by \ac{EDP} requires a 5, 10 and 15 minute data forecast. This specification implies the use of a fast model that is able to produce different forecasts in a short period of time. This is a problem for \ac{SVM}s/\ac{SVR}s because, as mentioned by Zhao et al.\cite{svm3}, Dong et al.\cite{svm2} and Li et al.\cite{svm5}, while producing results with high precision and accuracy, they are slow models for large-scale problems. 
 
 Another model presented in Chapter \ref{chap:background}, were the \ac{DT}s. Although they are simple to apply models, \ac{DT}s have the limitation of not allowing a future value to be computed, but rather a range of values in which the variable to be predicted can be found. Since for this problem the main objective is to obtain specific values of available power, this category of models was not considered in this research.
 
-Although all the mentioned models can produce acceptable results for the proposed work, it was decided to apply different types of artificial neural networks, both architectures with only one \ac{ANN} layer, and architectures with multiple layers implemented simultaneously. The idea is then to test various typologies of \ac{ANN}s, and elaborate a comparative study between the proposed solutions, comparing their performance in different scenarios and conditions.
+Although all the mentioned models can produce acceptable results for the proposed work, it was decided to apply different types of artificial neural networks, namely \ac{RNN}s, both architectures with only one layer, and architectures with multiple layers implemented simultaneously. 
+
+The choice of these models is based on several factors. Among them, the ease of implementation and the flexibility to adapt the models created to the specific needs of the problem can be highlighted. Moreover, in the specific case of \ac{RNN}s, this type of networks are ideal for the problem we are studying since they have the capacity to learn non-linear representations, and also have the property of "memory". \ac{RNN}s assume the existence of a sequential dependence between the inputs, and the previous states which makes this family of models ideal for the problem in question. 
+
+The idea is then to test various typologies of \ac{ANN}s, and elaborate a comparative study between the proposed solutions, comparing their performance in different scenarios and conditions.
 
 \subsection{Artificial Neural Networks}\label{chap3:subsec:artificial_neural_networks}
 
-Neural networks have proven to be 
-extremely efficient in identifying and learning temporal data patterns, many of them quite complex. In chapter \ref{chap:background}, two large families of neural networks were presented, \ac{FFNN}s and \ac{RNN}s. From the different existing architectures within these two categories, two types of layers were selected, \ac{GRU} and \ac{LSTM}, both classified as \ac{RNN}s' layers. In addition, \ac{1D CNN} layers were also tested, which fall under the umbrella of \ac{CNN}. These three different types of layers were tested in multiple arrangements and combined with each other to form multiple neural network architectures.
+Neural networks have proven to be extremely efficient in identifying and learning temporal data patterns, many of them quite complex. In chapter \ref{chap:background}, two large families of neural networks were presented, \ac{FFNN}s and \ac{RNN}s. From the different existing architectures within these two categories, two types of layers were selected, \ac{GRU} and \ac{LSTM}, both classified as \ac{RNN} layers. In addition, \ac{1D CNN} layers were also tested, which fall under the umbrella of \ac{CNN}. These three different types of layers were tested in multiple arrangements and combined with each other to form multiple neural network architectures.
 
 \subsubsection{Long Short-Term Memory (LSTM)}\label{chap3:subsubsec:lstm}
 
-The first type of configuration considered is the \ac{LSTM}, architecture that fits within the group of \ac{RNN}s, proposed by Hochreiter and Schmidhuber et al. \cite{lstm0} in 1997. \ac{LSTM}s were invented to fight the vanishing gradient problem that is often identified during the training process of common \ac{ANN}s with gradient-based learning methods and back propagation. In these cases, each of the \ac{ANN}'s weights receives an update proportional to the partial derivative of the error function from the current weight in each iteration of training. The problem is that, in some cases, the gradient becomes smaller and smaller with each iteration, preventing the weight from changing its value. This problem leads to a poor performance of the \ac{ANN}, and can even prevent it from continuing the training process. To avoid this situation, the \ac{LSTM} units are composed of a cell state, an input gate, an output gate and a forget gate, as can be seen in Figure \ref{lstm}.
+The first type of configuration considered was the \ac{LSTM}, architecture that fits within the group of \ac{RNN}s, proposed by Hochreiter and Schmidhuber et al. \cite{lstm0} in 1997. \ac{LSTM}s were invented to fight the vanishing gradient problem that is often identified during the training process of common \ac{ANN}s with gradient-based learning methods and back propagation. In these cases, each of the \ac{ANN} weights receives an update proportional to the partial derivative of the error function from the current weight in each iteration of training. The problem is that, in some cases, the gradient becomes smaller and smaller with each iteration, preventing the weight from changing its value. This problem leads to a poor performance of the \ac{ANN}, and can even prevent it from continuing the training process. To avoid this situation, the \ac{LSTM} units are composed of a cell state, an input gate, an output gate and a forget gate, as can be seen in Figure \ref{lstm}.
 
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=0.6\textwidth]{Images/LSTM_cell_detailed.png}
+    \includegraphics[width=0.6\textwidth]{Images/LSTM_cell_detailed.jpeg}
     \caption{LSTM unit.}
     \label{lstm}
     \end{center}
@@ -388,7 +366,7 @@ The equations that describe the operation of a \ac{LSTM} unit are given by
     \end{cases} ,
 \end{equation}
 
-where $f_t$ represents the forget, $i_t$ the input gate, $\widetilde{C}_t$ the cell input activation vector, ${C}_t$ the cell state vector, $o_t$ the output gate, $h_t$ the hidden state vector or output vector of the \ac{LSTM} unit. This type of units has then the ability to choose new information that is relevant and delete the past information that is not relevant, maintaining a good functioning, particularly in time series data since there can be lags of undefined length between important events in a time series dataset.
+where $f_t$ represents the forget, $i_t$ the input gate, $\widetilde{C}_t$ the cell input activation vector, ${C}_t$ the cell state vector, $o_t$ the output gate, $h_t$ the hidden state vector or output vector of the \ac{LSTM} unit. This type of units has then the ability to choose new information that is relevant and delete the past information that is not relevant, maintaining a good functioning, particularly in time series data since there can be lags of undefined length between important events in a time series dataset. This ability is one of the main factors that led to the use of \ac{LSTM}s to solve this problem. Since it is intended to predict the behaviour of the available power in the building based on past data, it was thought relevant to implement this architecture and evaluate the results for the case under study.
 
 \subsubsection{Gated Recurrent Unit (GRU)}\label{chap3:subsubsec:gru}
 
@@ -400,7 +378,7 @@ Compared to \ac{LSTM}s, \ac{GRU}s have no cell state and use the hidden state to
 \begin{figure}[h!]
     \centering
     \begin{center}
-    \includegraphics[width=0.6\textwidth]{Images/GRU_cell_detailed.png}
+    \includegraphics[width=0.6\textwidth]{Images/GRU_cell_detailed.jpeg}
     \caption{GRU unit.}
     \label{gru}
     \end{center}
@@ -409,7 +387,7 @@ Compared to \ac{LSTM}s, \ac{GRU}s have no cell state and use the hidden state to
 
 The \ac{GRU} structure allows to capture dependencies of large data sequences without discarding information from previous parts of the sequence. This is achieved through its gates, similar to \ac{LSTM}s. These gates are responsible for regulating the information to be kept or discarded at each time interval.
 
-The \ac{GRU}'s ability to maintain a long term memory stems from calculations in the \ac{GRU} unit to produce the hidden state. While \ac{LSTM}s have two different states passed between cells - the cell state, which carries long-term memory, and the hidden state, which carries short-term memory - \ac{GRU}s have only one hidden state transferred between time stages. This hidden state is able to maintain both long term and short term dependencies simultaneously, due to the constraint mechanisms and calculations through which the hidden state and the input data pass.  Like the \ac{LSTM} gates, the gates in the \ac{GRU} are trained to selectively filter out any irrelevant information, keeping what is useful.
+The \ac{GRU} ability to maintain a long term memory stems from calculations in the \ac{GRU} unit to produce the hidden state. While \ac{LSTM}s have two different states passed between cells - the cell state, which carries long-term memory, and the hidden state, which carries short-term memory - \ac{GRU}s have only one hidden state transferred between time stages. This hidden state is able to maintain both long term and short term dependencies simultaneously, due to the constraint mechanisms and calculations through which the hidden state and the input data pass.  Like the \ac{LSTM} gates, the gates in the \ac{GRU} are trained to selectively filter out any irrelevant information, keeping what is useful.
 
 These gates essentially produce vectors containing the values 0 or 1 that will be multiplied with the input data and/or hidden state. A value of 0 in the vectors indicates that the corresponding data in the input or hidden state is not important and therefore will be overridden. On the other hand, a value of 1 in the array means that the corresponding data is important and will be used.
 
@@ -427,14 +405,13 @@ The equations that describe the operation of a \ac{GRU} unit are given by
     \end{cases} ,
 \end{equation}
 
-where $zt$ represents the update gate vector, $r_t$ the reset gate vector, $\tilde{h}_t$ the candidate activation vector and $h_t$ the output vector. \ac{GRU}s have fewer tensor operations to perform, and so they take less time to train than \ac{LSTM}s.  
+where $zt$ represents the update gate vector, $r_t$ the reset gate vector, $\tilde{h}_t$ the candidate activation vector and $h_t$ the output vector. \ac{GRU}s have fewer tensor operations to perform, and so they take less time to train than \ac{LSTM}s. The main motivation for choosing this architecture was the possibility to compare its performance with \ac{LSTM} architecture. Since both types of \ac{RNN}s are quite similar and can be applied in identical scenarios, it was thought to be relevant to test both models, in order to understand which of them produces the best results for the case under study.
 
 \subsubsection{One Dimensional Convolutional Neural Network (1D CNN)}\label{chap3:subsubsec:1dcnn}
 
-
 Convolutional Neural Networks (\ac{CNN}s) are biologically-inspired feed-forward neural networks that have been successfully applied in the field of computer vision and digital image processing and analysis \cite{cnn0}.
 
-In \ac{ML} applications, \ac{2D CNN} are typically used for categorizing 2D images (into classification problems) or creating images (in case of regression-based problems). In this kind of applications, the layers extract two-dimensional patches from an image and then apply similar transformations to each of the patches. Similarly, there are \ac{1D CNN}, that extract data subsequences from a dimension of the main sequence. This thesis aims to predict the future behavior of certain variables of a single dimension, therefore models consisting of \ac{1D CNN}'s layers have been tested.
+In \ac{ML} applications, \ac{2D CNN} are typically used for categorizing 2D images (into classification problems) or creating images (in case of regression-based problems). In this kind of applications, the layers extract two-dimensional patches from an image and then apply similar transformations to each of the patches. Similarly, there are \ac{1D CNN}, that extract data subsequences from a dimension of the main sequence. This thesis aims to predict the future behavior of certain variables of a single dimension, therefore models consisting of \ac{1D CNN} layers have been tested.
 
 The \ac{1D CNN} is very effective when you expect to derive interesting features from shorter (fixed-length) segments of the overall data set. Its main purpose is to turn the long input sequence into much shorter (downsampled) sequences of higher-level features, which can be very useful in the treatment of large time sequences.
 
@@ -474,7 +451,7 @@ By applying "padding", having the input $n$, kernel size $k$, and padding with l
     o = \lfloor \frac{(n+2p-k)}{s} \rfloor + 1 .
 \end{equation}
 
-This allows to obtain \ac{1D CNN}'s layers whose input size is equal to the output. In this example, for the output $o$ dimension to have the same dimension as the input sequence, 20, then the $p$ dimension must be 2. In Figure \ref{conv1} it can be seen schematically the result of the described convolution operation.
+This allows to obtain \ac{1D CNN} layers whose input size is equal to the output. In this example, for the output $o$ dimension to have the same dimension as the input sequence, 20, then the $p$ dimension must be 2. In Figure \ref{conv1} it can be seen schematically the result of the described convolution operation.
 
 \begin{figure}[h!]
     \centering
@@ -549,10 +526,10 @@ In order to aggregate all the information entered regarding the layers {1D CNN},
 \begin{figure}[h!]
 \captionsetup[subfigure]{position=b}
 \centering
-\subcaptionbox{\label{inputseq}}{\includegraphics[width=.32\linewidth]{Images/inputsequence.png}}
-\subcaptionbox{ \label{afterconv}}{\includegraphics[width=.32\linewidth]{Images/afterconvolution.png}}
-\subcaptionbox{ \label{aftermaxp}}{\includegraphics[width=.32\linewidth]{Images/aftermaxpooling.png}}
-\caption{Example data a) Before convolution b) after convolution c) after Max pooling.}
+\subcaptionbox{Before convolution\label{inputseq}}{\includegraphics[width=.32\linewidth]{Images/inputsequence.png}}
+\subcaptionbox{After convolution\label{afterconv}}{\includegraphics[width=.32\linewidth]{Images/afterconvolution.png}}
+\subcaptionbox{After Max pooling\label{aftermaxp}}{\includegraphics[width=.32\linewidth]{Images/aftermaxpooling.png}}
+\caption{Process of transformation of a temporal sequence through convolution and Max pooling.}
 \label{resdata}
 \end{figure}
 
@@ -676,10 +653,10 @@ Early-stopping is probably the most common regularization technique. In Figure \
 \begin{figure}[h!]
 \captionsetup[subfigure]{position=b}
 \centering
-\subcaptionbox{\label{early0}}{\includegraphics[width=.45\linewidth]{Images/early-stopping0.png}}
+\subcaptionbox{Without overfitting\label{early0}}{\includegraphics[width=.45\linewidth]{Images/early-stopping0.png}}
 \hspace{0.05\textwidth}
-\subcaptionbox{ \label{early1}}{\includegraphics[width=.45\linewidth]{Images/early-stopping1.png}}
-\caption{Prediction error evolution over epochs a) without overfitting b) without overfitting.}
+\subcaptionbox{Without overfitting\label{early1}}{\includegraphics[width=.45\linewidth]{Images/early-stopping1.png}}
+\caption{Validation and test errors evolution over epochs.}
 \label{early}
 \end{figure}
 
@@ -696,10 +673,10 @@ To tackle this problem, the dropout is used, which is also a widely used regular
 \captionsetup[subfigure]{position=b}
 \centering
 \label{fig:drop}
-\subcaptionbox{\label{drop0}}{\includegraphics[width=.4\linewidth]{Images/dropout0.png}}
+\subcaptionbox{Without dropout\label{drop0}}{\includegraphics[width=.4\linewidth]{Images/dropout0.png}}
 \hspace{0.05\textwidth}
-\subcaptionbox{ \label{drop1}}{\includegraphics[width=.4\linewidth]{Images/dropout1.png}}
-\caption{Artificial neural network a) without dropout b) with dropout.}
+\subcaptionbox{With dropout \label{drop1}}{\includegraphics[width=.4\linewidth]{Images/dropout1.png}}
+\caption{Artificial neural network architecture.}
 \end{figure}
 
 The application of dropouts, implies for each hidden layer, for each sample of training, and for each iteration, to ignore a fraction $p$ of random neurons (and corresponding activations) during the training process. During the validation phase, all activations are then used, but reduced by a $p$ factor to take into account the missing activations lost during the training \cite{drop0}.
@@ -708,9 +685,9 @@ The application of dropouts, implies for each hidden layer, for each sample of t
 
 During the development of the thesis, several scripts were implemented, both for data processing and for the implementation of machine learning models. The language chosen for this purpose was \textit{Pyhton}. The primary reasons for this choice were the ease of syntax of this language, as well as the large number of libraries available, including \textit{keras}, a Deep Learning library that provides all the necessary tools for building and deploying Neural Networks.
 
-Regarding the hardware components used, two different systems were used during the development of this work. The first environment consists of a CPU (Intel Core i5-3470 3.20GHz), and a GPU (NVIDIA GeForce GTX 1050 Ti) essential to accelerate the training process of the proposed models. The second environment consists of a virtual environment implemented on \textit{Microsoft Azure Machine Learning} platform, where a cluster consisting of a 6 core processor, and a GPU (NVIDIA Tesla K80).
+Regarding the hardware components used, two different systems were used during the development of this work. The first environment consists of a CPU (Intel Core i5-3470 3.20GHz), and a GPU (NVIDIA GeForce GTX 1050 Ti - 4GB RAM) essential to accelerate the training process of the proposed models. The second environment consists of a virtual environment implemented on \textit{Microsoft Azure Machine Learning} platform, with a scalable cluster consisting of up to 5 nodes each with a 6 core processor, and a GPU (NVIDIA Tesla K80 - 24 GB RAM).
 
-The first setup was used with the purpose of testing, in a first phase, several models with simple tasks, and the second environment was used to put into practice more complex tests that required more computational capacity.
+The first setup was used with the purpose of testing, in a first phase, several models with simple tasks, and the second environment was used to put into practice more complex tests that required more compute power.
 	
 \section{Performance evaluation metrics}\label{chap3:sec:performance_evaluation_metrics}
 
