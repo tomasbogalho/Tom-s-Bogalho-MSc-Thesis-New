@@ -3,12 +3,12 @@
 % !TEX root = ../main.tex
 % #############################################################################
 % Change the Name of the Chapter i the following line
-\fancychapter{Conclusions and Future Work}
+\fancychapter{Conclusion}
 \cleardoublepage
 % The following line allows to ref this chapter
 \label{chap:conclusion}
 
-\section{Conclusions}
+\section{Conclusion}
 
 This study began with the aim of being able to feed the \ac{EVCS} with more information regarding the power behavior of the building. With more information, this system should be able to carry out more informed decisions regarding the \ac{EV}s charging procedure. Then, the challenge was introduced: "How can one forecast the power available in a near future, in order to optimise the \ac{EVCS}?". In this thesis, data from different sources (radiation, meteorology, production and consumption) was used in the construction of a predictive model whose outputs can be used to feed the \ac{EVCS}. The result of the research is a set of models capable of producing a maximum and minimum power output forecast algorithm to boost the capabilities of the \ac{EVCS} by predicting \ac{EDP} building power availability for the next 5, 10 and 15 minutes. Six different solutions to address this challenge were proposed, two adapted Vanilla solutions, in which simple typologies of \ac{RNN}s, \ac{GRU} and \ac{LSTM} were applied, two Encoder-Decoder models that use the same types of \ac{RNN}s in a more complex way in order to predict whole sequences, and two hybrid models that combine the predictive capabilities of Encoder-Decoder models with the extrapolative capabilities of \ac{CNN}s. Data from January 25, 2020 to June 12 of the same year was used in order to train, validate and test the six models. From the six, the model that presented the best results was the simplest model, the \ac{GRU} Vanilla, surpassing in all cases the baseline performance achieved by the Naive model, and also outperformed the remaining five models.
 
@@ -23,14 +23,14 @@ Some main contributions of this thesis are:
     
 \end{itemize}
 
-In the end, one must consider that the research carried out was successful, having developed a system to effectively predict the power available in the \ac{EDP} building in 5, 10 and 15 minutes, and also capable of determining confidence intervals of the forecasts generated. It can also be said that on a global scale, the system developed contributes to a more sustainable building, since it helps to optimise the power distribution in the building.
+In the end, one must consider that the research carried out was successful, having developed a system to effectively predict the power available in the \ac{EDP} building in 5, 10 and 15 minutes, and also capable of determining confidence intervals of the forecasts generated. It can also be said that on a global scale, the system developed may contribute to a more sustainable building, since it helps to optimise the power distribution in the building.
 
 
 
 \newpage
 \section{Future Work}
 
-The work developed has several aspects that can and should be developed. Limiting the analysis to the prediction of the available power in the building, there are two paths that can be explored: the optimisation and improvement of the models already implemented (1) or the creation and implementation of new forecasting methodologies (2). 
+The work presented has several aspects that can and should be further developed. With respect to the prediction of the available power in the building, there are two paths that can be explored: the optimisation and improvement of the models already implemented (1) or the creation and implementation of new forecasting methodologies (2). 
 
 Regarding the models already implemented (1):   
 
