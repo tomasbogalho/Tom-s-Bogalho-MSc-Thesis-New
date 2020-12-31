@@ -207,6 +207,7 @@
 		You must specify the scientific supervisor}
 	{Use the \protect\supervisor{} command in the preamble.}
 }
+
 %
 % DEFINE COMMAND FOR: othersupervisor -> NAME OF THESIS SCIENTIFIC CO-SUPERVISOR
 \newcommand*{\othersupervisor}[1]{\th@StoreIn{\th@othersupervisor}{#1}}
